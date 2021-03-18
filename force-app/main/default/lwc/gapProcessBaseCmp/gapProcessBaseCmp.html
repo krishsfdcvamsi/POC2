@@ -1,0 +1,52 @@
+<template>
+    <lightning-tabset>
+        <lightning-tab style="font-size: 20px;" label="Engineer Review" title="Engineer Review">
+            <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+                <!--<div class="slds-size_5-of-5">
+                     <div class="slds-box_x-small slds-text-align_center slds-m-around_x-small">
+                        
+                       <div class="slds-text-heading--medium">
+                           <b>Engineer Review</b> 
+                        </div>
+                    </div>
+                  </div>-->
+                  <div class="slds-size_5-of-5">
+                    <div class="slds-m-around_x-small">
+                        <c-open-visualforce-page  current-record-id={currenRecordId}>
+                            
+                        </c-open-visualforce-page>
+                    </div>
+                    <!--<c-add-approval-buttons 
+                    show-approve-button="true" 
+                    show-reject-button="true" 
+                    show-send-gap-button="true"
+                    label-approve-button="Approve"
+                    label-reject-button="Reject"
+                    label-send-gap-button = ""
+                    ></c-add-approval-buttons>-->
+                  </div>
+        </div>        
+        </lightning-tab>
+        
+            <lightning-tab style="font-size: 20px;" label="Customer Requirement" title="Customer Requirement">
+                <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+                    <!--<div class="slds-size_5-of-5">
+                    <div class="slds-box_x-small slds-text-align_center slds-m-around_x-small">
+                        <div class="slds-text-heading--medium">
+                            <b>Customer Spec</b>
+                        </div>
+                        
+                    </div>-->
+                    <div class="slds-size_1-of-1">
+                        <c-customer-spec-detail quote-id={currenRecordId}>
+                         </c-customer-spec-detail>
+                     </div>
+                </div>
+                
+            </lightning-tab>
+        
+    </lightning-tabset>
+    
+        
+    
+</template>

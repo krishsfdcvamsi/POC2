@@ -1,0 +1,13 @@
+<apex:page standardController="RFO_Asset_File__c" extensions="RFO_SendAssetFileInfoToTAS" action="{!callouttoTAS}">
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageMessage summary="{!Message}" severity="info" strength="3" rendered="{!userAccessFlag == true}">
+            	<apex:commandButton id="AssetFile" value="Click here to go back to Asset File" action="{!reset}"/>
+            </apex:pageMessage>
+            <apex:pageMessage summary="You don't have access on this button" severity="info" strength="3" rendered="{!userAccessFlag == false}">
+            <apex:commandButton id="AssetFile" value="Click here to go back to Asset File" action="{!reset}"/>
+            </apex:pageMessage>
+            <apex:pageMessages />
+  		</apex:pageBlock>
+    </apex:form>
+</apex:page>

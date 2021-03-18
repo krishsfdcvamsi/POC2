@@ -1,0 +1,116 @@
+<aura:component controller="lookupAssetsMultiAC" implements="lightning:availableForFlowScreens" access="global">
+    
+    <aura:attribute name="defaultRecordId"  type="String"  />
+    <aura:attribute name="defaultFieldName" type="String" />
+    <aura:attribute name="required" type="Boolean" default="false" />
+    <aura:attribute name="usePills" type="Boolean" default="true" />
+    <aura:attribute name="whereClause" type="String" />
+    <aura:attribute name="objectName"  type="String" default="Asset" />
+    <aura:attribute name="displayFieldName" type="String" default="Name"/>
+    <aura:attribute name="otherFields" type="String" default="RFO_CurrComm__r.RFO_STCC__c,RFO_CurrComm__r.Name,RFO_FileNumber__c"/>
+    <aura:attribute name="valueFieldName" type="String" default="Id" />
+    <aura:attribute name="label" type="String" />
+    <aura:attribute name="selectedValue" type="String" />
+    <aura:attribute name="filterFieldName" type="String" default="AccountId" />
+    <aura:attribute name="filterFieldValue" type="String" />
+    <aura:attribute name="parentChild" type="String" />
+    <aura:attribute name="defaultValue" type="String" />
+    <aura:attribute name="parentId" type="String" />
+    <aura:attribute name="cmpid" type="String" />
+    <aura:attribute name="asset" type="Asset"/>
+    <aura:attribute name="assetCommodity" type="String" access="global" />
+    <aura:attribute name="assets" type="Asset[]" access="global" />
+    <aura:attribute name="assetsNonExisting" type="Object[]" access="global" />
+    <aura:attribute name="assetsExisting1" type="Asset[]" access="global" />
+    <aura:attribute name="assetsExisting" type="String[]" access="global" />
+    <aura:attribute name="assetDetails" type="Boolean" access="global" default="false" />
+    <aura:attribute name="disabled" type="Boolean" access="public" default="false" description="Whether the input is disabled "/>
+    <aura:attribute name="assetSize" type="Integer" access="global" default="0" />
+    <aura:attribute name="errorMsg" type="String" default="" />
+    <aura:attribute name="foundAssetNames" type="String" default="" />
+    <aura:attribute name="isSingleAsset" type="Boolean" access="global" default="false" />
+    <aura:attribute name="showExisting" type="Boolean" access="global" default="false" />
+    <aura:attribute name="enableNext" type="Boolean" access="global" default="false" />
+    <aura:attribute name="activeSRCount" type="Integer" access="global" default="{!v.assetsExisting1.length}" />
+    <aura:attribute name="tmpDisable" type="Boolean" access="global" default="false" />
+    <aura:attribute name="fromExisting" type="Boolean" access="global" default="false" />
+    
+    <aura:attribute name="assetIds" type="Set" access="global" default="[]" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <!--<aura:handler event="c:EvtChangeLookup" action="{!c.updateLookup}"/>-->
+    <aura:handler event="c:EvtInitLookup" action="{!c.updateLookup}"/>
+    <!--<aura:handler event="c:EvtFilterValue" action="{!c.updateLookup}"/>-->
+    
+    <aura:attribute name="validate" type="Aura.Action"/> 
+    
+	<c:LookupAssets aura:id="assetLookup"
+                    sObjectName='{!v.objectName}' 
+                    displayedFieldName='{!v.displayFieldName}'  
+                    otherFields = '{!v.otherFields}'
+                    whereClause='{!v.whereClause}' 
+                    valueFieldName='{!v.valueFieldName}' 
+                    label='{!v.label}' 
+                    selectedValue='{!v.selectedValue}' 
+                    filteredFieldName='{!v.filterFieldName}' 
+                    filterFieldValue='{!v.filterFieldValue}' 
+                    parentChild='{!v.parentChild}' 
+                    required='{!v.required}'
+                    defaultValue='{!v.defaultValue}'
+                    parentId="{!v.parentId}"
+                    cmpId="{!v.cmpid}"
+                    performLookupOnFocus="true"
+                    disabled = "{!v.disabled}"
+                    />
+    
+    <p style="color:red">{!v.errorMsg}</p>
+    <!--<lightning:button class="slds-button slds-button_brand" onclick="{!c.getAsset}" label="Add Asset"/>-->
+    
+    <br /><br />
+    <!-- Asset: {!v.assetName} - {!v.assetCommodity}-->
+    <aura:if isTrue="{!v.assetDetails}">
+        <aura:iteration items="{!v.assets}" var="asset">
+            <p>
+                {!asset.Name +' - '+asset.RFO_CurrComm__r.Name+' - '+asset.RFO_CurrComm__r.RFO_STCC__c}
+            </p>
+        </aura:iteration>
+        <aura:set attribute="else">  
+                <aura:iteration items="{!v.assetsNonExisting}" var="asset">
+                    <p>
+                        <lightning:pill name="{!asset.Name}" label="{!asset.Name +' - '+asset.RFO_CurrComm__r.Name+' - '+asset.RFO_CurrComm__r.RFO_STCC__c}" onremove="{! c.handlePillRemove }"/>
+                    </p>
+                </aura:iteration>
+        </aura:set>
+    </aura:if>
+    <br />
+    <aura:if isTrue="{!v.assetsExisting.length > 0}">
+        <p style="color:red">An Active Service Request already exists for the asset(s) selected below. Do you wish to continue?</p>
+    <aura:iteration items="{!v.assetsExisting}" var="asset">
+        <p>
+            <lightning:pill name="{!asset}" label="{!asset}" onremove="{! c.handleExistingAssetsRemove }"/>
+        </p>
+    </aura:iteration>
+        <div style="float:right">
+        <lightning:button aura:id="NEXT" label="Continue" 
+                          variant="brand" onclick="{!c.gotoNext}" />
+        </div>
+    </aura:if>
+    <br />
+        <br />
+
+    <p style="color:#870500">    
+		Please note for Service Request containing multiple assets, options selected such as location, repair service(s), car status etc. must be the same for all the selected assets above.
+    </p>
+    
+    
+    <div style="float:right">
+    <aura:if isTrue="{!and(v.assetsExisting.length == 0, v.assetsNonExisting.length > 0)}">
+        <br />
+        <lightning:button aura:id="NEXT" label="Next" 
+                          variant="brand" onclick="{!c.gotoNext}" />
+    </aura:if>
+    </div>
+    
+    <br />
+    <br />
+</aura:component>

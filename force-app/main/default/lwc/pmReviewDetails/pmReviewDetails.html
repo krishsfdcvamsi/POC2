@@ -1,0 +1,209 @@
+<template>
+    <div style="width:80%;margin: auto;">
+
+    <center>
+        <lightning-button variant="brand" label="Edit" title="Edit" onclick={handleEdit} class="slds-m-right_x-small"></lightning-button>
+    </center>
+    <lightning-record-view-form record-id={recordId} object-api-name="SBQQ__Quote__c">
+    <lightning-accordion allow-multiple-sections-open
+    onsectiontoggle={handleSectionToggle}
+    active-section-name={activeSections} >
+    
+            <lightning-accordion-section name="A" label="Pricing Information">
+                <div class="slds-form" role="list">
+                    <div class="slds-form__row">
+                        <div class="slds-form__item" role="listitem">
+
+                            <lightning-output-field field-name="RFO_Allowable_Annual_Mileage__c">
+                            </lightning-output-field>
+                        </div>
+                        <div class="slds-form__item" role="listitem">
+
+                            <lightning-output-field field-name="RFO_ExcessMileageFee__c">
+                            </lightning-output-field>
+                        </div>
+                        
+
+                    </div>
+                    <div class="slds-form__row">
+                        
+                        <div class="slds-form__item" role="listitem">
+                            <lightning-output-field field-name="Pricing_Supervisor_Review_Complete__c">
+                            </lightning-output-field>
+                        </div>
+                        <div class="slds-form__item" role="listitem">
+                            <lightning-output-field field-name="RFO_PricingNotes__c">
+                            </lightning-output-field>
+                        </div>
+                       
+                        
+                    </div>
+                    <div class="slds-form__row">
+                        <div class="slds-form__item" role="listitem">
+
+                            <lightning-output-field field-name="RFO_BenchmarkRate__c">
+                            </lightning-output-field>
+                    </div>
+                       <div class="slds-form__item" role="listitem">
+                            <lightning-output-field field-name="RFO_BenchmarkDate__c">
+                            </lightning-output-field>
+                        </div>
+                        
+                    </div>
+                </div>
+            </lightning-accordion-section>
+            <lightning-accordion-section name="B" label="Non-Standard Lease Options">
+                <div class="slds-form" role="list">
+                    <div class="slds-form__row">
+                        <div class="slds-form__item" role="listitem">
+                            <lightning-output-field field-name="RFO_PurchaseOptions__c">
+                            </lightning-output-field>
+                        </div>
+                        <div class="slds-form__item" role="listitem">
+                            <lightning-output-field field-name="RFO_NonStandardTerms__c">
+                            </lightning-output-field>
+                        </div>
+                        
+                    </div>
+                    <div class="slds-form__row">
+                        <div class="slds-form__item" role="listitem">
+                            <lightning-output-field field-name="RFO_EarlyTermination__c">
+                            </lightning-output-field>
+                        </div>
+                        <div class="slds-form__item" role="listitem">
+                            <lightning-output-field field-name="RFO_EarlyTerminationDate__c">
+                            </lightning-output-field>
+                        </div>
+                    </div>
+                </div>
+            </lightning-accordion-section>
+            <lightning-accordion-section name="C" label="Proposal Specific Information">
+
+
+                <div class="slds-form" role="list">
+                    <div class="slds-form__row">
+                        <div class="slds-form__item" role="listitem">
+                            <lightning-output-field field-name="RFO_ProposalRequired__c">
+                            </lightning-output-field>
+                        </div>
+                        <div class="slds-form__item" role="listitem">
+                            <lightning-output-field field-name="RFO_ProposalAttachments__c">
+                            </lightning-output-field>
+                        </div>
+                    </div>
+                    <div class="slds-form__row">
+                        <div class="slds-form__item" role="listitem">
+                            <lightning-output-field field-name="RFO_LessorLesseeSelector__c">
+                            </lightning-output-field>
+                        </div>
+                        <div class="slds-form__item" role="listitem">
+                            <lightning-output-field field-name="RFO_LessorEntity__c">
+                            </lightning-output-field>
+                        </div>
+                    </div>
+                    <div class="slds-form__row">
+                        <div class="slds-form__item" role="listitem">
+                            <lightning-output-field field-name="RFO_TIH_PIH__c">
+                            </lightning-output-field>
+                        </div>
+                        <div class="slds-form__item" role="listitem">
+                            <lightning-output-field field-name="RFO_DeliveryLocation__c">
+                            </lightning-output-field>
+                        </div>
+                    </div>
+                    <div class="slds-form__row">
+                        
+                        <div class="slds-form__item" role="listitem">
+                            <lightning-output-field field-name="RFO_ProteinTransport__c">
+                            </lightning-output-field>
+                        </div>
+                        <div class="slds-form__item" role="listitem">
+                            <lightning-output-field field-name="RFO_FirstCarShipDay__c">
+                            </lightning-output-field>
+                        </div>
+                    </div>
+                    <div class="slds-form__row">
+                        <div class="slds-form__item" role="listitem">
+                            <lightning-output-field field-name="RFO_CoalTransport__c">
+                            </lightning-output-field>
+                        </div>
+                        <div class="slds-form__item" role="listitem">
+                            <lightning-output-field field-name="RFO_FirstCarShipDays__c">
+                            </lightning-output-field>
+                        </div>
+                        
+                    </div>
+                </div>
+            </lightning-accordion-section>
+            <lightning-accordion-section name="d" label="Advance Payment">
+                <div class="slds-form__row">
+                    <div class="slds-form__item" role="listitem">
+                        <lightning-output-field field-name="RFO_MonthsRent__c">
+                        </lightning-output-field>
+                    </div>
+                    <div class="slds-form__item" role="listitem">
+                        <lightning-output-field field-name="RFO_AdvancePaymentRequired__c">
+                        </lightning-output-field>
+                    </div>
+                    
+                </div>
+            </lightning-accordion-section>
+    </lightning-accordion>
+</lightning-record-view-form>
+</div>
+ <div  if:true={showEditForm}>
+    <lightning-record-edit-form record-id={recordId}
+    object-api-name="SBQQ__Quote__c" onsuccess={handleCreate} >
+    <section role="dialog" tabindex="-1" aria-label="Meaningful description of the modal content" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+            <header class="slds-modal__header">
+                <span class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close">
+                    <lightning-button-icon icon-name="utility:close"  
+                    alternative-text="Close" title="Close" onclick={closeModal}>
+                </lightning-button-icon>
+                </span>
+                <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Edit Pricing Review</h2>
+              </header>
+              <div if:false={isLoaded} class="slds-is-relative">
+                <lightning-spinner
+                    alternative-text="Loading..." variant="brand">
+                </lightning-spinner>
+            </div>
+          <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+            
+                <lightning-input-field name="AllowableAnural" field-name="RFO_Allowable_Annual_Mileage__c"></lightning-input-field>
+                <lightning-input-field name="PricingSupervisor" field-name="Pricing_Supervisor_Review_Complete__c"></lightning-input-field>
+                <lightning-input-field name="BenchMarkRate" field-name="RFO_BenchmarkRate__c"></lightning-input-field>
+                <lightning-input-field name="ExcessMileage" field-name="RFO_ExcessMileageFee__c"></lightning-input-field>
+                <lightning-input-field name="PricingNotes" field-name="RFO_PricingNotes__c"></lightning-input-field>
+                <lightning-input-field name="PurchaseOptions" field-name="RFO_PurchaseOptions__c"></lightning-input-field>
+                <lightning-input-field name="EarlyTermination" field-name="RFO_EarlyTermination__c"></lightning-input-field>
+                <lightning-input-field name="NonStandardTerms" field-name="RFO_NonStandardTerms__c"></lightning-input-field>
+                <lightning-input-field name="EarlyTerminationDate" field-name="RFO_EarlyTerminationDate__c"></lightning-input-field>
+                <lightning-input-field name="ProposalRequired" field-name="RFO_ProposalRequired__c"></lightning-input-field>
+                <lightning-input-field name="LessorLess" field-name="RFO_LessorLesseeSelector__c"></lightning-input-field>
+                <lightning-input-field name="Tihpih" field-name="RFO_TIH_PIH__c"></lightning-input-field>
+                <lightning-input-field name="ProteinTransport" field-name="RFO_ProteinTransport__c"></lightning-input-field>
+                <lightning-input-field name="CoalTransport" field-name="RFO_CoalTransport__c"></lightning-input-field>
+                <lightning-input-field name="ProposalAttachment" field-name="RFO_ProposalAttachments__c"></lightning-input-field>
+                <lightning-input-field name="LessorEntity" field-name="RFO_LessorEntity__c"></lightning-input-field>
+                <lightning-input-field name="DeliveryLocation" field-name="RFO_DeliveryLocation__c"></lightning-input-field>
+                <lightning-input-field name="FirstCarShipDays" field-name="RFO_FirstCarShipDays__c"></lightning-input-field>
+           
+          </div>
+          <footer class="slds-modal__footer">
+            <lightning-button  
+                class="slds-m-top_small"  
+                variant="brand"  
+                type="submit"  
+                name="Save"  
+                label="Save" onclick={handleSubmit}>  
+            </lightning-button>  
+            <lightning-button variant="destructive" label="Cancel" title="Cancel" onclick={closeModal} class="slds-m-left_x-small"></lightning-button>
+          </footer>
+        </div>
+      </section>
+    </lightning-record-edit-form>
+      <div class="slds-backdrop slds-backdrop_open"></div>
+ </div>
+</template>

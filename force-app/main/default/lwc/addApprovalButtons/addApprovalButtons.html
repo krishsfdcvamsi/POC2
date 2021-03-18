@@ -1,0 +1,40 @@
+<template>
+    <div if:true={isLoaded} class="slds-is-relative">
+        <lightning-spinner
+            alternative-text="Loading..." variant="brand">
+        </lightning-spinner>
+    </div>
+    <span if:true={isShowApproveButton}>
+        <lightning-button
+        variant="success" 
+        label={labelForApproveButton}
+        title={labelForApproveButton}
+        name="Approved_As_Is" 
+        disabled={isApproveButtonDisabled}
+        onclick={handleCompleteClick} 
+        class="slds-m-left_x-small">
+        </lightning-button>
+    </span>
+    <span if:true={isShowSendGapButton}>
+        <lightning-button
+        variant="Brand" 
+        label={labelForSendGapButton}
+        title={labelForSendGapButton}
+        name="GAP" 
+        disabled={isGAPButtonDisabled}
+        onclick={handleManualOverrideClick} 
+        class="slds-m-left_x-small">
+        </lightning-button>
+    </span>
+    <span if:true={isShowRejectButton}>
+        <lightning-button
+        variant="destructive" 
+        label={labelForRejectButton}
+        title={labelForRejectButton}
+        name="Reject" 
+        disabled={isRejectButtonDisabled}
+        onclick={handleRejectClick} 
+        class="slds-m-left_x-small">
+        </lightning-button>
+    </span>
+</template>

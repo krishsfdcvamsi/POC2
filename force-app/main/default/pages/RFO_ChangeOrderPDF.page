@@ -1,0 +1,130 @@
+<apex:page standardcontroller="RFO_ChangeOrder__c" 
+    extensions="RFO_ChangeOrderPdf_Controller" renderAs="pdf">
+   <apex:pageBlock >
+        <apex:sectionHeader >
+            <apex:image id="theImage" url="{!$Resource.RFO_Trinityrail}" width="220" height="55" alt="TrinityRail"/>
+       </apex:sectionHeader>
+        <head>
+<style>
+body {
+    font-family: 'Arial Unicode MS';
+}
+.Name {
+    font: normal 50px;
+    color: black;
+}
+.Heading {
+    font: Bold 40px;
+    color: black;
+}
+</style>
+        </head>
+        <body >
+            <center>
+                <h4 style="font-size:14px;">Change Order (Price Included)</h4>
+            </center>
+          <left>
+            <table cellpadding="5" cellspacing="0" >
+                <tr style="font-size: 12px;">
+                    <th width="50px" height="10px">Customer Name:</th>
+                    <th width="50px" height="10px">Change Order Letter:</th>
+                </tr>
+                <tr style="font-size: 12px;">
+                    <td width="50px"  height="10px">{!RFO_ChangeOrder__c.RFO_AccountName__c}</td>
+                    <td width="50px"  height="10px">{!RFO_ChangeOrder__c.RFO_ChangeOrderLetter__c}</td>
+                </tr>
+                <tr style="font-size: 12px;">
+                    <th width="50px"  height="10px">LX Customer Number:</th>
+                    <th width="50px"  height="10px">Change Due To:</th>
+                </tr>
+                <tr style="font-size: 12px; font-weight: normal;">
+                    <td width="50px"  height="10px">{!RFO_ChangeOrder__c.RFO_ERPMfgCustomerNumber__c}</td>
+                    <td width="50px"  height="10px">{!RFO_ChangeOrder__c.RFO_ChangeDueto__c}</td>
+                </tr>
+                <tr style="font-size: 12px;">
+                    <th width="50px"  height="10px">RF1 Order Number:</th>
+                    <th width="50px"  height="10px">Issued By:</th>
+                </tr>
+                <tr style="font-size: 12px; font-weight: normal;">
+                    <td width="50px"  height="10px">{!RFO_ChangeOrder__c.RFO_OrderID__r.OrderNumber}</td>
+                    <td width="50px"  height="10px">{!RFO_ChangeOrder__c.RFO_IssuedBy__r.Name}</td>
+                </tr>
+                <tr style="font-size: 12px;">
+                    <th width="50px"  height="10px">Asset File Name:</th>
+                    <th width="50px"  height="10px"></th>
+                </tr>
+                <tr style="font-size: 12px; font-weight: normal;">
+                    <td width="50px"  height="10px">{!RFO_ChangeOrder__c.RFO_AssetFile__r.RFO_IntegrationId__c}</td>
+                    <td width="50px"  height="10px"></td>
+                </tr>
+                
+                
+            </table>
+           
+            <br/>
+            <br/>
+       <strong style="font-size:12px;">  Change Order Item Details: </strong> 
+            
+              
+        <table cellpadding="5"   cellspacing="0" border="1" width="100%" >
+        
+        <tr style="font-size:12px;">
+             <th width="50px"  height="15px" > Date</th>
+             <th width="50px" height="15px"> Change Detail Description</th>
+             <th width="50px"  height="15px"> Change Detail Margin</th>
+             <th width="50px"  height="15px"> Change Detail Cost</th>
+             <th width="50px"  height="15px">Change Detail Price</th>
+            </tr >
+            
+
+            
+                <apex:repeat value="{!RFO_ChangeOrder__c.Change_Order_Line_Items__r}" var="Coli">
+                 <tr>   
+                <td width="50px" height="15px" style="font-size:12px;"><apex:outputText value="{0,date,MM'-'dd'-'yyyy}">
+                <apex:param value="{!Coli.RFO_Date__c}" /> 
+</apex:outputText></td>
+                <td width="50px" height="15px" style="font-size:12px;">
+                    <apex:outputfield value="{!Coli.RFO_ChangeOrderLineItemComments__c}"/></td>
+                <td width="50px" height="15px" style="font-size:12px;">{!Coli.RFO_ChangeDetailMargin__c}</td>
+                <td width="50px" height="15px" style="font-size:12px;">{!Coli.RFO_ChangeDetailCost__c}</td>
+                <td width="50px" height="15px" style="font-size:12px;">{!Coli.RFO_ChangeDetailPrice__c}</td>
+                </tr>    
+               </apex:repeat>     
+                 
+          
+             </table>
+      
+            <br/>          
+      
+        <table cellpadding="5" cellspacing="0"  >
+            
+            <tr style="font-size:12px;">
+             <th width="50px"  height="10px" style="font-size:12px;">Total Change Margin</th>
+              <td width="50px"  height="10px" style="font-size:12px;">{!RFO_ChangeOrder__c.RFO_TotalChangeMargin__c}</td> 
+            </tr >
+              
+           
+             <tr style="font-size:12px;">
+             <th width="50px"  height="10px" style="font-size:12px;">Total Change Cost</th>
+              <td width="50px"  height="10px" style="font-size:12px;">{!RFO_ChangeOrder__c.RFO_TotalChangeCost__c}</td> 
+            </tr >
+            
+             <tr style="font-size:10px;">
+             <th width="50px"  height="10px" style="font-size:12px;">Total Change Price</th>
+              <td width="50px"  height="10px" style="font-size:12px;">{!RFO_ChangeOrder__c.RFO_TotalChangeAmount__c}</td> 
+            </tr >
+            
+            <tr style="font-size:10px;">
+                <th width="50px"  height="10px" style="font-size:12px;">Current Unit Price</th>
+                 <td width="50px"  height="10px" style="font-size:12px;">{!RFO_ChangeOrder__c.RFO_CurrentUnitPrice__c}</td> 
+            </tr >
+               
+               
+            </table>    
+        </left>
+            
+            
+            
+        </body>
+  </apex:pageBlock> 
+</apex:page>

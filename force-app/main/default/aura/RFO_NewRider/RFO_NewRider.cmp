@@ -1,0 +1,140 @@
+<aura:component implements="force:lightningQuickAction,force:hasRecordId" access="global" controller="RFO_OrderController">            
+    <aura:attribute name="sObjectName" type="String" default="RFO_Rider__c" />     
+    <aura:attribute name="recordId" type="String" /> 
+    <aura:attribute name="orderRecord" type="Order" />    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>    
+    <aura:attribute name="orderObject" type="Object" 
+                    description="A simplified view record object to be displayed"/>	
+    <lightning:navigation aura:id="navService"/>    
+    <aura:if isTrue="{!v.showSpinner}">
+        <lightning:spinner />
+    </aura:if>
+    <aura:if isTrue="{!!v.saved}">                                
+        <lightning:recordEditForm
+                                  onload="{!c.handleLoad}"
+                                  onsubmit="{!c.handleSubmit}"
+                                  onsuccess="{!c.handleSuccess}"
+                                  objectApiName="{!v.sObjectName}">
+            <!--  the messages component is for error messages -->
+            <lightning:messages />	            
+            <!--<lightning:inputField fieldName="RFO_AccountId__c" aura:id="accountid"/>
+            <lightning:inputField fieldName="RFO_AssignmentType__c" aura:id="assignmenttype"/>
+            <lightning:inputField fieldName="RFO_BeginChargeDate__c" aura:id="beginchargedate"/> -->				
+            
+            <lightning:accordion aura:id="accordion">
+                <lightning:accordionSection name="Information" label="Information">
+                    <aura:set attribute="body">
+                        <lightning:inputField fieldName="RFO_Contract__c" aura:id="contract" value="{!v.orderRecord.ContractId}"/>             
+                        <lightning:inputField fieldName="RFO_OrderID__c" aura:id="order" value="{!v.recordId}"/>
+                        <lightning:inputField fieldName="RFO_Account__c" aura:id="account" value="{!v.orderRecord.AccountId}"/>
+                        <lightning:inputField fieldName="RFO_Status__c" aura:id="status"/>						
+                        <lightning:inputField fieldName="RFO_Notes__c" aura:id="notes"/>
+                        <lightning:inputField fieldName="RFO_RiderType__c" aura:id="riderType"/>
+                        <lightning:inputField fieldName="RFO_ProductType__c" aura:id="productType" value="{!v.orderRecord.RFO_CarType__c}"/>
+                    </aura:set>
+                </lightning:accordionSection>
+                
+                <lightning:accordionSection name="Sales Order Information" label="Sales Order Information">
+                    <aura:set attribute="body">
+                        <lightning:inputField fieldName="RFO_Commodity__c" aura:id="commodity" value="{!v.orderRecord.RFO_Commodity_lookup__c}"/>
+                        <lightning:inputField fieldName="RFO_TotalOfCars__c" aura:id="totalOfCars" value="{!v.orderRecord.RFO_Quantity__c}"/>
+                        <lightning:inputField fieldName="RFO_RunningNumbers__c" aura:id="runningNumbers" value="{!v.orderRecord.RFO_RunningNumbers__c}"/>
+                        <lightning:inputField fieldName="RFO_ReportingMarks__c" aura:id="reportingMarks" value="{!v.orderRecord.RFO_ReportingMarks__c}"/>
+                    </aura:set>
+                </lightning:accordionSection>
+                
+                <lightning:accordionSection name="Rider General" label="Rider General">
+                    <aura:set attribute="body">
+                        <lightning:inputField fieldName="RFO_RiderDate__c" aura:id="riderDate"/>
+                        <lightning:inputField fieldName="RFO_ExecutedDate__c" aura:id="executedDate"/>
+                        <lightning:inputField fieldName="RFO_StartMethod__c" aura:id="startMethod"/>
+                        <lightning:inputField fieldName="RFO_AssetsAssigned__c" aura:id="assetsassigned"/>
+                        <lightning:inputField fieldName="RFO_OriginalMaturityDate__c" aura:id="originalMaturtyDate"/>
+                        <lightning:inputField fieldName="RFO_CurrentMaturityDate__c" aura:id="currentMaturtyDate"/>
+                        <lightning:inputField fieldName="RFO_AvgBeginCharge__c" aura:id="avgBeginCharge"/>
+                    </aura:set>
+                </lightning:accordionSection>
+                
+                <lightning:accordionSection name="Rider Rates" label="Rider Rates">
+                    <aura:set attribute="body">
+                        <lightning:inputField fieldName="RFO_RiderRateType__c" aura:id="riderRateType"/>
+                        <lightning:inputField fieldName="RFO_UnitofMeasure__c" aura:id="UOM"/>
+                        <lightning:inputField fieldName="RFO_StartMonth__c" aura:id="startMonth"/>
+                        <lightning:inputField fieldName="RFO_Term__c" aura:id="term" value="{!v.orderRecord.RFO_LeaseTerms__c}"/>
+                        <lightning:inputField fieldName="RFO_StartDate__c" aura:id="startDtae"/>
+                        <lightning:inputField fieldName="RFO_TieredRate__c" aura:id="tieredRate"/>
+                        <lightning:inputField fieldName="RFO_EstimatedMiles__c" aura:id="EstMiles"/>
+                        <lightning:inputField fieldName="RFO_EndMonth__c" aura:id="endMonth"/>
+                        <lightning:inputField fieldName="RFO_RiderRate__c" aura:id="riderRate" value="{!v.orderRecord.RFO_LeaseRate__c}"/>
+                        <lightning:inputField fieldName="RFO_EndDate__c" aura:id="endDate"/>
+                    </aura:set>
+                </lightning:accordionSection>
+                
+                <lightning:accordionSection name="AAR Mandated Changes" label="AAR Mandated Changes">
+                    <aura:set attribute="body">
+                        <lightning:inputField fieldName="RFO_AdditionalLeaseRateFactor__c" aura:id="additionalleaseratefactor"/>
+                        <lightning:inputField fieldName="RFO_PerModCostPerCar__c" aura:id="PerModCost"/>
+                        <lightning:inputField fieldName="RFO_IncreaseEffectiveUpon__c" aura:id="inceraseEffectUpon"/>
+                        <lightning:inputField fieldName="RFO_LesseeRightofTermination__c" aura:id="LesseRight"/>
+                        <lightning:inputField fieldName="RFO_NotesComments__c" aura:id="notesComments"/>
+                    </aura:set>
+                </lightning:accordionSection>
+                
+                <lightning:accordionSection name="Rider Auto Renewals" label="Rider Auto Renewals">
+                    <aura:set attribute="body">
+                        <lightning:inputField fieldName="RFO_AutoRenewalTermTermMonths__c" aura:id="autorenewaltermtermmonth"/>
+                        <lightning:inputField fieldName="RFO_RenewalDaysNotice__c" aura:id="renewalDaysNotic"/>
+                        <lightning:inputField fieldName="RFO_RenewalRateChange__c" aura:id="renewalRateChange"/>
+                        <lightning:inputField fieldName="RFO_AutoRenewal__c" aura:id="autoRenewal"/>
+                    </aura:set>
+                </lightning:accordionSection>
+                
+                <lightning:accordionSection name="Rider Purchase Options" label="Rider Purchase Options">
+                    <aura:set attribute="body">
+                        <lightning:inputField fieldName="RFO_PurchaseOptionMonths__c" aura:id="puchaseMonths"/>
+                        <lightning:inputField fieldName="RFO_PurchaseOptionNoticeDays__c" aura:id="puchaseNoticeDays"/>
+                        <lightning:inputField fieldName="RFO_PurchaseOptionValue__c" aura:id="puchaseValue"/>
+                    </aura:set>
+                </lightning:accordionSection>
+                
+                <lightning:accordionSection name="Rider Early Termination" label="Rider Early Termination">
+                    <aura:set attribute="body">
+                        <lightning:inputField fieldName="RFO_EarlyTerminationNoticeRequired__c" aura:id="earlyNotice"/>
+                        <lightning:inputField fieldName="RFO_EarlyTerminationMonth__c" aura:id="earlyMonth"/>
+                        <lightning:inputField fieldName="RFO_EarlyTerminationCost__c" aura:id="earlyCost"/>
+                        <lightning:inputField fieldName="RFO_EarlyTerminationQuantity__c" aura:id="earlyQuantity"/>
+                    </aura:set>
+                </lightning:accordionSection>
+                
+                <lightning:accordionSection name="Rider Misc" label="Rider Misc">
+                    <aura:set attribute="body">
+                        <lightning:inputField fieldName="RFO_ExcessMileageMethod__c" aura:id="mileageMethod"/>
+                        <lightning:inputField fieldName="RFO_ExcessMileagePremium__c" aura:id="mileagePremium"/>
+                        <lightning:inputField fieldName="RFO_MileageLimit__c" aura:id="mileageLimit"/>
+                        <lightning:inputField fieldName="RFO_ContractStatusNotes__c" aura:id="contractStatusNotes"/>
+                        <lightning:inputField fieldName="RFO_CreditApproved__c" aura:id="creditApproved"/>
+                        <lightning:inputField fieldName="RFO_ContractRiderAuditComplete__c" aura:id="crAuditComplete"/>
+                        <lightning:inputField fieldName="RFO_1stCarAssignedRiderRateValidated__c" aura:id="1CarAssigned"/>
+                        <lightning:inputField fieldName="RFO_LastCarAssignedCarValidated__c" aura:id="lastCarValidated"/>
+                        <lightning:inputField fieldName="RFO_LastCarAssignedCarOwnersValidated__c" aura:id="lastCarOwnerValidated"/>
+                    </aura:set>
+                </lightning:accordionSection>
+                
+                <lightning:accordionSection name="Termination" label="Termination">
+                    <aura:set attribute="body">
+                        <lightning:inputField fieldName="RFO_NotificationReceivedVia__c" aura:id="notifRecieved"/>
+                        <lightning:inputField fieldName="RFO_TerminationLetterComments__c" aura:id="terminationLetter"/>
+                        <lightning:inputField fieldName="RFO_EndChargeDate__c" aura:id="endChargeDate"/>
+                    </aura:set>
+                </lightning:accordionSection>
+            </lightning:accordion>
+            
+            <div class="slds-m-top_medium">
+                <lightning:button disabled="{!v.disabled}" variant="brand" type="submit" name="save" label="Save" />
+            </div>
+        </lightning:recordEditForm>
+        <aura:set attribute="else">
+            <p>Saved! New record id is {!v.recordId}</p>
+        </aura:set>            
+    </aura:if>    
+</aura:component>

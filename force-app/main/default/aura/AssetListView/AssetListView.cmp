@@ -1,0 +1,15 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" controller="AssetListViewController" access="global" >
+	
+    
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="recordTypeName" type="String" />
+    <aura:attribute name="assetData" type="List" />
+    <aura:attribute name="assetColumns" type="List" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:if isTrue="{!v.recordTypeName == 'RFO_ExistingCar'}">
+        <lightning:card  variant="Narrow" title="{!'Asset List('+v.assetData.length+')'}"  iconName="standard:asset_object" >
+            <lightning:datatable keyField="assetId" data="{!v.assetData}" columns="{!v.assetColumns}" hideCheckboxColumn="true"
+                                 columnWidthsMode="auto"/>
+        </lightning:card>
+    </aura:if>
+</aura:component>

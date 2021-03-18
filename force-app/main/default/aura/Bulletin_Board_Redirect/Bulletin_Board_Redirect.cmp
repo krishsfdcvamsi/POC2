@@ -1,0 +1,10 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction,lightning:actionOverride,lightning:isUrlAddressable" 
+                access="global">
+    
+    <!-- Redirect to capture Bulletin Board record for Event Log and send to URL Link -->
+    <aura:method name="redirectMethod" action="{!c.navigateToBBRecord}" access="PUBLIC">
+        <aura:attribute name="bbId" type="String"/>
+        <aura:attribute name="bbURL" type="String"/>
+    </aura:method>
+
+</aura:component>

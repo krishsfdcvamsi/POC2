@@ -1,0 +1,26 @@
+<template>
+    <lightning-card
+            variant="narrow"
+           >
+    <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+        <div class="slds-size_5-of-6">
+          <div class="slds-box_x-small slds-text-align_center slds-m-around_x-small">
+          </div>
+        </div>
+        <div class="slds-size_1-of-6">
+          <span if:true={showTCPQButton}>
+            <lightning-button  variant="brand" label="CPQ UI" 
+                title="CPQ UI" onclick={handleChange} 
+                class="slds-m-left_x-small">
+                </lightning-button>
+              </span>
+              <span if:true={showTrinityButton}>
+                <lightning-button variant="brand" label="Quote UI" 
+                title="Quote UI" onclick={handleChange} 
+                class="slds-m-left_x-small">
+                </lightning-button>
+              </span>
+          </div>
+      </div>
+      </lightning-card>
+</template>

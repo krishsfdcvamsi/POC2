@@ -1,0 +1,13 @@
+<apex:page standardController="RFO_Rider__c" extensions="RFO_SendRiderInfoToTAS" action="{!callouttoTAS}">
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageMessage summary="{!Message}" severity="info" strength="3" rendered="{!userAccessFlag == true}">
+            	<apex:commandButton id="Rider" value="Click here to go back to Rider" action="{!reset}"/>
+            </apex:pageMessage>
+            <apex:pageMessage summary="You don't have access on this button" severity="info" strength="3" rendered="{!userAccessFlag == false}">
+            <apex:commandButton id="Rider" value="Click here to go back to Rider" action="{!reset}"/>
+            </apex:pageMessage>
+            <apex:pageMessages />
+  		</apex:pageBlock>
+    </apex:form>
+</apex:page>

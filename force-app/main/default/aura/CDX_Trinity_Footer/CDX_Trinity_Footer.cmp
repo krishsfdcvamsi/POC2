@@ -1,0 +1,304 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global">
+    
+    
+    <aura:attribute name="year" type="String" access="global" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <!-- Desktop And Tablet View -->
+    <aura:if isTrue="{!$Browser.formFactor != 'PHONE'}">
+        <div class="slds-p-left_xx-large slds-p-right_xx-large Header122" >
+            <div class="FooterTop">
+                
+                <!-- Image -->
+                <a href="https://www.trinityrail.com" class="logo-f " >
+                    <img src="/resource/1563286108000/FooterLogo?" alt=""/>
+                </a>
+                
+                <!-- Column 1 -->
+                <div class="slds-grid slds-wrap " >
+                    <div class="slds-col slds-size_1-of-4" >
+                        <div >
+                            <span>
+                                <div>
+                                    <h5>MAIN OFFICE</h5>
+                                    <p>14221 N. Dallas Pkwy, Ste. 1100<br></br>
+                                        Dallas, TX 75254</p>
+                                    <p>Primary: 800-631-4420<br></br>
+                                        Customer Service: 800-227-8844</p>
+                                </div>
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <!-- Column 2 -->
+                    <div class="slds-col slds-size_1-of-4">
+                        <div >
+                            <span>
+                                <h5 class="Columns">Quick Links</h5>
+                                <ul>
+                                    <li class="item ">
+                                        <a href="http://www.trin.net/" class="title">Trinity Industries, Inc.</a>
+                                    </li>
+                                    <li class="item ">
+                                        <a href="https://jobs.trin.net/" class="title">Careers</a>
+                                    </li>
+                                    <li class="item ">
+                                        <a href="https://www.trinityrail.com/contact/" class="title">Contact</a>
+                                    </li>
+                                    <li class="item ">
+                                        <a href="https://tasonline.gotilc.com/TRNWeb/Login/TRNLogin.aspx" class="title">Login</a>
+                                    </li>
+                                    <li class="item ">
+                                        <a href="https://tasonline.gotilc.com/GTPublicWeb/MainWeb/GageSelect.aspx" class="title">Gauge Tables</a>
+                                    </li>
+                                    <li class="item ">
+                                        <a href="https://www.trinityrail.com/supplier-training/" class="title">Supplier Training</a>
+                                    </li>
+                                </ul>
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <!-- Column 3 -->
+                    <div class="slds-col slds-size_1-of-4">
+                        <div align="center">
+                            <span >
+                                <h5>Products</h5>
+                                <ul>
+                                    <li class="item ">
+                                        <a href="https://www.trinityrail.com/products/tank-cars/" class="title">Tank Cars</a>
+                                    </li>
+                                    <li class="item ">
+                                        <a href="https://www.trinityrail.com/products/covered-hoppers/" class="title">Covered Hoppers</a>
+                                    </li>
+                                    <li class="item ">
+                                        <a href="https://www.trinityrail.com/products/autoracks/" class="title">Autoracks</a>
+                                    </li>
+                                    <li class="item ">
+                                        <a href="https://www.trinityrail.com/products/flat-intermodal/" class="title">Flat &amp; Intermodal</a>
+                                    </li>
+                                    <li class="item ">
+                                        <a href="https://www.trinityrail.com/products/gondolas/" class="title">Gondolas</a>
+                                    </li>
+                                    <li class="item ">
+                                        <a href="https://www.trinityrail.com/products/open-hoppers/" class="title">Open Hoppers</a>
+                                    </li>
+                                    <li class="item ">
+                                        <a href="https://www.trinityrail.com/products/box-cars/" class="title">Box Cars</a>
+                                    </li>
+                                </ul>
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <!-- Column 4 -->
+                    <div class="slds-col slds-size_1-of-4">
+                        <div align="center">
+                            <span>
+                                <h5>Services</h5>
+                                <ul>
+                                    <li class="item ">
+                                        <a href="https://www.trinityrail.com/leasing/" class="title">Leasing</a>
+                                    </li>
+                                    <li class="item ">
+                                        <a href="https://www.trinityrail.com/products/" class="title">Products</a>
+                                    </li>
+                                    <li class="item ">
+                                        <a href="https://www.trinityrail.com/maintenance/" class="title">Maintenance</a>
+                                    </li>
+                                    <li class="item ">
+                                        <a href="https://www.trinityrail.com/fleet-management/" class="title">Fleet Management</a>
+                                    </li>
+                                    <li class="item ">
+                                        <a href="https://www.trinityrail.com/field-support/" class="title">Field Support</a>
+                                    </li>
+                                    <li class="item ">
+                                        <a href="https://www.trinityrail.com/parts/" class="title">Parts</a>
+                                    </li>
+                                    <li class="item ">
+                                        <a href="https://www.trinityrail.com/investor-services/" class="title">Investor Services</a>
+                                    </li>
+                                </ul>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slds-p-left_xx-large slds-p-right_xx-large FooterBottom" Style ="background-color: rgb(122,147,156)">
+            <div class="FootBottomInner">
+                <table style="width:100%;">
+                    <tr>
+                        <td width="70%">
+                            <p align="left">© {!v.year} TrinityRail</p>
+                        </td>
+                        <td>
+                            <div class="flex-list">
+                                <ul>
+                                    <li>
+                                        <a href="https://www.trinityrail.com/site-map/">
+                                            Site Map 
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a target="_blank" rel="noopener noreferrer" href="https://legal.trin.net/Home/Privacy">
+                                            Privacy Policy 
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a target="_blank" rel="noopener noreferrer" href="https://legal.trin.net/">
+                                            Legal Information
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </aura:if>
+    
+    <!-- Phone View -->
+    <aura:if isTrue="{!$Browser.formFactor == 'PHONE'}">
+        <div class="MobileFoot" >
+            <!-- Image -->
+            <a href="https://www.trinityrail.com" class="" >
+                <img src="/resource/1563286108000/FooterLogo?" alt=""/>
+            </a>
+            <div class="">
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_6-of-12 TOP">
+                        <span>
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-col slds-size_1-of-2 MobileCol">
+                                    <span class="Content">
+                                        <div>
+                                            <h5>MAIN OFFICE</h5>
+                                            <p>14221 N. Dallas Pkwy, Ste. 1100<br></br>
+                                                Dallas, TX 75254</p>
+                                            <p>Primary: 800-631-4420<br></br>
+                                                Customer Service: 800-227-8844</p>
+                                        </div>
+                                    </span>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2 MobileCol">
+                                    <span class="Content">
+                                        <h5>Quick Links</h5>
+                                        <ul>
+                                            <li class="item ">
+                                                <a href="http://www.trin.net/" class="title">Trinity Industries, Inc.</a>
+                                            </li>
+                                            <li class="item ">
+                                                <a href="https://jobs.trin.net/" class="title">Careers</a>
+                                            </li>
+                                            <li class="item ">
+                                                <a href="https://www.trinityrail.com/contact/" class="title">Contact</a>
+                                            </li>
+                                            <li class="item ">
+                                                <a href="https://tasonline.gotilc.com/TRNWeb/Login/TRNLogin.aspx" class="title">Login</a>
+                                            </li>
+                                            <li class="item ">
+                                                <a href="https://tasonline.gotilc.com/GTPublicWeb/MainWeb/GageSelect.aspx" class="title">Gauge Tables</a>
+                                            </li>
+                                            <li class="item ">
+                                                <a href="https://www.trinityrail.com/supplier-training/" class="title">Supplier Training</a>
+                                            </li>
+                                        </ul>
+                                    </span>
+                                </div>
+                            </div>
+                        </span>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_6-of-12 BOTTOM">
+                        <span>
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-col slds-size_1-of-2 MobileCol">
+                                    <span class="Content">
+                                        <h5>Products</h5>
+                                        <ul>
+                                            <li class="item ">
+                                                <a href="https://www.trinityrail.com/products/tank-cars/" class="title">Tank Cars</a>
+                                            </li>
+                                            <li class="item ">
+                                                <a href="https://www.trinityrail.com/products/covered-hoppers/" class="title">Covered Hoppers</a>
+                                            </li>
+                                            <li class="item ">
+                                                <a href="https://www.trinityrail.com/products/autoracks/" class="title">Autoracks</a>
+                                            </li>
+                                            <li class="item ">
+                                                <a href="https://www.trinityrail.com/products/flat-intermodal/" class="title">Flat &amp; Intermodal</a>
+                                            </li>
+                                            <li class="item ">
+                                                <a href="https://www.trinityrail.com/products/gondolas/" class="title">Gondolas</a>
+                                            </li>
+                                            <li class="item ">
+                                                <a href="https://www.trinityrail.com/products/open-hoppers/" class="title">Open Hoppers</a>
+                                            </li>
+                                            <li class="item ">
+                                                <a href="https://www.trinityrail.com/products/box-cars/" class="title">Box Cars</a>
+                                            </li>
+                                        </ul>
+                                    </span>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2 MobileCol">
+                                    <span class="Content">
+                                        <h5>Services</h5>
+                                        <ul>
+                                            <li class="item ">
+                                                <a href="https://www.trinityrail.com/leasing/" class="title">Leasing</a>
+                                            </li>
+                                            <li class="item ">
+                                                <a href="https://www.trinityrail.com/products/" class="title">Products</a>
+                                            </li>
+                                            <li class="item ">
+                                                <a href="https://www.trinityrail.com/maintenance/" class="title">Maintenance</a>
+                                            </li>
+                                            <li class="item ">
+                                                <a href="https://www.trinityrail.com/fleet-management/" class="title">Fleet Management</a>
+                                            </li>
+                                            <li class="item ">
+                                                <a href="https://www.trinityrail.com/field-support/" class="title">Field Support</a>
+                                            </li>
+                                            <li class="item ">
+                                                <a href="https://www.trinityrail.com/parts/" class="title">Parts</a>
+                                            </li>
+                                            <li class="item ">
+                                                <a href="https://www.trinityrail.com/investor-services/" class="title">Investor Services</a>
+                                            </li>
+                                        </ul>
+                                    </span>
+                                </div>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="MobileFooter2" style="background:rgb(122,147,156)">
+            <div class="">
+                <div>
+                    <p>© {!v.year} TrinityRail</p>
+                    <div class="flex-list2">
+                        <ul>
+                            <li class="NoBoarder">
+                                <a href="https://www.trinityrail.com/site-map/">
+                                    Site Map 
+                                </a>
+                            </li>
+                            <li class="Boarder">
+                                <a target="_blank" rel="noopener noreferrer" href="https://legal.trin.net/Home/Privacy">
+                                    Privacy Policy 
+                                </a>
+                            </li>
+                            <li class="Boarder">
+                                <a target="_blank" rel="noopener noreferrer" href="https://legal.trin.net/">
+                                    Legal Information
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aura:if>
+</aura:component>

@@ -1,0 +1,5 @@
+<apex:page standardController="SBQQ__Quote__c">
+ <apex:form >
+ <p>Successfully generated !!! </p>
+ </apex:form> 
+</apex:page>

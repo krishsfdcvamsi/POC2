@@ -1,0 +1,19 @@
+<aura:component implements="force:hasRecordId,force:lightningQuickActionWithoutHeader,lightning:actionOverride" access="global">
+    
+    <!-- Attributes -->
+    <aura:attribute name="recordId" type="String" />
+
+    <!-- SLDS Style Override -->
+    <aura:html tag="style">
+        .slds-modal__container{
+            max-width: 115rem !important;
+            width: 98% !important;
+        }
+        .modal-body{
+            position: relative !important;
+        }
+    </aura:html>
+
+    <c:createAssumption recordId="{!v.recordId}" onclosecomponent="{!c.closeComponent}"></c:createAssumption>
+
+</aura:component>

@@ -1,0 +1,19 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" 
+                access="global">
+    
+     <aura:attribute name="orderRecord" type="Object"/>
+    
+    <force:recordData aura:id="recordLoader"
+        recordId="{!v.recordId}"
+        fields="Name,Order_Record_Type_Name__c"
+        targetFields="{!v.orderRecord}"/>
+    
+    <aura:if isTrue="{!v.orderRecord.Order_Record_Type_Name__c == 'RFO_ExistingCar'}">
+        <c:DisplaySchedulesOrder orderId="{!v.recordId}"/>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.orderRecord.Order_Record_Type_Name__c == 'RFO_NewCar'}">
+    	<c:NewCarSchedule orderId="{!v.recordId}"/>
+    </aura:if>
+    
+</aura:component>

@@ -1,0 +1,13 @@
+<aura:component controller="RFO_ExternalObjectFilterController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	 <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="Link" type="String" /> 
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <div class='slds-p-left_small slds-grid slds-wrap'>
+        <div class="slds-size_1-of-3">
+					<p><label>Link to Invoice</label> </p>
+					<a href="{!'file://'+v.Link}" target="_blank">{!v.Link}</a>
+					</div>
+        </div>
+    
+</aura:component>

@@ -1,0 +1,41 @@
+<!--
+* @Author      : Accenture
+* @Version     : 1.0
+* @Created Date: 
+* @Description :
+-->
+<apex:page standardController="SBQQ__QuoteLine__c" extensions="RFO_NewQuoteLineController" action="{!quoteLineRecordType}" recordSetVar="quotenew" docType="html-5.0">
+  <apex:pageMessages ></apex:pageMessages>
+      
+    <apex:form >
+        <div align="center" draggable="false" >
+        <apex:commandButton value="Click here to go back to Quote" onClick="navSObjectOpportunity()"/>
+        </div>    
+    </apex:form>
+     
+  <script>
+        var previousOnload = window.onload; 
+        window.onload = function() {            
+            redirectOutputPanel(); 
+        }
+    </script>
+    
+    
+    <apex:includeLightning />
+                    <div id="lightning" />
+    <script>
+        function redirectOutputPanel(){
+          if( (typeof sforce != 'undefined') && (sforce != null) ) {//for Lightning Desktop and Mobile                
+               sforce.one.createRecord("SBQQ__QuoteLine__c",'{!recordTypeId }',{'SBQQ__Quote__c':'{!quoteId}'});                     
+                                              
+            }           
+            
+        } 
+    
+     function navSObjectOpportunity() 
+        {             
+        sforce.one.navigateToSObject('{!quoteId}','DETAILED'); 
+        }; 
+      </script>    
+  
+</apex:page>

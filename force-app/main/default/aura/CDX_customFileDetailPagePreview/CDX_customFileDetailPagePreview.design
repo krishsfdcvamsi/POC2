@@ -1,0 +1,3 @@
+<design:component label="File Detail - File Preview (fileCard)">
+   <design:attribute name="recordId" label="{!recordId}" description="Salesforce Id of the record" />
+ </design:component>

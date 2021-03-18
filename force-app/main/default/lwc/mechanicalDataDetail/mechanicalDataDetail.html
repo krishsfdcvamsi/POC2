@@ -1,0 +1,14 @@
+<template>
+    <template if:true={GVP}>
+        <lightning-record-form
+          record-id= "{GVP}"
+          object-api-name="CDX_MechanicalDataExternal__x"
+          layout-type="Full"
+          columns="2"
+          mode="readonly">
+        </lightning-record-form>
+      </template>
+      <template if:false={GVP}>
+          <p>{NoMecha}</p>
+      </template>
+</template>

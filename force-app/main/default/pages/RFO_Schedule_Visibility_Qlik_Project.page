@@ -1,0 +1,4 @@
+<apex:page standardController="RFO_Projects__c" showHeader="false" sidebar="false" standardStylesheets="false">
+<iframe src="{!$Label.RFO_ScheduleVisibility_Qlik_ProjectURL}{!RFO_Projects__c.RFO_ProjectId__c}"      
+scrolling="true" height="800px" width="800px" frameborder="false"/>  
+</apex:page>

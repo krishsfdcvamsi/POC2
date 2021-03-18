@@ -1,0 +1,410 @@
+<template>
+   
+    <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+        <div class="slds-size_2-of-2 slds-scrollable" style="height:350px;">
+            <lightning-card>
+                <div if:true={isLoaded} class="slds-is-relative">
+                    <lightning-spinner
+                        alternative-text="Loading..." variant="brand">
+                    </lightning-spinner>
+                </div>
+                    <lightning-button 
+                        label="New Pricing Scenario" 
+                        icon-name="utility:add" 
+                        slot="actions"
+                        onclick={handleCreateNew}>
+                    </lightning-button>
+                    <lightning-button 
+                        label="Refresh" 
+                        icon-name="utility:refresh" 
+                        slot="actions"
+                        onclick={handleRefresh}>
+                    </lightning-button>
+                    <!--<lightning-button 
+                        label={toggleSaveLabel} 
+                        icon-name="utility:save" 
+                        slot="actions"
+                        onclick={handleSave}>
+                    </lightning-button>
+                    <lightning-button 
+                        label="Cancel" 
+                        icon-name="utility:cancel" 
+                        slot="actions"
+                        onclick={handleCancel}>
+                    </lightning-button>-->
+
+                <div class="slds-p-around_x-small">
+                        <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                            <thead>
+                                <tr class="">
+                                    <th class="slds-size_3-of-10" scope="col">
+                                        <div class="slds-truncate" title="Line Name">Line Name</div>
+                                    </th>
+                                    <th class="slds-size_3-of-10" scope="col">
+                                        <div class="slds-truncate" title="Description">Description</div>
+                                    </th>
+                                    <th class="slds-size_3-of-10" scope="col">
+                                        <div class="slds-truncate" title="Lease Rate">Lease Rate</div>
+                                    </th>
+                                    <th class="slds-size_3-of-10" scope="col">
+                                        <div class="slds-truncate" title="Lease Term">Lease Term</div>
+                                    </th>
+                                    <!--<th class="slds-size_3-of-10" scope="col">
+                                        <div class="slds-truncate" title="Unit Price">Unit Price</div>
+                                    </th>-->
+                                    <th class="slds-size_3-of-10" scope="col">
+                                        <div class="slds-truncate" title="Quantity">Quantity</div>
+                                    </th>
+                                    <th class="slds-size_3-of-10" scope="col">
+                                        <div class="slds-truncate" title="NPV">NPV</div>
+                                    </th>
+                                    <th class="slds-size_3-of-10" scope="col">
+                                        <div class="slds-truncate" title="Return">Return</div>
+                                    </th>
+                                    <th class="slds-size_1-of-10" scope="col">
+                                        <div class="slds-truncate" title="Action">Action</div>
+                                    </th>
+                                </tr>
+                            </thead>
+                        <tbody>
+                            <template for:each = {myList} for:item = "item" for:index="indexVar">
+                                <!--<tr key={item.key} data-id={indexVar} data-target-id={indexVar} data-index={indexVar} class="slds-hint-parent"  ondblclick={onDoubleClickEdit}>-->
+                                    <tr key={item.key} data-id={indexVar} data-target-id={indexVar} 
+                                    data-index={indexVar} class="slds-hint-parent">
+                                    <td class="slds-size_3-of-10" data-label="Description">
+                                        <div  title="Line Name">
+                                            <a href={item.LineNameLink} target="_blank"
+                                            class="slds-text-link_reset">
+                                                <span class="slds-text-link">{item.LineName}</span></a>
+                                        </div>
+                                    </td>
+                                    <td class="slds-size_3-of-10" data-label="Description">
+                                        <div  title="Description">
+                                            <lightning-formatted-rich-text value={item.RFO_Description}></lightning-formatted-rich-text>
+                                        </div>
+                                    </td>
+                                    <td class="slds-size_3-of-10" data-label="Lease Rate">
+                                        <div  title="Lease Rate">
+                                            {item.RFO_LeaseRate}
+                                        </div>
+                                    </td>
+                                    
+                                    <td class="slds-size_3-of-10" data-label="Lease Term">
+                                        <div  title="Lease Term">
+                                            {item.RFO_TotalLeaseTerm}
+
+                                            
+                                        </div>
+                                    </td>
+                                   <!-- <td class="slds-size_3-of-10" data-label="Unit Price">
+                                        <div  title="Unit Price">
+                                            <a href={item.GroupLink} target="_blank"
+                                            class="slds-text-link_reset">
+                                                <span class="slds-text-link">{item.UnitPrice}</span></a>
+                                        </div>
+                                    </td>-->
+                                    <td class="slds-size_3-of-10" data-label="Quantity">
+                                        {item.Quantity}
+                                    </td>
+                                    <td class="slds-size_3-of-10" data-label="Net Present Value">
+                                        <div  title="Customer Total">
+                                            ${item.NPV}
+                                        </div>
+                                    </td>
+                                    <td class="slds-size_3-of-10" data-label="Net Total">
+                                        <div  title="Net Total">
+                                            {item.Return}%
+                                        </div>
+                                    </td>
+                                    
+                                    <td class="slds-size_1-of-10" data-label="Action">
+                                        <template if:false={item.Edit}>
+                                            <a  data-id={indexVar} onclick={navigateToRecordEditPage}>
+                                                <lightning-button-icon icon-name="utility:preview" variant="brand"  
+                                                alternative-text="View" 
+                                                    class="slds-m-left_xx-small" title="View"></lightning-button-icon>
+                                                
+                                            </a>&nbsp;&nbsp;
+                                            
+                                            <a  data-id={item.Id} onclick={navigateToRecordQuteCalculator}>
+                                                <lightning-button-icon icon-name="utility:symbols" variant="brand"  alternative-text="Return Calculator" 
+                                                    class="slds-m-left_xx-small" title="Return Calculator"></lightning-button-icon>
+                                            </a>&nbsp;&nbsp;
+                                            <a  data-id={indexVar} onclick={deletePricingScenario}>
+                                                <lightning-button-icon icon-name="utility:delete" variant="brand"  alternative-text="Delete" 
+                                                    class="slds-m-left_xx-small" title="Delete"></lightning-button-icon>
+                                            </a>
+                                            
+                                        </template>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </lightning-card>
+        </div>
+    </div>
+    <div if:true={isCalculate}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-10" class="slds-modal slds-fade-in-open">
+            <div  class="slds-modal__container">
+            
+                 <header class="slds-modal__header">
+                        <h2 id="modal-heading-03" class="slds-modal__title slds-hyphenate">
+                             Return Calculation
+                        </h2>
+                    </header>
+                    <div style="width:90% !important; max-width: 90% !important ;min-width: 90% !important;"  class="slds-modal__content slds-p-around_medium" id="modal-content-id101">
+                        <c-roi-calculation trinity-quote={quoteLineItemId}></c-roi-calculation>
+                    </div>
+            <footer class="slds-modal__footer">
+                <lightning-button 
+                        label="Close" 
+                        icon-name="utility:close" 
+                        slot="actions"
+                        onclick={handleCalClose}>
+                    </lightning-button>
+            </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </div>
+    <div if:true={isView}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-3" class="slds-modal slds-fade-in-open">
+            <div  class="slds-modal__container">
+            
+                 <header class="slds-modal__header">
+                        <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">
+                             Edit Pricing Scenario
+                        </h2>
+                    </header>
+                    <div style="width:90% !important; max-width: 90% !important ;min-width: 90% !important;"  class="slds-modal__content slds-p-around_medium" id="modal-content-id-20">
+                        <c-lwc-create-new-record 
+                        object-api-name="SBQQ__QuoteLine__c"
+                        show-edit-form="true"
+                        onsuccessfullynewrecordcreation ={refreshTableAfterCreation}
+                        ></c-lwc-create-new-record>
+                    </div>
+            <footer class="slds-modal__footer">
+                <lightning-button 
+                        label="Close" 
+                        icon-name="utility:close" 
+                        slot="actions"
+                        onclick={handleClose}>
+                    </lightning-button>
+            </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </div>
+    <div if:true={isCreate}>
+            <section  role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-2" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container" style="width:90% !important; max-width: 90% !important ;min-width: 90% !important;">
+                    <header class="slds-modal__header">
+                        <h2 id="modal-heading-02" class="slds-modal__title slds-hyphenate">
+                            Create Pricing Scenario
+                        </h2>
+                    </header>
+                    <div style="width:90% !important; max-width: 90% !important ;min-width: 90% !important;"  class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
+                    <!--<c-lwc-create-new-record 
+                        object-api-name="SBQQ__QuoteLine__c"
+                        show-create-form="true"
+                        onsuccessfullynewrecordcreation ={refreshTableAfterCreation}
+                            ></c-lwc-create-new-record>--> 
+                            <div if:true={isLoaded} class="slds-is-relative">
+                                <lightning-spinner
+                                    alternative-text="Loading..." variant="brand">
+                                </lightning-spinner>
+                            </div>
+                        <lightning-record-edit-form  
+                            object-api-name="SBQQ__QuoteLine__c"
+                            onsubmit={onSubmitHandler}  
+                            onsuccess={handleSuccess}
+                            onerror={handleError}>
+                                    <div class="slds-form" role="list" >
+                                            <div class="slds-form slds-form_compound">
+                                                    <div class="slds-section slds-is-open">
+                                                        <h3 class="slds-section__title slds-theme_shade">
+                                                            <span class="slds-truncate slds-p-horizontal_small" title="Information">Information</span>
+                                                        </h3>
+                                                        <div aria-hidden="false" class="slds-section__content">  
+                                                            <div class="slds-form-element__group">
+                                                                <div class="slds-form-element__row">
+                                                                <div class="slds-form-element slds-size_1-of-2">
+                                                                    
+                                                                    <lightning-input-field field-name="SBQQ__Quote__c" value={recordId}> </lightning-input-field>
+                                                                    </div>
+                                                                    <div class="slds-form-element slds-size_1-of-2">
+                                                                        <lightning-input-field field-name="RFO_TransactionType__c"> </lightning-input-field>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="slds-form-element__group">
+                                                                <div class="slds-form-element__row">
+                                                                    <div class="slds-form-element slds-size_1-of-2">
+                                                                        <lightning-input-field field-name="RFO_CustSelected__c"> </lightning-input-field>
+                                                                    
+                                                                    </div>
+                                                                    <div class="slds-form-element slds-size_1-of-2">
+                                                                        <lightning-input-field field-name="RFO_PricingClassification__c"> </lightning-input-field>
+                                                                    
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="slds-form-element__group">
+                                                                <div class="slds-form-element__row">
+                                                                    <div class="slds-form-element slds-size_1-of-2">
+                                                                        <lightning-input-field field-name="SBQQ__Product__c" value={productId}> </lightning-input-field>
+                                                                    </div>
+                                                                    <div class="slds-form-element slds-size_1-of-2">
+                                                                        <lightning-input-field field-name="SBQQ__Description__c"> </lightning-input-field>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="slds-form-element__group">
+                                                                <div class="slds-form-element__row">
+                                                                    <div class="slds-form-element slds-size_1-of-2">
+                                                                        <lightning-input-field field-name="RFO_LeaseQty__c"> </lightning-input-field>
+                                                                    </div>
+                                                                    <div class="slds-form-element slds-size_1-of-2">
+                                                                        <lightning-input-field field-name="RFO_WithdrawnComments__c"> </lightning-input-field>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="slds-form-element__group">
+                                                                <div class="slds-form-element__row">
+                                                                    <div class="slds-form-element slds-size_1-of-2">
+                                                                        <lightning-input-field field-name="RFO_Withdrawn__c"> </lightning-input-field>
+                                                                    </div>
+                                                                    <div class="slds-form-element slds-size_1-of-2">
+                                                                        <lightning-input-field field-name="Package_Name__c"> </lightning-input-field>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="slds-form-element__group">
+                                                                <div class="slds-form-element__row">
+                                                                    <div class="slds-form-element slds-size_1-of-2">
+                                                                        <lightning-input-field field-name="Labor_Cost__c"> </lightning-input-field>
+                                                                    </div>
+                                                                    <div class="slds-form-element slds-size_1-of-2">
+                                                                        <lightning-input-field field-name="ParentLine__c"> </lightning-input-field>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div> 
+
+                                                <div class="slds-section slds-is-open">
+                                                    <h3 class="slds-section__title slds-theme_shade">
+                                                    <span class="slds-truncate slds-p-horizontal_small" title="Direct Sale">Direct Sale</span>
+                                                    </h3>
+                                                    <div aria-hidden="false" class="slds-section__content">
+                                                        <div class="slds-form-element__group">
+                                                            <div class="slds-form-element__row">
+                                                            <div class="slds-form-element slds-size_2-of-2">
+                                                                    <lightning-input-field field-name="RFO_DirSaleQty__c"> </lightning-input-field>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="slds-section slds-is-open">
+                                                    <h3 class="slds-section__title slds-theme_shade">
+                                                    <span class="slds-truncate slds-p-horizontal_small" title="Lease">Lease</span>
+                                                    </h3>
+                                                    <div aria-hidden="false" class="slds-section__content">
+                                                        <div class="slds-form-element__group">
+                                                            <div class="slds-form-element__row">
+                                                                <div class="slds-form-element slds-size_1-of-2">
+                                                                    <lightning-input-field field-name="RFO_LeaseType__c"> </lightning-input-field>
+                                                                </div>
+        
+                                                                <div class="slds-form-element slds-size_1-of-2">
+                                                                    <lightning-input-field field-name="RFO_LeaseTerm__c"> </lightning-input-field>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="slds-form-element__group">
+                                                            <div class="slds-form-element__row">
+                                                                <div class="slds-form-element slds-size_1-of-2">
+                                                                    <lightning-input-field field-name="RFO_LeaseRate__c"> </lightning-input-field>
+                                                                </div>
+        
+                                                                <div class="slds-form-element slds-size_1-of-2">
+                                                                    <lightning-input-field field-name="RFO_TransferPrice__c"> </lightning-input-field>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="slds-section slds-is-open">
+                                                    <h3 class="slds-section__title slds-theme_shade">
+                                                    <span class="slds-truncate slds-p-horizontal_small" title="SUPERTrump Integration">SUPERTrump Integration</span>
+                                                    </h3>
+                                                    <div aria-hidden="false" class="slds-section__content">   
+                                                        <div class="slds-form-element__group">
+                                                            <div class="slds-form-element__row">
+                                                                <div class="slds-form-element slds-size_1-of-2">
+                                                                    <lightning-input-field field-name="RFO_ROE__c" onchange={currentResi}> </lightning-input-field>
+                                                                </div>
+        
+                                                                <div class="slds-form-element slds-size_1-of-2">
+                                                                    <lightning-input-field field-name="RFO_TargetLeaseRate__c" onchange={currentResi}> </lightning-input-field>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="slds-form-element__group">
+                                                            <div class="slds-form-element__row">
+                                                                <div class="slds-form-element slds-size_1-of-2">
+                                                                    <lightning-input-field field-name="RFO_IRR__c" onchange={currentResi}> </lightning-input-field>
+                                                                </div>
+        
+                                                                <div class="slds-form-element slds-size_1-of-2">
+                                                                    <lightning-input-field field-name="RFO_MISFYield__c" onchange={currentResi}> </lightning-input-field>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="slds-form-element__group">
+                                                            <div class="slds-form-element__row">
+                                                                <div class="slds-form-element slds-size_1-of-2">
+                                                                    <lightning-input-field field-name="RFO_Residuals__c" onchange={currentResi}> </lightning-input-field>
+                                                                </div>
+        
+                                                                <div class="slds-form-element slds-size_1-of-2">
+                                                                    <lightning-input-field field-name="RFO_AdditionalCharges__c" onchange={currentResi}> </lightning-input-field>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    </div>
+                                    <footer class="slds-modal__footer">
+                                        <lightning-button 
+                                                label="Save" 
+                                                icon-name="utility:save" 
+                                                slot="actions"
+                                                type="submit"  
+                                                >
+                                            </lightning-button>
+                                        <lightning-button 
+                                                label="Close" 
+                                                icon-name="utility:close" 
+                                                slot="actions"
+                                                onclick={handleCreateClose}>
+                                            </lightning-button>
+                                            
+                                            
+                                            
+                                    </footer>
+                        </lightning-record-edit-form>
+                    </div>
+                    
+                </div>
+            </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </div>
+   
+</template>

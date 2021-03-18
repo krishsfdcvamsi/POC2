@@ -1,0 +1,18 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global">
+    <aura:registerEvent name="appURLEvent" type="c:passQlikURL_evnt"/>
+
+    <div class="slds-m-top_xx-small slds-p-left_x-large">
+        <br/><h3>Dashboard</h3>
+        <div style="font-weight:bold;" class="slds-form-element_control">
+            <h1 >Customer Delivery/OTD Dashboard</h1><br/>
+        </div>
+    <lightning:button label="1. Open Cases" variant="base" onclick="{!c.handleOpenCases}"/><br/>
+    <lightning:button label="2. Total Open Tasks*" variant="base" onclick="{!c.handleTotalOpenTask}"/><br/>
+    <lightning:button label="3. Estimates Awaiting Approval" variant="base" onclick="{!c.handleEstimated}"/><br/>
+    <lightning:button label="4. Awaiting Dispo" variant="base" onclick="{!c.handleAwaiting}"/><br/>
+    <lightning:button label="5. SR's waiting Response" variant="base" onclick="{!c.handleSRWaiting}"/><br/>
+    <lightning:button label="6. Projects Awaiting Schedule Approval" variant="base" onclick="{!c.handleProject}"/><br/>
+    <lightning:button label="7. Awaiting Customer service" variant="base" onclick="{!c.handleCustomer}"/><br/>
+    <lightning:button label="8. First call resolution" variant="base" onclick="{!c.handleFCR}"/><br/><br/>
+    </div>
+</aura:component>

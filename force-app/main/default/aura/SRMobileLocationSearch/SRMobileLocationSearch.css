@@ -1,0 +1,6 @@
+.THIS {
+}
+
+.THIS.cSRMobileLocationSearch>lightning-input-address>fieldset>legend {
+    display: none;
+}

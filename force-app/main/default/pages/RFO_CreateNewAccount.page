@@ -1,0 +1,8 @@
+<apex:page standardController="Account" >
+    <apex:form >
+        <apex:pageBlock >
+        	<apex:pageMessage summary="Account will be created only when the Lead is converted" severity="info" strength="3" />
+        	<apex:pageMessages />
+  		</apex:pageBlock>
+    </apex:form>
+</apex:page>

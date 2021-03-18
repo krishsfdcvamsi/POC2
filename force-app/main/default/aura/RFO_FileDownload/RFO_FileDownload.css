@@ -1,0 +1,14 @@
+.THIS .showMore{
+    border: 1px solid rgb(0, 95, 178); 
+    padding: 5px 15px; 
+    border-radius: 3px; 
+}
+
+.THIS .showMoreDiv{
+    text-align: center;
+    cursor: pointer;
+    margin-top: 10px;
+    color: #0070d2;
+    font-size: 14px;
+    font-family: inherit; 
+}

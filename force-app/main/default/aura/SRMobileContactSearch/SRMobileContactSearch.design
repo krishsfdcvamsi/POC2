@@ -1,0 +1,9 @@
+<design:component>
+	<design:attribute name="newContact"  label="New Contact" />
+    <design:attribute name="foundContact"  label="Found Contact" />
+    <design:attribute name="firstName"  label="First Name" />
+    <design:attribute name="lastName"  label="Last Name" />
+    <design:attribute name="phone"  label="Phone" />
+    <design:attribute name="email"  label="Email" />
+    <design:attribute name="disableContact"  label="Disable Contact" />
+</design:component>

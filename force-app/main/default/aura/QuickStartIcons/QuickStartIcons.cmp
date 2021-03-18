@@ -1,0 +1,57 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    
+    <lightning:layout multipleRows="true" class="c-container" horizontalAlign="center">
+        
+        <lightning:layoutItem size="4" smallDeviceSize="4" mediumDeviceSize="2" class="lrg_device submit_request_div" padding="around-small">
+            <a href="/s/flow/ServiceRequest"> 
+                <img  src="/sfsites/c/resource/NewSubmitRequest"/>
+                <div class="submit_request" style="text-align: center; margin-left: -5px">
+                    <b> Submit Service Request</b> 
+                </div>
+            </a>
+        </lightning:layoutItem>
+        
+        <lightning:layoutItem size="4" smallDeviceSize="4" mediumDeviceSize="2" class="lrg_device reports_div" padding="around-small">
+            <a href="/s/report/Report/Recent/Report/?queryScope=everything">
+                <img style="height:55px;width:65px;" src="/sfsites/c/resource/Reports"  />
+                <div class="reports">
+                    <b>Reports</b> </div>
+            </a>
+        </lightning:layoutItem>
+        
+        <lightning:layoutItem size="4" smallDeviceSize="4" mediumDeviceSize="2" class="lrg_device submit_case_div">
+            <a href="/s/contactsupport">
+                <img style="margin-top:10px;margin-left:5px" src="/sfsites/c/resource/NewCase"/>
+                <div class="submit_request" style="margin-left:0px;text-align:center;margin-top: 8px;">
+                    <b> Submit New Case</b> </div>
+            </a>
+        </lightning:layoutItem>
+        
+        <lightning:layoutItem size="4" smallDeviceSize="3" mediumDeviceSize="2" class="lrg_device training_div" padding="around-small">
+            <a href="/s/training-material">
+                <img style="height:50px;width:60px;" src="/sfsites/c/resource/TrainingMaterial" />
+                <div class="training_material">
+                    <b>Training <br/> Material</b>
+                </div>
+            </a>
+        </lightning:layoutItem>
+      
+        <lightning:layoutItem size="4" smallDeviceSize="4" mediumDeviceSize="2" class="lrg_device submit_case_div">
+            <a href="/s/dashboard">
+                <img style="margin-top:10px;margin-left:15px;width:60px" src="/sfsites/c/resource/Dashboard"/>
+                <div class="submit_request" style="margin-top: 8px;">
+                    <b> Dashboard</b> 
+                </div>
+            </a>
+        </lightning:layoutItem>
+             
+        <lightning:layoutItem size="4" smallDeviceSize="4" mediumDeviceSize="2" class="lrg_device web_portal_div">
+            <a href="https://trinityrail.getfeedback.com/r/049b6iPP/" target="_blank">
+                <img style="margin-top:5px;" src="/sfsites/c/resource/Feedback"/>
+                <div class="web_portal" style="text-align: center; margin-left: -4px">
+                    <b> Web Portal Feedback</b> </div>
+            </a>
+        </lightning:layoutItem>
+    </lightning:layout>
+    
+</aura:component>

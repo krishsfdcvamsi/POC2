@@ -1,0 +1,11 @@
+.THIS {
+}
+
+.THIS .bulletin_board{
+    font-size: 1rem;
+    background: rgb(122,147,156);
+    color: #fff;
+    font-family: Open Sans;
+    height: 35px;
+    padding: 5px;
+}

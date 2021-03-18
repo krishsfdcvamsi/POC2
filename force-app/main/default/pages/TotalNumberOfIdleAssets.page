@@ -1,0 +1,13 @@
+<apex:page standardController="Account" showHeader="true" sidebar="true">
+ <!-- <analytics:reportChart reportId="00O5B000000OhuIUAS" >
+  
+  </analytics:reportChart>-->
+  
+ <!-- <apex:outputLink onclick="changeURL('/{!$Setup.RFO_ReportSFDCIds__c.RFO_ReportId__c}');"> </apex:outputLink>-->
+                    <analytics:reportChart reportId="{!$Label.RFO_TotalNumberofIdleAssets}"
+                        size="tiny"
+                        cacheResults="false"
+                        showRefreshButton="true"
+                         filter="{column:'Account.RFO_SalesforceId__c', operator:'equals', value:'{!Account.RFO_SalesforceId__c}'}"/>
+                
+</apex:page>

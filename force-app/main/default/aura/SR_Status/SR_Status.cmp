@@ -1,0 +1,24 @@
+<aura:component controller="SRStatusController" 
+                implements="lightning:availableForFlowScreens" access="global">
+    
+    <aura:attribute name="srIds" type="String[]" access="global" />
+    <aura:attribute name="srs" type="RFO_ShopIncident__c[]" access="global" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <img style="margin-left:25%;" src="/s/sfsites/c/resource/CDX_Complete" width="255" height="255" />
+    <table>
+        <tr>
+            <th>Asset(Car Mark + Number)</th>
+            <th>Status</th>
+            <th>Review</th>
+        </tr>
+    
+    <aura:iteration items="{!v.srs}" var="sr">
+        <tr>
+            <td>{!sr.RFO_Asset__r.Name}</td>
+            <td>{!sr.RFO_SIStatus__c}</td>
+            <td><a target="_blank" href="{!'/'+sr.Id}">Review</a></td>
+        </tr>
+    </aura:iteration>
+	</table>
+</aura:component>

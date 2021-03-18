@@ -1,0 +1,33 @@
+.THIS .slds-textarea{
+    border: none;
+    height:120px;
+}
+.THIS .slds-input{
+    border:none;
+}
+.THIS .slds-checkbox_faux{
+    border:none;
+}
+.THIS .slds-input__icon{
+    display: none;
+}
+@media print{
+    .THIS .disableInPrint{
+        display: none;        
+    }
+    
+    .THIS .utilitybar{
+        display: none;        
+    }
+    .THIS .oneUtilityBar{
+        display: none;        
+    }
+    .THIS .slds-textarea{
+        height: 150px;       
+    }
+}
+
+@page{
+    size: tabloid landscape; 
+    margin: mininum;
+}

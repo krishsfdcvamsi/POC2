@@ -1,0 +1,16 @@
+<template>
+    <template if:true={buttonInfo}>
+        <template for:each={buttonInfo} for:item="btnn">
+            <lightning-button key={btnn.key}
+            variant={btnn.type} 
+            label={btnn.label}
+            title={btnn.title}
+            name={btnn.name} 
+            onclick={handleClick} 
+            class="slds-m-left_x-small">
+             </lightning-button>
+        </template>
+    </template>
+    
+
+</template>

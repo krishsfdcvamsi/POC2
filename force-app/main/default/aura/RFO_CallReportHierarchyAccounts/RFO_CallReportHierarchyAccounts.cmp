@@ -1,0 +1,11 @@
+<aura:component controller="RFO_CallReportHierarchyAcctCtrl" implements="force:appHostable,flexipage:availableForRecordHome,flexipage:availableForAllPageTypes,force:hasRecordId" access="global" >
+	<aura:attribute name="ListOfCallReports" type="Call_Report__c[]"/>
+    <aura:attribute name="mycolumns" type="List"/>
+   
+  	<aura:handler name="init" value="{!this}" action="{!c.getCallReportList}"/>
+    <lightning:datatable data="{! v.ListOfCallReports }"
+                         columns="{! v.mycolumns }"
+                         keyField="id"
+                         hideCheckboxColumn="true"/>
+    
+</aura:component>

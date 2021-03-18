@@ -1,0 +1,35 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" 
+                access="global"
+                controller="AssetFilesController" >
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="recordType" type="String" />
+    <aura:attribute name="data" type="List" />
+    <aura:attribute name="assetFiles" type="List" />
+    <aura:attribute name="columns" type="List" />
+    <aura:attribute name="relatedColumns" type="List" />
+    <aura:if isTrue="{!v.recordType == 'New Car'}">
+
+        <lightning:card  variant="Narrow" title="{!'Asset Files('+v.assetFiles.length+')'}"  iconName="standard:lead_list" >
+
+            <lightning:datatable
+                                 keyField="id"
+                                 data="{!v.assetFiles}"
+                                 columns="{!v.relatedColumns}"
+                                 hideCheckboxColumn="true"
+
+                                 columnWidthsMode="fixed"
+
+                                 />
+        </lightning:card>
+        <lightning:card  variant="Narrow" title="{!'Asset List('+v.data.length+')'}"  iconName="standard:lead_list" >
+            <lightning:datatable
+                                 keyField="id"
+                                 data="{!v.data}"
+                                 columns="{!v.columns}"
+                                 hideCheckboxColumn="true"
+                                 columnWidthsMode="auto"
+                                 />
+        </lightning:card>
+    </aura:if>
+</aura:component>

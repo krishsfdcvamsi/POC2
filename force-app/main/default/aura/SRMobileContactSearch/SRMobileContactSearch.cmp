@@ -1,0 +1,58 @@
+<aura:component implements="lightning:availableForFlowScreens" controller="SRMobileSearchController" >
+    
+    <aura:attribute name="contactsSearch" type="String"  />
+    <aura:attribute name="selectedRecord" type="ServiceRequestMobileContact__c" access="public" required="false" description="Selected Record"/>
+    <aura:attribute name="newContact" type="ServiceRequestMobileContact__c"  default="{'sObjectType':'ServiceRequestMobileContact__c'}" />
+    <aura:attribute name="foundContact" type="Contact"  default="{'sObjectType':'Contact'}" />
+    
+    <aura:attribute name="firstName" type="String" default="{!v.foundContact.FirstName}"  />
+    <aura:attribute name="lastName" type="String" default="{!v.foundContact.LastName}"  />
+    <aura:attribute name="email" type="String" default="{!v.foundContact.Email}" />
+    <aura:attribute name="phone" type="String" default="{!v.foundContact.Phone}" />
+    
+    <aura:handler name="change" value="{!v.selectedRecord}" action="{!c.setContact}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="accountId" type="Id" default="" />
+    
+    <aura:attribute name="disableContact" type="Boolean" default="true"  />
+    <aura:attribute name="showContact" type="Boolean" default="true"  />
+    <b>Name</b>
+    <c:DynamicComboBox label="Search a Contact" 
+                       sObjectName="ServiceRequestMobileContact__c"
+                       fieldName="Contact_Search__c"
+                       searchText = "{!v.contactsSearch}"
+                       additionalFields= "Name,Last_Name__c,Email__c,Phone__c,Account__c"
+                       whereClause = "{!'Account__c =' + '\''+v.accountId+'\''}"
+                       keyField = "Id"
+                       selectedRecord="{!v.selectedRecord}"
+                       isArrayList="true"
+                       matchAnyString = "true"
+                       type="search"
+                       />
+    
+    <br />
+    
+    <lightning:button label="Add New Contact" title="New contact" onclick="{!c.enableContact}"/>
+    
+    <div>
+        <aura:if isTrue="{!v.showContact}">
+            <lightning:layout multipleRows="true">
+                <lightning:layoutItem size="12">
+                    <lightning:input  type="text" onchange="{!c.setNewContact}" aura:id="input" disabled="{!v.disableContact}" required="true" placeholder="First Name" value="{!v.newContact.Name}" name="fistName" label="First Name" />
+                </lightning:layoutItem>
+                <lightning:layoutItem size="12">
+                    <lightning:input type="text" onchange="{!c.setNewContact}" aura:id="input" disabled="{!v.disableContact}" required="true" placeholder="Last Name" value="{!v.newContact.Last_Name__c}" name="lastName" label="Last Name" />
+                </lightning:layoutItem>
+                <lightning:layoutItem size="12">
+                    <lightning:input type="email" onchange="{!c.setNewContact}" aura:id="input"  disabled="{!v.disableContact}" required="true" placeholder="you@example.com" value="{!v.newContact.Email__c}" name="memail" label="Mobile Contact Email" />
+                </lightning:layoutItem>
+                <lightning:layoutItem size="12">
+                    <lightning:input type="phone" onchange="{!c.setNewContact}" aura:id="input" disabled="{!v.disableContact}" required="true" placeholder="01-555-555-5555" value="{!v.newContact.Phone__c}" name="phone" label="Mobile Contact Phone" />
+                </lightning:layoutItem>
+            </lightning:layout>
+        </aura:if>
+    </div>
+    <aura:if isTrue="{!or(v.firstName == null, v.lastName == null, v.email == null, v.phone == null)}">
+        <p style="color:red;">Please enter a full name.</p>
+    </aura:if>
+</aura:component>

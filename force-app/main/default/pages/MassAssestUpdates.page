@@ -1,0 +1,36 @@
+<apex:page controller="MassAssetUpdatesController" lightningStylesheets="true">
+    <apex:includeLightning />
+    <div class="slds">
+    <div id="lightning" />
+        <apex:outputPanel rendered="{!isError}">
+            	<center>
+             		<div id="errorMessage" class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error" role="alert">
+                 	<h2 style="color:red;">
+                     	{!errorMsg}
+                 	</h2>
+           			</div>
+                </center>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!isError = false}">
+     <script>
+        try{
+    		$Lightning.use("c:MassAssestUpdateApp", function() {
+                $Lightning.createComponent("c:massUpdateAssets",
+                {
+                    
+                    recordId:"{!strId}"
+                },
+               "lightning",
+                    function(component) {
+                       console.log('Display Lightning component in visualforce page');
+                    });
+                });
+        }catch(error){
+                    console.log('error>>>>>',error);
+                  
+        }
+        
+ </script>
+            </apex:outputPanel>
+         </div>
+</apex:page>

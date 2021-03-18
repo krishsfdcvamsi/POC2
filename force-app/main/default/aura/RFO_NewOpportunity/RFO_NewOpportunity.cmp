@@ -1,0 +1,5 @@
+<aura:component implements="force:lightningQuickAction,force:hasRecordId" controller="RFO_RiderController">
+  
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+ 
+</aura:component>

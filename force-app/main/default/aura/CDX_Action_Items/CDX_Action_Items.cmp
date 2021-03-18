@@ -1,0 +1,1313 @@
+<aura:component controller="CDX_Action_Items_Class" implements="flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global">
+    
+    <!-- attributes -->
+    <aura:attribute name="EstimatesData" type="Object"/>
+    <aura:attribute name="EstimatesColumns" type="List"/>
+    <aura:attribute name="EstimatesSize" type="Integer" default="0"/>
+    <aura:attribute name="OTMAData" type="Object"/>
+    <aura:attribute name="OTMAColumns" type="List"/>
+    <aura:attribute name="OTMASize" type="Integer" default="0"/>
+    <aura:attribute name="DispositionData" type="Object"/>
+    <aura:attribute name="DispositionColumns" type="List"/>
+    <aura:attribute name="DispositionSize" type="Integer" default="0"/>
+    <aura:attribute name="SchedulesData" type="Object"/>
+    <aura:attribute name="SchedulesColumns" type="List"/>
+    <aura:attribute name="SchedulesSize" type="Integer" default="0"/>
+    <aura:attribute name="CasesData" type="Object"/>
+    <aura:attribute name="CasesColumns" type="List"/>
+    <aura:attribute name="CasesSize" type="Integer" default="0"/>
+    <aura:attribute name="InvoicesData" type="Object"/>
+    <aura:attribute name="InvoicesColumns" type="List"/>
+    <aura:attribute name="InvoicesSize" type="Integer" default="0"/>
+    <aura:attribute name="RidersData" type="Object"/>
+    <aura:attribute name="RidersColumns" type="List"/>
+    <aura:attribute name="RidersSize" type="Integer" default="0"/>
+    <aura:attribute name="Total" type="Integer"/>
+	<aura:attribute name="projectsList" type="List"/>
+	<aura:attribute name="weekList" type="List"/>
+	<aura:attribute name="projectsListSize" type="Integer" default="0"/>
+	<aura:attribute name="hasPerm" type="Boolean" default="false"/>
+    
+    <!-- Get Data On Init -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> 
+    
+    <!-- Variables to Hide Accordion Parts -->
+    <aura:attribute name="ViewOTMA" type="Boolean" default="false"/>
+    <aura:attribute name="ViewInvoices" type="Boolean" default="false"/>
+    <aura:attribute name="ViewRiders" type="Boolean" default="false"/>
+
+    <!-- Component Code -->
+    <div class="slds-card">
+        <!-- Header -->
+        <div class="slds-page-header slds-border_bottom" style="background-color: #ECEBEA">
+            <div class="slds-page-header__row">
+                <div class="slds-page-header__col-title">
+                    <div class="slds-media">
+                        <div class="slds-media__figure">
+                            <span class="slds-icon_container slds-icon-standard-opportunity" title="opportunity">
+                                <lightning:icon class="Icon" iconName="standard:action_list_component" alternativeText="Action Items" size="small"/>
+                                <span class="slds-assistive-text">
+                                    Action Items
+                                </span>
+                            </span>
+                        </div>
+                        <div class="slds-media__body">
+                            <div class="slds-page-header__name">
+                                <div class="slds-page-header__name-title">
+                                    <h1>
+                                        <span class="slds-page-header__title slds-truncate" title="Items Requiring Attention">
+                                            Items Requiring Attention
+                                        </span>
+                                    </h1>
+                                </div>
+                            </div>
+                            <p class="slds-page-header__name-meta">
+                                <span class="slds-badge">        
+                                    You have {! v.Total } pending action items
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Accordion -->
+        <!-- Desktop and Mobile Version -->
+        <aura:if isTrue="{!$Browser.formFactor != 'TABLET'}">
+        <lightning:accordion aura:id="accordion" class="slds-border_top">
+            
+            <!-- Estimates Section -->
+            <lightning:accordionSection name="Estimates" label="Pending Estimates">
+                <aura:set attribute="actions">
+                    <span class="slds-badge">
+                        <span class="slds-badge__icon slds-badge__icon_left">
+                            <span class="slds-icon_container slds-icon-utility-moneybag slds-current-color" title="Description of icon when needed">
+                                <lightning:icon class="Icon" iconName="custom:custom24" alternativeText="Pending Estimates" size="small"/>
+                            </span>
+                        </span>{! v.EstimatesSize }</span>
+                </aura:set>
+                <aura:set attribute="body">
+					<div class="slds-table--header-fixed_container" >
+                    <div style="{!$Browser.formFactor == 'DESKTOP' ? 'max-height: 200px;height:100%;' : ''}" class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-scrollable--y' : ''}">
+                        <table class="slds-table slds-table_bordered slds-max-medium-table_stacked-horizontal slds-table--header-fixed" style="table-layout: fixed;">
+                            <thead>
+                                <tr class="slds-text-title_caps">
+                                    <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                        <div class="slds-truncate slds-cell-fixed" title="Asset">Asset
+                                            <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                <span class="slds-assistive-text">Sort</span>
+                                            </button>
+                                        </div>
+                                    </th>
+                                    <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                        <div class="slds-truncate slds-cell-fixed" title="Estimate">Estimate
+                                            <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                <span class="slds-assistive-text">Sort</span>
+                                            </button>
+                                        </div>
+                                    </th>
+                                    <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                        <div class="slds-truncate slds-cell-fixed" title="Est. Amount">Est. Amount
+                                            <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                <span class="slds-assistive-text">Sort</span>
+                                            </button>
+                                        </div>
+                                    </th>
+                                    <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                        <div class="slds-truncate slds-cell-fixed" title="Days Waiting Approval">Days Waiting Approval
+                                            <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                <span class="slds-assistive-text">Sort</span>
+                                            </button>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <aura:iteration items="{!v.EstimatesData}" var="a" indexVar="akey">
+                                    <tr class="slds-hint-parent">
+                                        <th scope="row" data-label="Asset" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}" title="{! a.CDX_Asset__c }">                                                
+                                                {! a.CDX_Asset__r.Name }
+                                            </div>
+                                        </th>
+                                        <th data-label="Estimate" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}" title="{! a.CDX_Estimated_Amount__c }">
+                                                <a href="{!'/s/estimate/'+a.Id+'/'+a.Name}">
+                                                   {! a.Name }
+                                                </a>
+                                            </div>
+                                        </th>
+                                        <th data-label="Est. Amount" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}" title="{! a.CDX_Estimated_Amount__c }">
+                                                    <p><lightning:formattedNumber value="{! a.CDX_Estimated_Amount__c }" style="currency" currencyCode="USD" currencyDisplayAs="symbol"/></p></div>
+                                        </th>
+                                        <th data-label="Days Waiting Approval" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}" title="{! a.CDX_Num_of_Days_Waiting_Approval__c }">{! a.CDX_Days_Waiting__c }</div>
+                                        </th>
+                                    </tr>
+                                </aura:iteration>
+                            </tbody>
+                        </table>
+                    </div>
+					</div>
+                </aura:set>
+            </lightning:accordionSection>
+            
+            <!-- Dispositions Section -->
+            <lightning:accordionSection name="Dispositions" label="Outbound Dispositions">
+                <aura:set attribute="actions">
+                    <span class="slds-badge">
+                        <span class="slds-badge__icon slds-badge__icon_left">
+                            <span class="slds-icon_container slds-icon-utility-moneybag slds-current-color" title="Description of icon when needed">
+                                <lightning:icon class="Icon" iconName="custom:custom67" alternativeText="Outbound Dispositions" size="small"/>
+                            </span>
+                        </span>{! v.DispositionSize }</span>
+                </aura:set>
+                <aura:set attribute="body">
+					<div class="slds-table--header-fixed_container" >
+                    <div style="{!$Browser.formFactor == 'DESKTOP' ? 'max-height: 200px;height:100%;' : ''}" class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-scrollable--y' : ''}">
+                        <table class="slds-table slds-table_bordered slds-max-medium-table_stacked-horizontal slds-table--header-fixed" style="table-layout: fixed;">
+                            <thead>
+                                <tr class="slds-text-title_caps">
+                                    <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                        <div class="slds-truncate slds-cell-fixed" title="Asset">Asset
+                                        </div>
+                                    </th>
+                                    <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                        <div class="slds-truncate slds-cell-fixed" title="Shop Name">Shop Name
+                                        </div>
+                                    </th>
+                                    <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                        <div class="slds-truncate slds-cell-fixed" title="Delivery Railroad">Delivery Railroad
+                                        </div>
+                                    </th>
+                                    <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                        <div class="slds-truncate slds-cell-fixed" title="Days Waiting Disposition">Days Waiting Disposition
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <aura:iteration items="{!v.DispositionData}" var="c" indexVar="ckey">
+                                    <tr class="slds-hint-parent" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                        <th scope="row" data-label="Asset">
+                                            <div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}" title="{! c.AssetName }">
+                                                {! c.AssetName }
+                                            </div>
+                                        </th>
+                                        <th data-label="Shop Name" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}" title="{! c.ShopName }">
+                                                <a href="{!c.LinkURL}">
+                                                    {! c.ShopName }
+                                                </a>
+                                            </div>
+                                        </th>
+                                        <th data-label="Delivery Railroad" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}" title="{! c.ServicingRailroad }">
+                                                {! c.ServicingRailroad }
+                                            </div>
+                                        </th>
+                                        <th data-label="Days Waiting Disposition" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}" title="{! c.DaysWaiting }">
+                                                {! c.DaysWaiting }
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </aura:iteration>
+                            </tbody>
+                        </table>
+                    </div>
+					</div>
+                </aura:set>
+            </lightning:accordionSection>
+            
+            <!-- Cases Section -->
+            <lightning:accordionSection name="Cases" label="Cases Awaiting Customer">
+                <aura:set attribute="label" value="{!$Browser.formFactor != 'PHONE' ? 'Cases Awaiting Customer' : 'Cases Awaiting'}"/>
+                <aura:set attribute="actions">
+                    <span class="slds-badge">
+                        <span class="slds-badge__icon slds-badge__icon_left">
+                            <span class="slds-icon_container slds-icon-utility-moneybag slds-current-color" title="Description of icon when needed">
+                                <lightning:icon class="Icon" iconName="standard:case" alternativeText="Awaiting Cases" size="small"/>
+                            </span>
+                        </span>{! v.CasesSize }</span>
+                </aura:set>
+                <aura:set attribute="body">
+					<div class="slds-table--header-fixed_container" >
+                    <div style="{!$Browser.formFactor == 'DESKTOP' ? 'max-height: 200px;height:100%;' : ''}" class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-scrollable--y' : ''}">
+                        <table class="slds-table slds-table_bordered slds-max-medium-table_stacked-horizontal slds-table--header-fixed" style="table-layout: fixed;">
+                            <thead>
+                                <tr class="slds-text-title_caps">
+                                    <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                        <div class="slds-truncate slds-cell-fixed" title="Case Number">Case Number
+                                            <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                <span class="slds-assistive-text">Sort</span>
+                                            </button>
+                                        </div>
+                                    </th>
+                                    <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                        <div class="slds-truncate slds-cell-fixed" title="Case Subject" >Case Subject
+                                            <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                <span class="slds-assistive-text">Sort</span>
+                                            </button>
+                                        </div>
+                                    </th>
+                                    <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                        <div class="slds-truncate slds-cell-fixed" title="Case Type">Case Type
+                                            <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                <span class="slds-assistive-text">Sort</span>
+                                            </button>
+                                        </div>
+                                    </th>
+                                    <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                        <div class="slds-truncate slds-cell-fixed" title="Case Age">Case Age
+                                            <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                <span class="slds-assistive-text">Sort</span>
+                                            </button>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody >
+                                <aura:iteration items="{!v.CasesData}" var="e" indexVar="ekey">
+                                    <tr class="slds-hint-parent" >
+                                        <th scope="row" data-label="Case Number" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}" title="{! e.CaseNumber }">
+                                                <a href="{!'/s/case/'+e.Id+'/'+e.Subject}">
+                                                    {! e.CaseNumber }
+                                                </a>
+                                            </div>
+                                        </th>
+                                        <th data-label="Case Subject" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : 'word-wrap: break-word'}">
+                                            <div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}" title="{! e.Subject }">
+                                            	{! e.Subject }
+                                            </div>
+                                        </th>
+                                        <th data-label="Case Type" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}" title="{! e.Type }">{! e.Type }</div>
+                                        </th>
+                                        <th data-label="Case Age" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}" title="{! e.Case_Age__c }">{! e.Case_Age__c }</div>
+                                        </th>
+                                    </tr>
+                                </aura:iteration>
+                            </tbody>
+                        </table>
+                    </div>
+					</div>
+                </aura:set>
+            </lightning:accordionSection>
+            
+            <!-- OTMA Section -->
+            <aura:if isTrue="{! v.ViewOTMA }">
+                <lightning:accordionSection name="OTMA" label="Pending OTMA">
+                    <aura:set attribute="actions">
+                        <span class="slds-badge">
+                            <span class="slds-badge__icon slds-badge__icon_left">
+                                <span class="slds-icon_container slds-icon-utility-moneybag slds-current-color" title="Description of icon when needed">
+                                    <lightning:icon class="Icon" iconName="custom:custom67" alternativeText="Pending OTMA" size="small"/>
+                                </span>
+                            </span>{! v.OTMASize }</span>
+                    </aura:set>
+                    <aura:set attribute="body">
+						<div class="slds-table--header-fixed_container" >
+                        <div style="{!$Browser.formFactor == 'DESKTOP' ? 'max-height: 200px;height:100%;' : ''}" class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-scrollable--y' : ''}">
+                            <table class="slds-table slds-table_bordered slds-max-medium-table_stacked-horizontal slds-table--header-fixed" style="table-layout: fixed;">
+                                <thead>
+                                    <tr class="slds-text-title_caps">
+                                        <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="slds-truncate slds-cell-fixed" title="Asset">Asset
+                                                <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                    <span class="slds-assistive-text">Sort</span>
+                                                </button>
+                                            </div>
+                                        </th>
+                                        <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="slds-truncate slds-cell-fixed" title="Service Request">Service Request
+                                                <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                    <span class="slds-assistive-text">Sort</span>
+                                                </button>
+                                            </div>
+                                        </th>
+                                        <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="slds-truncate slds-cell-fixed" title="Shop Name">Shop Name
+                                                <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                    <span class="slds-assistive-text">Sort</span>
+                                                </button>
+                                            </div>
+                                        </th>
+                                        <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="slds-truncate slds-cell-fixed" title="Days Waiting OTMA">Days Waiting OTMA
+                                                <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                    <span class="slds-assistive-text">Sort</span>
+                                                </button>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <aura:iteration items="{!v.OTMAData}" var="b" indexVar="bkey">
+                                        <tr class="slds-hint-parent">
+                                            <th scope="row" data-label="Asset" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                                <div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}" title="{! b.Asset_Name__c }">                                                
+                                                    {! b.RFO_Asset__r.Name }
+                                                </div>
+                                            </th>
+                                            <th data-label="Service Request" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                                <div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}" title="{! b.RFO_ShopName__c }">
+                                                    <a href="{!'/s/service-request/'+b.Id+'/'+b.Name}">
+                                                        {! b.Name }
+                                                    </a>
+                                                </div>
+                                            </th>
+                                            <th data-label="Shop Name" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                                <div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}" title="{! b.RFO_ShopName__c }">{! b.RFO_ShopName__c }</div>
+                                            </th>
+                                            <th data-label="Days Waiting OTMA" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                                <div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}" title="{! b.CDX_Num_of_Days_Waiting_OTMA__c }">{! b.CDX_Num_of_Days_Waiting_OTMA__c }</div>
+                                            </th>
+                                        </tr>
+                                    </aura:iteration>
+                                </tbody>
+                            </table>
+                        </div>
+						</div>
+                    </aura:set>
+                </lightning:accordionSection>
+            </aura:if>
+            
+            <!-- Invoice Section -->
+            <aura:if isTrue="{! v.ViewInvoices }">
+                <lightning:accordionSection name="Invoices" label="Invoices Due">
+                    <aura:set attribute="actions">
+                        <span class="slds-badge">
+                            <span class="slds-badge__icon slds-badge__icon_left">
+                                <span class="slds-icon_container slds-icon-utility-moneybag slds-current-color" title="Description of icon when needed">
+                                    <lightning:icon class="Icon" iconName="custom:custom18" alternativeText="Invoices Due" size="small"/>
+                                </span>
+                            </span>{! v.InvoicesSize }</span>
+                    </aura:set>
+                    <aura:set attribute="body">
+						<div class="slds-table--header-fixed_container" >
+                        <div style="{!$Browser.formFactor == 'DESKTOP' ? 'max-height: 200px;height:100%;' : ''}" class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-scrollable--y' : ''}">
+                            <table class="slds-table slds-table_bordered slds-max-medium-table_stacked-horizontal slds-table--header-fixed" style="table-layout: fixed;">
+                                <thead>
+                                    <tr class="slds-text-title_caps">
+                                        <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="slds-truncate slds-cell-fixed" title="Invoice Number">Invoice Number
+                                                <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                    <span class="slds-assistive-text">Sort</span>
+                                                </button>
+                                            </div>
+                                        </th>
+                                        <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="slds-truncate slds-cell-fixed" title="Amount">Amount
+                                                <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                    <span class="slds-assistive-text">Sort</span>
+                                                </button>
+                                            </div>
+                                        </th>
+                                        <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="slds-truncate slds-cell-fixed" title="Invoice Date">Invoice Date
+                                                <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                    <span class="slds-assistive-text">Sort</span>
+                                                </button>
+                                            </div>
+                                        </th>
+                                        <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="slds-truncate slds-cell-fixed" title="Invoice Type">Invoice Type
+                                                <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                    <span class="slds-assistive-text">Sort</span>
+                                                </button>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <aura:iteration items="{!v.InvoicesData}" var="f" indexVar="fkey">
+                                        <tr class="slds-hint-parent">
+                                            <th scope="row" data-label="Invoice Number" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                                <div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}" title="Invoice Number Data">
+                                                    <a href="{!'/s/invoice/'+f.Id+'/'+f.Name}">
+                                                        {! f.Name }
+                                                    </a>
+                                                </div>
+                                            </th>
+                                            <th data-label="Amount" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                                <div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}" title="Amount Data">{! f.CDX_Amount_Due__c }</div>
+                                            </th>
+                                            <th data-label="Invoice Date Date" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                                <div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}" title="Invoice Date Data">{! f.CDX_Invoice_Date__c }</div>
+                                            </th>
+                                            <th data-label="Invoice Type" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                                <div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}" title="Invoice Type Data">{! f.CDX_Invoice_Type__c }</div>
+                                            </th>
+                                        </tr>
+                                    </aura:iteration>
+                                </tbody>
+                            </table>
+                        </div>
+						</div>
+                    </aura:set>
+                </lightning:accordionSection>
+            </aura:if>
+            
+            <!-- Schedules Section -->
+            <lightning:accordionSection name="Schedules" label="Schedules Awaiting Approval">
+                <aura:set attribute="label" value="{!$Browser.formFactor != 'PHONE' ? 'Project Schedules Awaiting Approval' : 'Project Schedules'}"/>
+                <aura:set attribute="actions">
+                    <span class="slds-badge">
+                        <span class="slds-badge__icon slds-badge__icon_left">
+                            <span class="slds-icon_container slds-icon-utility-moneybag slds-current-color" title="Description of icon when needed">
+                                <lightning:icon class="Icon" iconName="custom:custom10" alternativeText="Schedules Waiting" size="small"/>                           
+                            </span>
+                        </span>{! v.SchedulesSize }</span>
+                </aura:set>
+                <aura:set attribute="body">
+					<div class="slds-table--header-fixed_container" >
+                    <div style="{!$Browser.formFactor == 'DESKTOP' ? 'max-height: 200px;height:100%;' : ''}" class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-scrollable--y' : ''}">
+                        <table class="slds-table slds-table_bordered slds-max-medium-table_stacked-horizontal slds-table--header-fixed" style="table-layout: fixed;">
+                            <thead>
+                                <tr class="slds-text-title_caps">
+                                    <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                        <div class="slds-truncate slds-cell-fixed" title="Project">Project
+                                            <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                <span class="slds-assistive-text">Sort</span>
+                                            </button>
+                                        </div>
+                                    </th>
+                                    <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                        <div class="slds-truncate slds-cell-fixed" title="Published Date">Published Date
+                                            <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                <span class="slds-assistive-text">Sort</span>
+                                            </button>
+                                        </div>
+                                    </th>
+                                    <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                        <div class="slds-truncate slds-cell-fixed" title="Demand Driver Name">Demand Driver Name
+                                            <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                <span class="slds-assistive-text">Sort</span>
+                                            </button>
+                                        </div>
+                                    </th>
+                                    <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                        <div class="slds-truncate slds-cell-fixed" title="Total Asset Count">Total Asset Count
+                                            <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                <span class="slds-assistive-text">Sort</span>
+                                            </button>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <aura:iteration items="{!v.SchedulesData}" var="d" indexVar="dkey">
+                                    <tr class="slds-hint-parent">
+                                        <th scope="row" data-label="Project" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}" title="{! d.Name }">
+                                                <a href="{!'/s/projects/'+d.Id+'/'+d.Name+$Label.c.ScheduleLabel}">
+                                                    {! d.Name }
+                                                </a>
+                                            </div>
+                                        </th>
+                                        <th data-label="Published Date" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}" title="{! d.CDX_Published_Date__c }">{! d.CDX_Schedule_Last_Published_Date__c }</div>
+                                        </th>
+                                        <th data-label="Demand Driver Name" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}" title="{! d.CDX_Demand_Driver_Name__c }">{! d.RFO_DemandDriverName__c }</div>
+                                        </th>
+                                        <th data-label="Total Asset Count" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}" title="{! d.CDX_Total_Assets__c }">{! d.RFO_TotalAssetCount__c }</div>
+                                        </th>
+                                    </tr>
+                                </aura:iteration>
+                            </tbody>
+                        </table>
+                    </div>
+					</div>
+                </aura:set>
+            </lightning:accordionSection>
+            
+            
+            <!-- Rider Section -->
+            <aura:if isTrue="{! v.ViewRiders }">
+                <lightning:accordionSection name="Riders" label="Maturing Riders">
+                    <aura:set attribute="actions">
+                        <span class="slds-badge">
+                            <span class="slds-badge__icon slds-badge__icon_left">
+                                <span class="slds-icon_container slds-icon-utility-moneybag slds-current-color" title="Description of icon when needed">
+                                    <lightning:icon class="Icon" iconName="custom:custom32" alternativeText="Maturing Riders" size="small"/>
+                                </span>
+                            </span>{! v.RidersSize }</span>
+                    </aura:set>
+                    <aura:set attribute="body">
+						<div class="slds-table--header-fixed_container" >
+                        <div style="{!$Browser.formFactor == 'DESKTOP' ? 'max-height: 200px;height:100%;' : ''}" class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-scrollable--y' : ''}">
+                            <table class="slds-table slds-table_bordered slds-max-medium-table_stacked-horizontal slds-table--header-fixed" style="table-layout: fixed;">
+                                <thead>
+                                    <tr class="slds-text-title_caps">
+                                        <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="slds-truncate slds-cell-fixed" title="Rider">Rider
+                                                <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                    <span class="slds-assistive-text">Sort</span>
+                                                </button>
+                                            </div>
+                                        </th>
+                                        <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="slds-truncate slds-cell-fixed" title="Original Maturity Date">Original Maturity Date
+                                                <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                    <span class="slds-assistive-text">Sort</span>
+                                                </button>
+                                            </div>
+                                        </th>
+                                        <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="slds-truncate slds-cell-fixed" title="Current Maturity Date">Current Maturity Date
+                                                <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                    <span class="slds-assistive-text">Sort</span>
+                                                </button>
+                                            </div>
+                                        </th>
+                                        <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="slds-truncate slds-cell-fixed" title="Sales Rep">Sales Rep
+                                                <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                    <span class="slds-assistive-text">Sort</span>
+                                                </button>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <aura:iteration items="{!v.RidersData}" var="g" indexVar="gkey">
+                                        <tr class="slds-hint-parent">
+                                            <th scope="row" data-label="Rider" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                                <div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}" title="{! g.Name }">
+                                                    <a href="{!'/s/rider/'+g.Id+'/'+g.Name}">
+                                                        {! g.Name }
+                                                    </a>
+                                                </div>
+                                            </th>
+                                            <th data-label="Original Maturity Date" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                                <div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}" title="{! g.RFO_OriginalMaturityDate__c }">{! g.RFO_OriginalMaturityDate__c }</div>
+                                            </th>
+                                            <th data-label="Current Maturity Date" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                                <div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}" title="{! g.RFO_CurrentMaturityDate__c }">{! g.RFO_CurrentMaturityDate__c }</div>
+                                            </th>
+                                            <th data-label="Sales Rep" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                                <div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}" title="{! g.CDX_Rider_Sales_Rep__c }">
+                                                    <a href="{! g.CDX_Rider_Link__c}">
+                                                        {! g.CDX_Rider_Sales_Rep__c }
+                                                    </a>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </aura:iteration>
+                                </tbody>
+                            </table>
+                        </div>
+						</div>
+                    </aura:set>
+                </lightning:accordionSection>
+            </aura:if>
+			
+			<!-- Scheduled Customer Release-->
+			<aura:if isTrue="{!v.hasPerm}" >
+				<lightning:accordionSection name="Schedules" label="Scheduled Customer Release">
+					<aura:set attribute="label" value="{!$Browser.formFactor != 'PHONE' ? 'Scheduled Customer Release' : 'Scheduled Customer'}"/>
+					<aura:set attribute="actions">
+						<span class="slds-badge">
+							<span class="slds-badge__icon slds-badge__icon_left">
+								<span class="slds-icon_container slds-icon-utility-moneybag slds-current-color" title="Description of icon when needed">
+									<lightning:icon class="Icon" iconName="custom:custom31" alternativeText="Schedules Waiting" size="small"/>                           
+								</span>
+							</span>{! v.projectsListSize }</span>
+					</aura:set>
+					<aura:set attribute="body">
+						<div class="slds-table--header-fixed_container" >
+						<div style="{!$Browser.formFactor == 'DESKTOP' ? 'max-height: 200px;height:100%;' : ''}" class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-scrollable--y' : ''}">
+							<table class="slds-table slds-table_bordered slds-max-medium-table_stacked-horizontal slds-table--header-fixed" style="table-layout: fixed;">
+								<thead>
+									<tr class="slds-text-title_caps">
+										<th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 60%' : ''}">
+											<div class="slds-truncate slds-cell-fixed" title="Project ID">Project Name
+												<button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+													<span class="slds-assistive-text">Sort</span>
+												</button>
+											</div>
+										</th>
+										<aura:iteration items="{!v.weekList}" var="w" >
+										<th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+											<div class="slds-truncate slds-cell-fixed" title="{!w.weekName}"><aura:unescapedHtml value="{!w.weekNo}" />
+												<button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+													<span class="slds-assistive-text">Sort</span>
+												</button>
+											</div>
+										</th>
+										</aura:iteration>
+									</tr>
+								</thead>
+								<tbody>
+									<aura:iteration items="{!v.projectsList}" var="d" indexVar="dkey">
+										<tr class="slds-hint-parent">
+											<th scope="row" data-label="Project" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 60%' : ''}">
+												<div style="{!$Browser.formFactor == 'DESKTOP' ? 'overflow-wrap: break-word !important;white-space: initial;' : ''}" title="{! d.Name }">
+													<a href="{!'/s/projects/'+d.projectSO.Id+'/'+d.Name+'?'+$Label.c.Schedule_tab_Id}" title="{! d.projectSO.Name +' - '+d.projectSO.RFO_ProjectId__c}">
+														{! d.projectSO.Name } - {!d.projectSO.RFO_ProjectId__c}
+													</a>
+												</div>
+											</th>
+											<th data-label="Published Date" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+												<div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}">{! d.week0 }</div>
+											</th>
+											<th data-label="Demand Driver Name" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+												<div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}" >{! d.week1 }</div>
+											</th>
+											<th data-label="Total Asset Count" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+												<div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}" >{! d.week2 }</div>
+											</th>
+											<th data-label="Total Asset Count" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+												<div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}" >{! d.week3 }</div>
+											</th>
+											<th data-label="Total Asset Count" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+												<div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}" >{! d.week4 }</div>
+											</th>
+											<th data-label="Total Asset Count" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+												<div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}" >{! d.weekNth }</div>
+											</th>
+										</tr>
+									</aura:iteration>
+								</tbody>
+							</table>
+						</div>
+						</div>
+					</aura:set>
+				</lightning:accordionSection>
+				</aura:if>
+				
+			</lightning:accordion>
+        </aura:if>
+        
+        <!-- Tablet Tables -->
+        <aura:if isTrue="{!$Browser.formFactor == 'TABLET'}">
+        	<lightning:accordion aura:id="accordion" class="slds-border_top">
+            
+            <!-- Estimates Section -->
+            <lightning:accordionSection name="Estimates" label="Pending Estimates">
+                <aura:set attribute="actions">
+                    <span class="slds-badge">
+                        <span class="slds-badge__icon slds-badge__icon_left">
+                            <span class="slds-icon_container slds-icon-utility-moneybag slds-current-color" title="Description of icon when needed">
+                                <lightning:icon class="Icon" iconName="custom:custom24" alternativeText="Pending Estimates" size="small"/>
+                            </span>
+                        </span>{! v.EstimatesSize }</span>
+                </aura:set>
+                <aura:set attribute="body">
+					<div class="slds-table--header-fixed_container" >
+                    <div style="{!$Browser.formFactor == 'DESKTOP' ? 'max-height: 200px;height:100%;' : ''}" class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-scrollable--y' : ''}">
+                        <table class="slds-table slds-table_bordered slds-max-medium-table_stacked-horizontal slds-table--header-fixed" style="table-layout: fixed;">
+                            <thead>
+                                <tr class="slds-text-title_caps">
+                                    <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                        <div class="slds-truncate slds-cell-fixed" title="Asset">Asset
+                                            <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                <span class="slds-assistive-text">Sort</span>
+                                            </button>
+                                        </div>
+                                    </th>
+                                    <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                        <div class="slds-truncate slds-cell-fixed" title="Estimate">Estimate
+                                            <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                <span class="slds-assistive-text">Sort</span>
+                                            </button>
+                                        </div>
+                                    </th>
+                                    <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                        <div class="slds-truncate slds-cell-fixed" title="Est. Amount">Est. Amount
+                                            <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                <span class="slds-assistive-text">Sort</span>
+                                            </button>
+                                        </div>
+                                    </th>
+                                    <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                        <div class="slds-truncate slds-cell-fixed" title="Days Waiting Approval">Days Waiting Approval
+                                            <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                <span class="slds-assistive-text">Sort</span>
+                                            </button>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <aura:iteration items="{!v.EstimatesData}" var="a" indexVar="akey">
+                                    <tr class="slds-hint-parent">
+                                        <th scope="row" data-label="Asset" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="slds-truncate" title="{! a.CDX_Asset__c }">                                                
+                                                {! a.CDX_Asset__r.Name }
+                                            </div>
+                                        </th>
+                                        <th data-label="Estimate" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="slds-truncate" title="{! a.CDX_Estimated_Amount__c }">
+                                                <a href="{!'/s/estimate/'+a.Id+'/'+a.Name}">
+                                                   {! a.Name }
+                                                </a>
+                                            </div>
+                                        </th>
+                                        <th data-label="Est. Amount" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="slds-truncate" title="{! a.CDX_Estimated_Amount__c }"> {! a.CDX_Estimated_Amount__c }</div>
+                                        </th>
+                                        <th data-label="Days Waiting Approval" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="slds-truncate" title="{! a.CDX_Num_of_Days_Waiting_Approval__c }">{! a.CDX_Days_Waiting__c }</div>
+                                        </th>
+                                    </tr>
+                                </aura:iteration>
+                            </tbody>
+                        </table>
+                    </div>
+					</div>
+                </aura:set>
+            </lightning:accordionSection>
+            
+            <!-- Dispositions Section -->
+            <lightning:accordionSection name="Dispositions" label="Outbound Dispositions">
+                <aura:set attribute="actions">
+                    <span class="slds-badge">
+                        <span class="slds-badge__icon slds-badge__icon_left">
+                            <span class="slds-icon_container slds-icon-utility-moneybag slds-current-color" title="Description of icon when needed">
+                                <lightning:icon class="Icon" iconName="custom:custom67" alternativeText="Outbound Dispositions" size="small"/>
+                            </span>
+                        </span>{! v.DispositionSize }</span>
+                </aura:set>
+                <aura:set attribute="body">
+					<div class="slds-table--header-fixed_container" >
+                    <div style="{!$Browser.formFactor == 'DESKTOP' ? 'max-height: 200px;height:100%;' : ''}" class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-scrollable--y' : ''}">
+                        <table class="slds-table slds-table_bordered slds-max-medium-table_stacked-horizontal slds-table--header-fixed" style="table-layout: fixed;">
+                            <thead>
+                                <tr class="slds-text-title_caps">
+                                    <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                        <div class="slds-truncate slds-cell-fixed" title="Asset">Asset
+                                            <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                <span class="slds-assistive-text">Sort</span>
+                                            </button>
+                                        </div>
+                                    </th>
+                                    <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                        <div class="slds-truncate slds-cell-fixed" title="Shop Name">Shop Name
+                                            <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                <span class="slds-assistive-text">Sort</span>
+                                            </button>
+                                        </div>
+                                    </th>
+                                    <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                        <div class="slds-truncate slds-cell-fixed" title="Delivery Railroad">Delivery Railroad
+                                            <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                <span class="slds-assistive-text">Sort</span>
+                                            </button>
+                                        </div>
+                                    </th>
+                                    <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                        <div class="slds-truncate slds-cell-fixed" title="Days Waiting Disposition">Days Waiting Disposition
+                                            <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                <span class="slds-assistive-text">Sort</span>
+                                            </button>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <aura:iteration items="{!v.DispositionData}" var="c" indexVar="ckey">
+                                    <tr class="slds-hint-parent" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                        <th scope="row" data-label="Asset">
+                                            <div class="slds-truncate" title="{! c.AssetName }">
+                                                {! c.AssetName }
+                                            </div>
+                                        </th>
+                                        <th data-label="Shop Name" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="slds-truncate" title="{! c.ShopName }">
+                                                <a href="{!c.LinkURL}">
+                                                    {! c.ShopName }
+                                                </a>
+                                            </div>
+                                        </th>
+                                        <th data-label="Delivery Railroad" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="slds-truncate" title="{! c.ServicingRailroad}">
+                                                {! c.ServicingRailroad }
+                                            </div>
+                                        </th>
+                                        <th data-label="Days Waiting Disposition" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="slds-truncate" title="{! c.DaysWaiting }">
+                                                {! c.DaysWaiting }
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </aura:iteration>
+                            </tbody>
+                        </table>
+                    </div>
+					</div>
+                </aura:set>
+            </lightning:accordionSection>
+            
+            <!-- Cases Section -->
+            <lightning:accordionSection name="Cases" label="Cases Awaiting Customer">
+                <aura:set attribute="label" value="{!$Browser.formFactor != 'PHONE' ? 'Cases Awaiting Customer' : 'Cases Awaiting'}"/>
+                <aura:set attribute="actions">
+                    <span class="slds-badge">
+                        <span class="slds-badge__icon slds-badge__icon_left">
+                            <span class="slds-icon_container slds-icon-utility-moneybag slds-current-color" title="Description of icon when needed">
+                                <lightning:icon class="Icon" iconName="standard:case" alternativeText="Awaiting Cases" size="small"/>
+                            </span>
+                        </span>{! v.CasesSize }</span>
+                </aura:set>
+                <aura:set attribute="body">
+					<div class="slds-table--header-fixed_container" >
+                    <div style="{!$Browser.formFactor == 'DESKTOP' ? 'max-height: 200px;height:100%;' : ''}" class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-scrollable--y' : ''}">
+                        <table class="slds-table slds-table_bordered slds-max-medium-table_stacked-horizontal slds-table--header-fixed" style="table-layout: fixed;">
+                            <thead>
+                                <tr class="slds-text-title_caps">
+                                    <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                        <div class="slds-truncate slds-cell-fixed" title="Case Number">Case Number
+                                            <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                <span class="slds-assistive-text">Sort</span>
+                                            </button>
+                                        </div>
+                                    </th>
+                                    <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                        <div class="slds-truncate slds-cell-fixed" title="Case Subject" >Case Subject
+                                            <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                <span class="slds-assistive-text">Sort</span>
+                                            </button>
+                                        </div>
+                                    </th>
+                                    <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                        <div class="slds-truncate slds-cell-fixed" title="Case Type">Case Type
+                                            <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                <span class="slds-assistive-text">Sort</span>
+                                            </button>
+                                        </div>
+                                    </th>
+                                    <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                        <div class="slds-truncate slds-cell-fixed" title="Case Age">Case Age
+                                            <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                <span class="slds-assistive-text">Sort</span>
+                                            </button>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody >
+                                <aura:iteration items="{!v.CasesData}" var="e" indexVar="ekey">
+                                    <tr class="slds-hint-parent" >
+                                        <th scope="row" data-label="Case Number" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="slds-truncate" title="{! e.CaseNumber }">
+                                                <a href="{!'/s/case/'+e.Id+'/'+e.Subject}">
+                                                    {! e.CaseNumber }
+                                                </a>
+                                            </div>
+                                        </th>
+                                        <th data-label="Case Subject" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : 'word-wrap: break-word'}">
+                                            <div class="slds-truncate" title="{! e.Subject }">
+                                            	{! e.Subject }
+                                            </div>
+                                        </th>
+                                        <th data-label="Case Type" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="slds-truncate" title="{! e.Type }">{! e.Type }</div>
+                                        </th>
+                                        <th data-label="Case Age" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="slds-truncate" title="{! e.Case_Age__c }">{! e.Case_Age__c }</div>
+                                        </th>
+                                    </tr>
+                                </aura:iteration>
+                            </tbody>
+                        </table>
+                    </div>
+					</div>
+                </aura:set>
+            </lightning:accordionSection>
+            
+            <!-- OTMA Section -->
+            <aura:if isTrue="{! v.ViewOTMA }">
+                <lightning:accordionSection name="OTMA" label="Pending OTMA">
+                    <aura:set attribute="actions">
+                        <span class="slds-badge">
+                            <span class="slds-badge__icon slds-badge__icon_left">
+                                <span class="slds-icon_container slds-icon-utility-moneybag slds-current-color" title="Description of icon when needed">
+                                    <lightning:icon class="Icon" iconName="custom:custom67" alternativeText="Pending OTMA" size="small"/>
+                                </span>
+                            </span>{! v.OTMASize }</span>
+                    </aura:set>
+                    <aura:set attribute="body">
+						<div class="slds-table--header-fixed_container" >
+                        <div style="{!$Browser.formFactor == 'DESKTOP' ? 'max-height: 200px;height:100%;' : ''}" class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-scrollable--y' : ''}">
+                            <table class="slds-table slds-table_bordered slds-max-medium-table_stacked-horizontal slds-table--header-fixed" style="table-layout: fixed;">
+                                <thead>
+                                    <tr class="slds-text-title_caps">
+                                        <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="slds-truncate slds-cell-fixed" title="Asset">Asset
+                                                <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                    <span class="slds-assistive-text">Sort</span>
+                                                </button>
+                                            </div>
+                                        </th>
+                                        <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="slds-truncate slds-cell-fixed" title="Service Request">Service Request
+                                                <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                    <span class="slds-assistive-text">Sort</span>
+                                                </button>
+                                            </div>
+                                        </th>
+                                        <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="slds-truncate slds-cell-fixed" title="Shop Name">Shop Name
+                                                <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                    <span class="slds-assistive-text">Sort</span>
+                                                </button>
+                                            </div>
+                                        </th>
+                                        <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="slds-truncate slds-cell-fixed" title="Days Waiting OTMA">Days Waiting OTMA
+                                                <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                    <span class="slds-assistive-text">Sort</span>
+                                                </button>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <aura:iteration items="{!v.OTMAData}" var="b" indexVar="bkey">
+                                        <tr class="slds-hint-parent">
+                                            <th scope="row" data-label="Asset" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                                <div class="slds-truncate" title="{! b.Asset_Name__c }">                                                
+                                                    {! b.RFO_Asset__r.Name }
+                                                </div>
+                                            </th>
+                                            <th data-label="Service Request" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                                <div class="slds-truncate" title="{! b.RFO_ShopName__c }">
+                                                    <a href="{!'/s/service-request/'+b.Id+'/'+b.Name}">
+                                                        {! b.Name }
+                                                    </a>
+                                                </div>
+                                            </th>
+                                            <th data-label="Shop Name" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                                <div class="slds-truncate" title="{! b.RFO_ShopName__c }">{! b.RFO_ShopName__c }</div>
+                                            </th>
+                                            <th data-label="Days Waiting OTMA" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                                <div class="slds-truncate" title="{! b.CDX_Num_of_Days_Waiting_OTMA__c }">{! b.CDX_Num_of_Days_Waiting_OTMA__c }</div>
+                                            </th>
+                                        </tr>
+                                    </aura:iteration>
+                                </tbody>
+                            </table>
+                        </div>
+						</div>
+                    </aura:set>
+                </lightning:accordionSection>
+            </aura:if>
+            
+            <!-- Invoice Section -->
+            <aura:if isTrue="{! v.ViewInvoices }">
+                <lightning:accordionSection name="Invoices" label="Invoices Due">
+                    <aura:set attribute="actions">
+                        <span class="slds-badge">
+                            <span class="slds-badge__icon slds-badge__icon_left">
+                                <span class="slds-icon_container slds-icon-utility-moneybag slds-current-color" title="Description of icon when needed">
+                                    <lightning:icon class="Icon" iconName="custom:custom18" alternativeText="Invoices Due" size="small"/>
+                                </span>
+                            </span>{! v.InvoicesSize }</span>
+                    </aura:set>
+                    <aura:set attribute="body">
+						<div class="slds-table--header-fixed_container" >
+                        <div style="{!$Browser.formFactor == 'DESKTOP' ? 'max-height: 200px;height:100%;' : ''}" class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-scrollable--y' : ''}">
+                            <table class="slds-table slds-table_bordered slds-max-medium-table_stacked-horizontal slds-table--header-fixed" style="table-layout: fixed;">
+                                <thead>
+                                    <tr class="slds-text-title_caps">
+                                        <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="slds-truncate slds-cell-fixed" title="Invoice Number">Invoice Number
+                                                <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                    <span class="slds-assistive-text">Sort</span>
+                                                </button>
+                                            </div>
+                                        </th>
+                                        <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="slds-truncate slds-cell-fixed" title="Amount">Amount
+                                                <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                    <span class="slds-assistive-text">Sort</span>
+                                                </button>
+                                            </div>
+                                        </th>
+                                        <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="slds-truncate slds-cell-fixed" title="Invoice Date">Invoice Date
+                                                <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                    <span class="slds-assistive-text">Sort</span>
+                                                </button>
+                                            </div>
+                                        </th>
+                                        <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="slds-truncate slds-cell-fixed" title="Invoice Type">Invoice Type
+                                                <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                    <span class="slds-assistive-text">Sort</span>
+                                                </button>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <aura:iteration items="{!v.InvoicesData}" var="f" indexVar="fkey">
+                                        <tr class="slds-hint-parent">
+                                            <th scope="row" data-label="Invoice Number" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                                <div class="slds-truncate" title="Invoice Number Data">
+                                                    <a href="{!'/s/invoice/'+f.Id+'/'+f.Name}">
+                                                        {! f.Name }
+                                                    </a>
+                                                </div>
+                                            </th>
+                                            <th data-label="Amount" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                                <div class="slds-truncate" title="Amount Data">{! f.CDX_Amount_Due__c }</div>
+                                            </th>
+                                            <th data-label="Invoice Date Date" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                                <div class="slds-truncate" title="Invoice Date Data">{! f.CDX_Invoice_Date__c }</div>
+                                            </th>
+                                            <th data-label="Invoice Type" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                                <div class="slds-truncate" title="Invoice Type Data">{! f.CDX_Invoice_Type__c }</div>
+                                            </th>
+                                        </tr>
+                                    </aura:iteration>
+                                </tbody>
+                            </table>
+                        </div>
+						</div>
+                    </aura:set>
+                </lightning:accordionSection>
+            </aura:if>
+            
+            <!-- Schedules Section -->
+            <lightning:accordionSection name="Schedules" label="Schedules Awaiting Approval">
+                <aura:set attribute="label" value="{!$Browser.formFactor != 'PHONE' ? 'Project Schedules Awaiting Approval' : 'Project Schedules'}"/>
+                <aura:set attribute="actions">
+                    <span class="slds-badge">
+                        <span class="slds-badge__icon slds-badge__icon_left">
+                            <span class="slds-icon_container slds-icon-utility-moneybag slds-current-color" title="Description of icon when needed">
+                                <lightning:icon class="Icon" iconName="custom:custom10" alternativeText="Schedules Waiting" size="small"/>                           
+                            </span>
+                        </span>{! v.SchedulesSize }</span>
+                </aura:set>
+                <aura:set attribute="body">
+					<div class="slds-table--header-fixed_container" >
+                    <div style="{!$Browser.formFactor == 'DESKTOP' ? 'max-height: 200px;height:100%;' : ''}" class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-scrollable--y' : ''}">
+                        <table class="slds-table slds-table_bordered slds-max-medium-table_stacked-horizontal slds-table--header-fixed " style="table-layout: fixed;">
+                            <thead>
+                                <tr class="slds-text-title_caps">
+                                    <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                        <div class="slds-truncate slds-cell-fixed" title="Project">Project
+                                            <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                <span class="slds-assistive-text">Sort</span>
+                                            </button>
+                                        </div>
+                                    </th>
+                                    <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                        <div class="slds-truncate slds-cell-fixed" title="Published Date">Published Date
+                                            <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                <span class="slds-assistive-text">Sort</span>
+                                            </button>
+                                        </div>
+                                    </th>
+                                    <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                        <div class="slds-truncate slds-cell-fixed" title="Demand Driver Name">Demand Driver Name
+                                            <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                <span class="slds-assistive-text">Sort</span>
+                                            </button>
+                                        </div>
+                                    </th>
+                                    <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                        <div class="slds-truncate slds-cell-fixed" title="Total Asset Count">Total Asset Count
+                                            <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                <span class="slds-assistive-text">Sort</span>
+                                            </button>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <aura:iteration items="{!v.SchedulesData}" var="d" indexVar="dkey">
+                                    <tr class="slds-hint-parent">
+                                        <th scope="row" data-label="Project" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="slds-truncate" title="{! d.Name }">
+                                                <a href="{!'/s/projects/'+d.Id+'/'+d.Name+$Label.c.ScheduleLabel}">
+                                                    {! d.Name }
+                                                </a>
+                                            </div>
+                                        </th>
+                                        <th data-label="Published Date" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="slds-truncate" title="{! d.CDX_Published_Date__c }">{! d.CDX_Schedule_Last_Published_Date__c }</div>
+                                        </th>
+                                        <th data-label="Demand Driver Name" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="slds-truncate" title="{! d.CDX_Demand_Driver_Name__c }">{! d.RFO_DemandDriverName__c }</div>
+                                        </th>
+                                        <th data-label="Total Asset Count" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="slds-truncate" title="{! d.CDX_Total_Assets__c }">{! d.RFO_TotalAssetCount__c }</div>
+                                        </th>
+                                    </tr>
+                                </aura:iteration>
+                            </tbody>
+                        </table>
+                    </div>
+					</div>
+                </aura:set>
+            </lightning:accordionSection>
+            
+            
+            <!-- Rider Section -->
+            <aura:if isTrue="{! v.ViewRiders }">
+                <lightning:accordionSection name="Riders" label="Maturing Riders">
+                    <aura:set attribute="actions">
+                        <span class="slds-badge">
+                            <span class="slds-badge__icon slds-badge__icon_left">
+                                <span class="slds-icon_container slds-icon-utility-moneybag slds-current-color" title="Description of icon when needed">
+                                    <lightning:icon class="Icon" iconName="custom:custom32" alternativeText="Maturing Riders" size="small"/>
+                                </span>
+                            </span>{! v.RidersSize }</span>
+                    </aura:set>
+                    <aura:set attribute="body">
+						<div class="slds-table--header-fixed_container" >
+                        <div style="{!$Browser.formFactor == 'DESKTOP' ? 'max-height: 200px;height:100%;' : ''}" class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-scrollable--y' : ''}">
+                            <table class="slds-table slds-table_bordered slds-max-medium-table_stacked-horizontal slds-table--header-fixed" style="table-layout: fixed;">
+                                <thead>
+                                    <tr class="slds-text-title_caps">
+                                        <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="slds-truncate slds-cell-fixed" title="Rider">Rider
+                                                <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                    <span class="slds-assistive-text">Sort</span>
+                                                </button>
+                                            </div>
+                                        </th>
+                                        <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="slds-truncate slds-cell-fixed" title="Original Maturity Date">Original Maturity Date
+                                                <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                    <span class="slds-assistive-text">Sort</span>
+                                                </button>
+                                            </div>
+                                        </th>
+                                        <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="slds-truncate slds-cell-fixed" title="Current Maturity Date">Current Maturity Date
+                                                <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                    <span class="slds-assistive-text">Sort</span>
+                                                </button>
+                                            </div>
+                                        </th>
+                                        <th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                            <div class="slds-truncate slds-cell-fixed" title="Sales Rep">Sales Rep
+                                                <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                                    <span class="slds-assistive-text">Sort</span>
+                                                </button>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <aura:iteration items="{!v.RidersData}" var="g" indexVar="gkey">
+                                        <tr class="slds-hint-parent">
+                                            <th scope="row" data-label="Rider" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                                <div class="slds-truncate" title="{! g.Name }">
+                                                    <a href="{!'/s/rider/'+g.Id+'/'+g.Name}">
+                                                        {! g.Name }
+                                                    </a>
+                                                </div>
+                                            </th>
+                                            <th data-label="Original Maturity Date" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                                <div class="slds-truncate" title="{! g.RFO_OriginalMaturityDate__c }">{! g.RFO_OriginalMaturityDate__c }</div>
+                                            </th>
+                                            <th data-label="Current Maturity Date" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                                <div class="slds-truncate" title="{! g.RFO_CurrentMaturityDate__c }">{! g.RFO_CurrentMaturityDate__c }</div>
+                                            </th>
+                                            <th data-label="Sales Rep" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+                                                <div class="slds-truncate" title="{! g.CDX_Rider_Sales_Rep__c }">
+                                                    <a href="{! g.CDX_Rider_Link__c}">
+                                                        {! g.CDX_Rider_Sales_Rep__c }
+                                                    </a>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </aura:iteration>
+                                </tbody>
+                            </table>
+                        </div>
+						</div>
+                    </aura:set>
+                </lightning:accordionSection>
+            </aura:if>
+			
+			<!-- Scheduled Customer Release-->
+			<aura:if isTrue="{!v.hasPerm}" >
+				<lightning:accordionSection name="Schedules" label="Scheduled Customer Release">
+					<aura:set attribute="label" value="{!$Browser.formFactor != 'PHONE' ? 'Scheduled Customer Release' : 'Scheduled Customer'}"/>
+					<aura:set attribute="actions">
+						<span class="slds-badge">
+							<span class="slds-badge__icon slds-badge__icon_left">
+								<span class="slds-icon_container slds-icon-utility-moneybag slds-current-color" title="Description of icon when needed">
+									<lightning:icon class="Icon" iconName="custom:custom31" alternativeText="Schedules Waiting" size="small"/>                           
+								</span>
+							</span>{! v.projectsListSize }</span>
+					</aura:set>
+					<aura:set attribute="body">
+						<div class="slds-table--header-fixed_container" >
+						<div style="{!$Browser.formFactor == 'DESKTOP' ? 'max-height: 200px;height:100%;' : ''}" class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-scrollable--y' : ''}">
+							<table class="slds-table slds-table_bordered slds-max-medium-table_stacked-horizontal slds-table--header-fixed" style="table-layout: fixed;">
+								<thead>
+									<tr class="slds-text-title_caps">
+										<th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 100%' : ''}">
+											<div class="slds-truncate slds-cell-fixed" title="Project ID">Project Name
+												<button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+													<span class="slds-assistive-text">Sort</span>
+												</button>
+											</div>
+										</th>
+										<aura:iteration items="{!v.weekList}" var="weekNo" >
+										<th scope="col" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+											<div class="slds-truncate slds-cell-fixed" title="Week 0">{!weekNo}
+												<button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+													<span class="slds-assistive-text">Sort</span>
+												</button>
+											</div>
+										</th>
+										</aura:iteration>
+									</tr>
+								</thead>
+								<tbody>
+									<aura:iteration items="{!v.projectsList}" var="d" indexVar="dkey">
+										<tr class="slds-hint-parent">
+											<th scope="row" data-label="Project" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 50%' : ''}">
+												<div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}" title="{! d.Name }">
+													<a href="{!'/s/projects/'+d.projectSO.Id+'/'}" title="{! d.projectSO.Name +' - '+d.projectSO.RFO_ProjectId__c}">
+														{! d.projectSO.Name } - {!d.projectSO.RFO_ProjectId__c}
+													</a>
+												</div>
+											</th>
+											<th data-label="Published Date" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+												<div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}">{! d.week0 }</div>
+											</th>
+											<th data-label="Demand Driver Name" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+												<div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}" >{! d.week1 }</div>
+											</th>
+											<th data-label="Total Asset Count" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+												<div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}" >{! d.week2 }</div>
+											</th>
+											<th data-label="Total Asset Count" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+												<div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}" >{! d.week3 }</div>
+											</th>
+											<th data-label="Total Asset Count" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+												<div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}" >{! d.week4 }</div>
+											</th>
+											<th data-label="Total Asset Count" style="{!$Browser.formFactor == 'DESKTOP' ? 'width: 25%' : ''}">
+												<div class="{!$Browser.formFactor == 'DESKTOP' ? 'slds-truncate' : ''}" >{! d.weekNth }</div>
+											</th>
+										</tr>
+									</aura:iteration>
+								</tbody>
+							</table>
+						</div>
+						</div>
+					</aura:set>
+				</lightning:accordionSection>
+            </aura:if>   
+        </lightning:accordion>
+        </aura:if>     
+        
+    </div>  
+</aura:component>

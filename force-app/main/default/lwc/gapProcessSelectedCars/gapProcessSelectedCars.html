@@ -1,0 +1,106 @@
+<template>
+  <lightning-tabset>
+    <lightning-tab label="Inventory Selection" title="Inventory Selection">
+      <div if:false={isShowError}>
+      <lightning-card>
+      <div if:false={isLoaded} class="slds-is-relative">
+        <lightning-spinner
+            alternative-text="Loading..." variant="brand">
+        </lightning-spinner>
+      </div>
+      <div style="float:right;">
+        <lightning-button 
+        variant="brand" 
+        label="Save" 
+        title="Save" 
+        slot="actions"
+        onclick={handleSubmitClick} 
+      >
+        </lightning-button>
+      </div>
+      <br/>
+      <br/>
+        <div style="height:310px;">
+         <lightning-datatable
+            min-column-width="100"
+            max-column-width="350"
+            data={records}
+            columns={columns}
+            key-field="Id"
+            hide-checkbox-column={showcheckBox}
+            show-row-number-column={hideColumnNumbers}
+            onrowaction={handleRowAction}
+            enable-infinite-loading
+            onloadmore={loadMoreData}
+          >
+          </lightning-datatable>
+        </div>
+        <br/>
+        <br/>
+        <!--<c-add-approval-buttons 
+           show-approve-button="false" 
+            show-reject-button="false" 
+            show-send-gap-button="false"
+            label-approve-button="Move to next step"
+            label-reject-button="Move to previous step"
+            label-send-gap-button = ""
+            cqp-quote-id ={recordId}
+            is-cpq="true"
+        ></c-add-approval-buttons>-->
+        <!--
+        <lightning-button variant="success" label="Approved As-Is" title="Approved As-Is" onclick={handleApprovedAsIs} class="slds-m-left_x-small"></lightning-button>
+        <lightning-button variant="destructive" label="Rejected Selection" title="Rejected Selection" onclick={handleRejectedSelection} class="slds-m-left_x-small"></lightning-button>
+        <lightning-button variant="brand-outline" label="Sent to GAP" title="Sent to GAP" onclick={handleSendtoGAP} class="slds-m-left_x-small"></lightning-button>
+        -->
+    </lightning-card>
+  </div>
+  <div if:true={isShowError}>
+      <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error" role="alert">
+          <span class="slds-assistive-text">error</span>
+          <h2>{custmerSpecMessage}
+          </h2>
+          
+        </div>
+  </div>
+
+    <div if:true={isShowAssetLines}>
+      <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-10" class="slds-modal slds-fade-in-open">
+          <div  class="slds-modal__container poupWidth">
+              <div  class="slds-modal__content slds-p-around_medium poupWidth" id="modal-content-id101">
+                <div class="slds-m-around_medium">
+                  <iframe 
+                  id="cpqQuoteIframe"
+                  frameborder="0" 
+                  border="0" 
+                  cellspacing="0"
+                   width="100%" 
+                   height="500" src={finalVfURL}></iframe>
+              </div>  
+              </div>
+          <footer class="slds-modal__footer">
+              <lightning-button 
+                      label="Close" 
+                      icon-name="utility:close" 
+                      slot="actions"
+                      onclick={handleGroupClose}>
+              </lightning-button>
+          </footer>
+          </div>
+      </section>
+      <div class="slds-backdrop slds-backdrop_open"></div>
+  </div>
+
+    </lightning-tab>
+    <lightning-tab label="Selected Assets" title="Selected Assets">
+      <div class="slds-m-around_x-small">
+        <c-open-visualforce-page  current-record-id={currentRecordId}>
+         </c-open-visualforce-page>
+    </div>
+
+    </lightning-tab>
+    <lightning-tab label="Customer Requirement" title="Customer Requirement">
+      <c-customer-spec-detail quote-id={currentRecordId}>
+      </c-customer-spec-detail>
+    </lightning-tab>
+    </lightning-tabset>
+</template>

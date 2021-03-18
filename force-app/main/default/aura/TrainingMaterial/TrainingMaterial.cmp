@@ -1,0 +1,32 @@
+<aura:component controller="TrainingMaterialController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" 
+                access="global" >
+	
+    <aura:attribute name="trainingMaterials" type="ContentVersion[]" access="global" />
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="path" type="List"/>
+    <aura:attribute name="currentFolderId" type="Id"/>
+    <aura:attribute name="materialMap" type="Map"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <lightning:card variant="Narrow" title="Training Documents" iconName="standard:account" >
+    </lightning:card>
+    <br />
+    <aura:iteration items="{!v.path}" var="pt">
+
+        <lightning:button variant="base" value="{!pt.id}" label="{!pt.name +' >'}"
+                          onclick="{! c.handlePathClick }"/>
+    </aura:iteration>
+                <lightning:datatable
+                                     keyField="id"
+                                     data="{!v.trainingMaterials}"
+                                     columns="{! v.columns }"
+                                     hideCheckboxColumn="true"
+                                     showRowNumberColumn = "true"
+                                     columnWidthsMode="auto"
+                                     resizeColumnDisabled="true"
+                                     onrowaction="{!c.handleRowClick}"
+                                     />
+
+    <br />
+</aura:component>

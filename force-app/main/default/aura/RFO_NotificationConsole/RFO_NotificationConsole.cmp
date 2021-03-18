@@ -1,0 +1,65 @@
+<aura:component controller="RFO_ContractSyncController" implements="force:hasRecordId,flexipage:availableForAllPageTypes" access="global">
+    <lightning:empApi aura:id="empApi"/>
+    <aura:attribute name="channel" type="String" default="/event/Notification__e"/>
+    <aura:attribute name="subscription" type="Map"/>
+
+    <aura:attribute name="buttonstate" type="Boolean" default="true"/>
+    <aura:attribute name="toggleSpinner" type="boolean" default="false"/> 
+    <!-- <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> -->
+    <aura:handler event="aura:waiting" action="{!c.showSpinner}"/>
+    <aura:handler event="aura:doneWaiting" action="{!c.hideSpinner}"/>
+    
+    <aura:attribute name="notifications" type="List"/>
+    <aura:attribute name="isMuted" type="Boolean" default="false"/>
+    <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
+    <aura:registerEvent name="toastEvent" type="force:showToast"/>
+    <div class="container">
+    <!-- Header -->
+    <div aura:id="uploadCard" class="slds-card__header" style="position:relative">
+        <div class="slds-form--compound">
+            <div class="slds-p-around_x-small slds-border_bottom slds-theme_shade">
+                <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                    <div>
+                        <!-- <span class="slds-badge">{!v.notifications.length}</span> -->
+                    </div>
+                    <div>
+                        <lightning:buttonstateful 
+                            labelWhenOff="In Progress"
+                            labelWhenOn= "Send to TAS"
+                            state="{! v.buttonstate }" 
+                            variant="brand"
+                            title="Send to TAS" onclick="{!c.SyncTAS}">
+                        </lightning:buttonstateful>
+                        <lightning:buttonIcon onclick="{!c.onClear}" iconName="utility:delete" title="Clear notifications"
+                            alternativeText="Clear notifications" variant="border-filled"/>
+                        <lightning:buttonIcon onclick="{!c.onToggleMute}"
+                            iconName="{!v.isMuted ? 'utility:volume_off' : 'utility:volume_high'}"
+                            title="{!v.isMuted ? 'Unmute notifications' : 'Mute notifications'}"
+                            alternativeText="Toggle mute" variant="border-filled"/>
+                    </div>
+                </div>
+                <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center"></div>
+            </div>
+            <aura:if isTrue="{! !v.buttonstate}">
+            <div class="slds-spinner_container" aura:id="uploadSpinner">
+                    <div class="slds-spinner slds-spinner--medium" aria-hidden="false" role="alert">
+                    <div class="slds-spinner__dot-a"></div>
+                    <div class="slds-spinner__dot-b"></div>
+                    </div>
+                </div>
+            </aura:if>
+        </div>
+    </div>
+    <!-- Notification list -->
+    <div class="slds-container_fluid slds-scrollable_y content">
+        <aura:iteration items="{!v.notifications}" var="notification">
+        <div class="slds-p-around_small slds-border_top">
+            <div class="slds-grid slds-grid_align-spread slds-has-flexi-truncate">
+            <p>{!notification.message}</p>
+            <p class="slds-text-color_weak slds-p-left_x-small">{!notification.time}</p>
+            </div>
+        </div>
+        </aura:iteration>
+    </div>
+    </div>
+</aura:component>

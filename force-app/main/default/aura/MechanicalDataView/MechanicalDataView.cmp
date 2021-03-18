@@ -1,0 +1,206 @@
+<aura:component implements="force:appHostable,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" controller="MechanicalDataViewController"  access="global" >
+	
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="mechDataId" type="String" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <br/> <br/>
+    <!--<lightning:recordForm
+        recordId="{!v.mechDataId}" 
+        objectApiName="MechanicalData__c"
+        layoutType="Full"
+        columns="2"
+        mode="readonly" />-->
+    
+    <lightning:recordViewForm recordId="{!v.mechDataId}" objectApiName="MechanicalData__c">
+        <div class="slds-grid slds-wrap">
+            <div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Bottom_Outlet_Valve_Manufacturer__c" />
+            </div>
+            <div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="BOV_Handle_Type__c" />
+            </div>
+            <div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Safety_Valve_Composition__c" />
+            </div>
+            <div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Safety_Valve_QTY__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Safety_Vent__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Rupture_Disc__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="VRV__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Gauging_Device__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Sample_Valve__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Thermowell__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Eduction_Pipe__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Eduction_Valve__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Air_Val_Connection_Size__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Length_Over_Striker__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Length_Over_Coupler_Pulling__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Extreme_Height__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Capacity__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Extreme_Width__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Weight_Gross_Rail_Load_Stencilled__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Unit_of_Measure__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Light_Weight__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Load_Limit__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Build_Date__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Number_of_Compartments__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Manufacturer__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="File_Number__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="A_End_Coupler__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Truck_Capacity__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="DOT_Stencil_Class__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="B_End_Coupler__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Number_of_Coil_Lines__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="DOT_Construction_Class__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Manway_Size__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Insulation_Material__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Paint_Material__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Paint_Color__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Paint_By__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Paint_Date__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Lining_Material__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Lining_Type__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Lining_Date__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Lining_By__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Manway_Gasket__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Bottom_Outlet_Valve_Cap_Gasket__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="O_Ring__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Nitrogen_Pad__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Hatch_Cover_Manufacturer__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Hatch_Cover_Composition__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Hatch_Opening_Number_of_Hatches__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Hatch_Cover_Model__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Bottom_Gate_Model__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Hatch_Opening_Type__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Bottom_Gate_Type__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Bottom_Gate_Manufacturer__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Number_of_Bottom_Gates__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Asset_Name__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Car_Mark__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="AccountID__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="Car_Number__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="TAS_Asset_ID__c" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="CreatedDate" />
+            </div>
+			<div class="slds-col slds-size_1-of-2">
+                <lightning:outputField fieldName="LastModifiedDate" />
+            </div>
+			
+        </div>
+	</lightning:recordViewForm>
+    
+</aura:component>

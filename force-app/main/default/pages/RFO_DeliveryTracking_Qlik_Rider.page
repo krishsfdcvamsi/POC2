@@ -1,0 +1,4 @@
+<apex:page standardController="RFO_Rider__c" showHeader="false" sidebar="false" standardStylesheets="false">
+<iframe src="{!$Label.RFO_Qlik_RiderURL}{!RFO_Rider__c.RFO_TASRiderid__c}"      
+scrolling="true" height="800px" width="800px" frameborder="false"/> 
+</apex:page>

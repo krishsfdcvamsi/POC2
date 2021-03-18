@@ -1,0 +1,61 @@
+<aura:component implements="lightning:availableForFlowScreens" controller="SRMobileSearchController">
+    
+    <aura:attribute name="addressSearch" type="String"  />
+    <aura:attribute name="selectedRecord" type="ServiceRequestMobileLocation__c" access="public" required="false" description="Selected Record" />
+    <aura:attribute name="newAddress" type="ServiceRequestMobileLocation__c" default="{'sObjectType':'ServiceRequestMobileLocation__c'}"  />
+    <aura:attribute name="accountId" type="Id" default="" />
+    
+    <aura:attribute name="City" type="String" default="{!v.newAddress.City__c}" />
+    <aura:attribute name="State" type="String" default="{!v.newAddress.State__c}"  />
+    <aura:attribute name="zipCode" type="String" default="{!v.newAddress.ZipCode__c}" />
+    <aura:attribute name="country" type="String" default="{!v.newAddress.Country__c}"  />
+    <aura:attribute name="street" type="String" default="{!v.newAddress.Name}"  />
+    
+    
+    <aura:attribute name="disableAddress" type="Boolean" default="true"  />
+    <aura:attribute name="showAddress" type="Boolean" default="true"  />
+    <aura:attribute name="showError" type="Boolean" default="true"  />
+    
+    <aura:handler name="change" value="{!v.selectedRecord}" action="{!c.setAddress}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <b>Mobile Address</b>
+    <c:DynamicComboBox label="Search an Address" 
+                       sObjectName="ServiceRequestMobileLocation__c"
+                       fieldName="Address_Search__c"
+                       additionalFields= "Name,City__c,State__c,Country__c,ZipCode__c,Account__c"
+                       searchText = "{!v.addressSearch}"
+                       type="search"
+                       keyField = "Id"
+                       selectedRecord="{!v.selectedRecord}"
+                       isArrayList="true"
+                       matchAnyString = "true"
+                       />
+    <br />
+    <lightning:button label="Add New Address" title="New adress" onclick="{!c.enableAdress }"/>
+    <div>
+        <aura:if isTrue="{!v.showAddress}">
+        <lightning:inputAddress
+            
+            streetLabel="Street"
+            cityLabel="City"
+            countryLabel="Country"
+            provinceLabel="State/Province"
+            postalCodeLabel="Zip/Postal Code"
+            street="{!v.newAddress.Name}"
+            city="{!v.newAddress.City__c}"
+            country="{!v.newAddress.Country__c}"
+            province="{!v.newAddress.State__c}"
+            postalCode="{!v.newAddress.ZipCode__c}"
+            required="true"
+            fieldLevelHelp=""
+			disabled="{!v.disableAddress}"
+			aura:id="input"
+            onblur="{!c.setNewAddress}"
+        />
+        </aura:if>
+    </div>
+    <aura:if isTrue="{!or(v.City == null,v.street == null, v.State == null, v.country == null, v.zipCode == null)}">
+        <p style="color:red;">Please enter a full address.</p>
+    </aura:if>
+</aura:component>

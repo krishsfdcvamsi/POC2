@@ -1,0 +1,176 @@
+<aura:component controller="QuoteContainerController" implements="flexipage:availableForAllPageTypes,force:appHostable,force:hasRecordId,force:hasSObjectName">
+    <aura:attribute name="lwcCMP" type="Aura.Component" />
+    <aura:attribute name="viewPopUp" type="boolean" default="false"/>
+    <aura:attribute name="sobjecttype" type="String" default="{!v.sObjectName}"/>
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="CPQRecordId" type="String" />
+    <aura:attribute name="detailsPopUp" type="boolean" default="false"/>
+    <aura:attribute name="SpinnerLoaded" type="boolean" default="true"/>
+    <aura:attribute name="reportId" type="String" default=""/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <!--QuoteContainerAura-->
+    <lightning:card>
+        <aura:if isTrue="{! v.SpinnerLoaded }">
+            <lightning:spinner alternativeText="Loading" />
+        </aura:if>	
+        <div class="demo-only demo-only--sizing slds-grid slds-wrap" style="width:98%;margin: auto;">
+            <div class="slds-button_brand buttonStyle" onclick="{!c.handleAssetMatchingClick}">
+                <div class="slds-box_x-small 
+                            slds-text-align_center 
+                            slds-m-around_x-small">
+                    <span><lightning:icon iconName="standard:asset_action" 
+                                          alternativeText="Asset Matching" 
+                                          title="Asset Matching" /></span>
+                   	<span style="margin:5px;">Asset Matching</span>
+                    
+                </div>
+            </div>
+            <div class="slds-button_brand buttonStyle" onclick="{! c.showGapProcess }" >
+               <div class="slds-box_x-small slds-text-align_center 
+                slds-m-around_x-small">
+                    <span><lightning:icon iconName="standard:process" 
+                                          alternativeText="GAP Process" 
+                                          title="GAP Process" /></span>
+                   	<span style="margin:5px;">GAP Process</span>
+                    
+                </div>
+                    
+            </div>
+            
+            <div class=" slds-button_brand buttonStyle" onclick="{!c.handleDetails}">
+                <div class="slds-box_x-small 
+                slds-text-align_center 
+                slds-m-around_x-small">
+                    <span><lightning:icon iconName="standard:display_rich_text" alternativeText="Details" title="Details" /></span>
+                   	<span style="margin:5px;">Details</span>
+                </div>
+            </div>
+            <div class="slds-button_brand buttonStyle" onclick="{! c.showPricingScenario }" >
+               <div class="slds-box_x-small slds-text-align_center 
+                slds-m-around_x-small">
+                   <span><lightning:icon iconName="standard:currency" alternativeText="Pricing and PM review" title="Pricing and PM review" /></span>
+                   <span style="margin:5px;">Pricing &#38; PM review</span>
+                  
+                </div>
+                    
+            </div>
+            
+            
+        </div>
+        <br/>
+        
+        <div class="demo-only demo-only--sizing slds-grid slds-wrap" style="width:98%;margin: auto;">
+            <div class="slds-button_brand buttonStyle" onclick="{!c.handleProductionClick}">
+                <div class="slds-box_x-small 
+                    slds-text-align_center 
+                    slds-m-around_x-small">
+                    <span><lightning:icon iconName="standard:product" 
+                                          alternativeText="Production Planning" 
+                                          title="Production Planning" /></span>
+                   	<span style="margin:5px;">SLA</span>
+                    
+                </div>
+            </div>
+            <div class=" slds-button_brand buttonStyle" onclick="{!c.handleRelatedList}">
+                <div class="slds-box_x-small 
+                slds-text-align_center 
+                slds-m-around_x-small">
+                    <span><lightning:icon iconName="standard:related_list" 
+                                          alternativeText="LX Packages" 
+                                          title="LX Packages" /></span>
+                   	<span style="margin:5px;">LX Packages</span>
+                    
+                </div>
+            </div>
+            <!--<div class="slds-button_brand buttonStyle" onclick="{!c.handleClick}">
+                <div class="slds-box_x-small 
+                            slds-text-align_center 
+                            slds-m-around_x-small">
+                    <span><lightning:icon iconName="standard:live_chat" 
+                                          alternativeText="Chatter" 
+                                          title="Chatter" /></span>
+                   	<span style="margin:5px;">Chatter</span>
+                    
+                </div>
+            </div>-->
+            
+                <div class="slds-button_brand buttonStyle" onclick="{!c.handleReportClick}">
+                    <div class="slds-box_x-small 
+                        slds-text-align_center 
+                        slds-m-around_x-small">
+                        <span><lightning:icon iconName="standard:maintenance_plan" 
+                                              alternativeText="New Car Engineering" 
+                                              title="New Car Engineering" /></span>
+                        <span style="margin:5px;">Reporting</span>
+                       
+                    </div>
+                </div>
+            
+        </div>
+        
+    </lightning:card>
+    <aura:if isTrue="{!v.viewPopUp}">
+       
+        <section  role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="height:95% !important;min-height:25% !important;max-height:95% !important;;width:100% !important;max-width: 100% !important;min-width: 100% !important;">
+                <header class="slds-modal__header">
+                    <span class="slds-modal__close slds-button_icon-inverse" style="right:0px !important;top:0px !important;"
+                          title="Close">
+                       <lightning:buttonIcon iconName="utility:close" 
+                                             size="medium"  
+                                             variant="brand" 
+                                             alternativeText="close" 
+                                             iconClass="dark" 
+                                             onclick="{!c.handleClose}"/>
+                    </span>
+                  </header>
+                    <aura:if isTrue="{! v.SpinnerLoaded }">
+                         <lightning:spinner alternativeText="Loading" />
+                    </aura:if>
+                <div  class="slds-modal__content slds-p-around_medium" id="modal-content-id-1" style="width:100%;height:100%">
+                <div class="slds-form-element__control" style="width:100%;height:90%">
+                    {!v.lwcCMP}
+                </div>
+            </div>
+           <!-- <footer class="slds-modal__footer">
+                <lightning:button 
+                    label="Close" 
+                    iconName="utility:close" 
+                    onclick="{!c.handleClose}">
+                </lightning:button>
+            </footer>-->
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+    <aura:if isTrue="{!v.detailsPopUp}">
+        <section  role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="width:100% !important;height:95% !important;">
+                <header class="slds-modal__header">
+                    <span class="slds-button slds-button_icon slds-button_brand slds-modal__close slds-button_icon-inverse" title="Close">
+                        <lightning:button 
+                        iconName="utility:close" 
+                        onclick="{!c.handleDetailsClose}">
+                        </lightning:button>
+                    </span>
+                  </header>
+                <div  class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                <div class="slds-form-element__control">
+                    <c:lwcCreateNewRecord objectApiName="{!v.sobjecttype}" 
+                                          recordId="{!v.recordId}" 
+                                          showEditForm="true">
+                    </c:lwcCreateNewRecord>
+                </div>
+            </div>
+            <!--<footer class="slds-modal__footer">
+                <lightning:button 
+                    label="Close" 
+                    iconName="utility:close" 
+                    onclick="{!c.handleDetailsClose}">
+                </lightning:button>
+            </footer>-->
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+</aura:component>

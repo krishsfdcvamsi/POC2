@@ -1,0 +1,8 @@
+<design:component >
+    <flexipage:template >
+        <flexipage:region name="firstElement" defaultWidth="LARGE"/>
+        <flexipage:region name="secondElement" defaultWidth="Small"/>
+        <flexipage:region name="thirdElement" defaultWidth="Small"/>
+    </flexipage:template>  
+    
+</design:component>

@@ -1,0 +1,42 @@
+<template>
+    <div if:true={isLoaded} class="slds-is-relative">
+        <lightning-spinner
+            alternative-text="Loading..." variant="brand">
+        </lightning-spinner>
+    </div>
+   <div if:true={showForm}>
+         <lightning-radio-group name="radioGroup"
+                          label="Select Record Type"
+                          required
+                          options={recordTypeIds}
+                          value={defaultRecordTypeId}
+                          type="radio"></lightning-radio-group>
+
+                          <lightning-button variant="brand" 
+                          label="Next" 
+                          title="Next" 
+                          onclick={handleSelecteRecordType} 
+                          class="slds-m-left_x-small"></lightning-button>
+    </div>
+    <div if:true={showCreateForm}>
+        <lightning-record-form 
+        object-api-name={objectApiName} 
+        layout-type ="Full"
+        record-type-id={defaultRecordTypeId}
+        mode="edit"
+        columns='2' 
+        onsuccess={handleSuccess}
+        >
+        </lightning-record-form>
+    </div>
+    <div if:true={showEditForm}>
+        <lightning-record-form 
+        object-api-name={objectApiName} 
+        layout-type ="Full"
+        record-id={recordId}
+        mode="view"
+        columns='2' >
+        </lightning-record-form>
+    
+    </div>
+</template>

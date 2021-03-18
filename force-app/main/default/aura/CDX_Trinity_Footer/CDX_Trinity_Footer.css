@@ -1,0 +1,235 @@
+.THIS {
+    width: 100%;
+    height: 70px;
+    position: relative;
+    bottom: 0;
+    font-size: .8125rem;
+    line-height: 18px;
+}
+
+.THIS.MobileFoot, .THIS.MobileFooter2 {
+    
+    font-size: .8125rem;
+    line-height: 20px;
+}
+
+.THIS.MobileFoot .TOP {
+    padding-bottom: 10px;
+}
+
+.THIS .Content{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.THIS.Header122, .THIS.MobileFoot {
+    background-color: black;
+    color: #8D9295; 
+    
+    height: 100%;
+}
+
+.THIS.Header122 {
+	padding-bottom: 50px;    
+}
+
+.THIS .FooterTop  {
+    margin-left: 10vw;
+    margin-right: 6vw;
+}
+
+.THIS.Header122 a {
+  color: #8D9295;
+}
+
+.THIS.Header122 a:hover {
+    text-decoration: none;
+    color: #ffffff;
+}
+
+/* visited link */
+.THIS.Header122 a:visited {
+    color: #8D9295;
+}
+
+/* mouse over link */
+.THIS.Header122 a:hover {
+    color: #ffffff;
+}
+
+/* selected link */
+.THIS.Header122 a:active {
+    color: #ffffff;
+}
+
+.THIS.Header122 h5 {
+
+    font-size: .8125rem;
+  	font-family: Saira;
+  	font-weight: 300;
+  	letter-spacing: .1em;
+  	line-height: 26px;
+  	padding-bottom: 12px;
+  	text-transform: uppercase;
+    text-align: left;
+}
+
+.THIS.Header122 p, .THIS.Header122 li {
+  font-size: .8125rem;
+  padding-bottom: 10px;
+  color: #8d9295;
+  font-weight: 400;
+}
+
+
+
+/* Dekstop  */
+.THIS.Header122 img {
+    margin-left: -20px;
+    width: 200px;
+	height: 26px;
+    margin-bottom: 30px;
+    margin-top: 50px;
+}
+
+/* Mobile */
+.THIS.MobileFoot img {
+    width: 130px;
+    margin-bottom: 10px;
+    margin-top: 20px;
+}
+
+
+.THIS.FooterBottom{
+    background-color: #32271B; 
+    color: white; 
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.THIS .FootBottomInner{
+    margin-left: 10vw;
+    margin-right: 10vw;
+    font-size: .8125rem;
+    font-weight: 400;
+}
+
+.THIS.Header122 li {
+  font-size: .8125rem;
+  padding-bottom: 10px;
+  color: #8d9295;
+  text-align: left;
+  font-weight: 400;
+}
+
+.THIS .flex-list {
+    position: relative;
+    margin: 3px;
+    overflow: hidden;
+}
+.THIS .flex-list ul {
+    display: flex;
+    flex-direction: row;
+    margin-left: -1px;
+}
+.THIS .flex-list li {
+    flex-grow: 1;
+    flex-basis: auto;
+    margin: 1px 0;
+    padding: 1px;
+    text-align: center;
+    border-left: 1px solid #ccc;
+}
+
+.THIS.MobileFoot{
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.THIS.MobileFooter2{
+    text-align: center;
+    font-size: .8125rem;
+	line-height: 13px;
+}
+
+
+.THIS .flex-list2 {
+    position: relative;
+    margin: 1px;
+    overflow: hidden;
+}
+.THIS .flex-list2 ul {
+    display: flex;
+    flex-direction: row;
+    padding-left: 5%;
+    margin-left: 1px;
+}
+.THIS .Boarder {
+    flex-grow: 0;
+    flex-basis: auto;
+    margin: 6px 0;
+    padding: 6px;
+    text-align: center;
+    border-left: 1px solid #ccc;
+     white-space: nowrap;
+}
+.THIS .NoBoarder {
+    flex-grow: 0;
+    flex-basis: auto;
+    margin: 6px 0;
+    padding: 6px;
+    text-align: center;
+     white-space: nowrap;
+}
+
+.THIS.MobileFoot a {
+  color: #8D9295;
+}
+
+/* mobile link */
+.THIS.MobileFoot a:hover {
+    text-decoration: none;
+    color: #ffffff;
+}
+
+/* mobile visited link */
+.THIS.MobileFoot a:visited {
+    color: #8D9295;
+}
+
+/* mobile mouse over link */
+.THIS.MobileFoot a:hover {
+    color: #ffffff;
+}
+
+/* mobile selected link */
+.THIS.MobileFoot a:active {
+    color: #ffffff;
+}
+
+.THIS.MobileFooter2 {
+    background-color: #32271B; 
+    color: white; 
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+/* White Links */
+.THIS.MobileFooter2 a, .THIS.FooterBottom a{
+  color: #ffffff;
+}
+
+.THIS.MobileFooter2 a, .THIS.FooterBottom a {
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.THIS.MobileFoot h5 {
+
+    font-size: .8125rem;
+  	font-family: Saira;
+  	font-weight: 300;
+  	letter-spacing: .1em;
+  	text-transform: uppercase;
+    text-align: left;
+}

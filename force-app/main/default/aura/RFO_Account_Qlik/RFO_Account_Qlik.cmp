@@ -1,0 +1,7 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global" >
+ <aura:attribute name="recordId" type="String" />
+  <aura:attribute name="OracleID" type="String" /> 
+     <!--<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>-->
+    <iframe src= "{! '/apex/RFO_DeliveryTracking_Qlik_Account?Id=' + v.recordId}" width="100%" height="800px;" frameBorder="0"/>
+    <!--<iframe src="{!'https://qliksense.trin.net/sense/app/2b29b315-5e37-44cd-a060-a938cd4d2aae/sheet/3e2c7e66-f405-4c83-9fb7-1fc2ced8c10a/state/view/options/clearselections/select/OracleNumber/'+v.OracleID}" width="100%" height="800px;" frameBorder="0"/>-->
+</aura:component>

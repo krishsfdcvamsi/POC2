@@ -1,0 +1,43 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" access="global">
+    <aura:attribute name="recordId" type="Id"/>
+    <aura:attribute name="account" type="Account"/>
+    <aura:attribute name="creditDetailFields" type="String[]" default="Name,RFO_LastCreditReview__c,RFO_EntityType__c,RFO_CreditApplicationReceived__c,RFO_EntityValidation__c,RFO_NDAonFile__c,RFO_RegisteredStateProvince__c,RFO_DateofLastFiscalYearEndFS__c,RFO_RegistrationDate__c,RFO_FinancialStatementsWaived__c,Ownership,RFO_CreditComments__c"/>
+    <aura:attribute name="creditOtherFinSecFields" type="String[]" default="RFO_GuarantorName__c,RFO_LetterofCredit__c,RFO_SecurityDeposit__c,RFO_FinancialSecurityComments__c"/>
+    <aura:attribute name="creditRatingFields" type="String[]" default="RFO_DUNSID__c,RFO_DNBDate__c,RFO_GCSDate__c,RFO_DNBRating__c,RFO_GCSRating__c,RFO_DNBPaydexScore__c,RFO_Commercial_Credit_Score_Percentile__c,RFO_StressScore_NationalPercentile__c,RFO_GCSCommentary__c,RFO_SPDate__c,RFO_SPOutlook__c,RFO_SPRating__c,RFO_SPCreditWatch__c,RFO_MoodysDate__c,RFO_MoodysOutlook__c,RFO_MoodysRating__c,RFO_MoodysWatch__c,RFO_FitchDate__c,RFO_FitchOutlook__c,RFO_FitchRating__c,RFO_FitchRatingsWatch__c,RFO_RemovefromQueue__c,RFO_CreditRatingsComments__c"/>
+    <force:recordData aura:id="accountRecord"
+                        recordId="{!v.recordId}"
+                        targetFields="{!v.account}"
+                        layoutType="FULL"/>
+    <c:RFO_CollapsibleSection title="Credit Details">
+        <div aria-hidden="true" class="slds-section__content" >
+            <lightning:recordForm aura:id="creditDetailForm"
+                                recordId="{!v.recordId}"
+                                objectApiName="Account"
+                                fields="{!v.creditDetailFields}"
+                                columns="2"
+                                mode="View"/>
+        </div>
+    </c:RFO_CollapsibleSection>
+    <c:RFO_CollapsibleSection title="Other Additional Security">
+        <div class="slds-p-left_large slds-p-right_medium">
+            <lightning:recordForm aura:id="creditOtherFinSecForm"
+                                recordId="{!v.recordId}"
+                                objectApiName="Account"
+                                fields="{!v.creditOtherFinSecFields}"
+                                columns="1"
+                                mode="View"/>
+        </div>
+    </c:RFO_CollapsibleSection>
+    <c:RFO_CollapsibleSection title="Credit Ratings">
+        <div class="slds-p-left_large slds-p-right_medium">
+            <lightning:recordForm aura:id="creditRatingForm"
+                                recordId="{!v.recordId}"
+                                objectApiName="Account"
+                                fields="{!v.creditRatingFields}"
+                                columns="2"
+                                mode="View"/>
+        </div>
+    </c:RFO_CollapsibleSection>
+
+
+</aura:component>

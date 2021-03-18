@@ -1,0 +1,7 @@
+<aura:component implements="flexipage:availableForRecordHome,lightning:actionOverride,force:hasRecordId,force:lightningQuickActionWithoutHeader" description="My Lightning Component" access="global" controller="ORM_NotesController">
+	<lightning:quickActionAPI aura:id="quickActionAPI" />
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="orderId" type="string" />
+    <aura:handler name="init" value="{!this}" action="{!c.doinit}" />
+    
+</aura:component>

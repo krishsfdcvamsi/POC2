@@ -1,0 +1,20 @@
+<aura:component controller="TrainingMaterialController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="contentDocs" type="List"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <lightning:card variant="Narrow" title="My Documents" iconName="standard:account" >
+    </lightning:card>
+         <lightning:datatable
+                                     keyField="id"
+                                     data="{!v.contentDocs}"
+                                     columns="{! v.columns }"
+                                     hideCheckboxColumn="true"
+                                     showRowNumberColumn = "true"
+                                     columnWidthsMode="auto"
+                                     resizeColumnDisabled="true"
+                                     onrowaction="{!c.handleRowClick}"
+                                     />
+    
+</aura:component>

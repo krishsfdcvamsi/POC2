@@ -1,0 +1,53 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,lightning:availableForFlowScreens,forceCommunity:availableForAllPageTypes" access="global" 
+                controller="DynamicComboBoxController" >
+    
+    
+    <aura:attribute name="sObjectName" type="String" access="public" required="false" description="Name of the sObjectName"/>
+    <aura:attribute name="fieldName" type="String" access="public" required="false" description="Name of the Field"/>
+    <aura:attribute name="additionalFields" type="String" access="public" required="false" description="Additional Fields to display"/>
+    <aura:attribute name="keyField" type="String" access="public" required="false" description="Key Field"/>
+    <aura:attribute name="selectedRecord" type="Object" access="public" required="false" description="Key Field"/>
+    <aura:attribute name="searchText" type="String" access="public" required="false" description=""/>
+    <aura:attribute name="label" type="String" access="public" required="false" description=""/>
+    <aura:attribute name="type" type="String" access="public" required="false" default="text" description=""/>
+    <aura:attribute name="matchedListDisplay" type="List" access="public" required="false" description=""/>
+    <aura:attribute name="data" type="List" access="public" required="false" description=""/>
+    <aura:attribute name="whereClause" type="String" access="public" required="false" description=""/>
+    <aura:attribute name="disableInput" type="Boolean" access="public" required="false" description="" default="false" />
+    
+    <aura:attribute name="displayResults" type="Boolean" access="public" required="false" description="" default="true" />
+    <aura:attribute name="isArrayList" type="Boolean" access="public" default="false" required="false" description="" />
+    <aura:attribute name="matchAnyString" type="Boolean" access="public" default="false" required="false" description="" />
+    <aura:attribute name="parentHandlesSearch" type="Boolean" access="public" required="false" description="" default="" />
+    
+    <aura:registerEvent name="dynamicComboEvt" type="c:DynamicComboBoxEvt"/>
+	
+    <lightning:icon iconName="utility:chevrondown" class="icon" alternativeText="" size="x-small" />
+    <lightning:input disabled="{!v.disableInput}" type="{!v.type}" label="{!v.label}" onblur="{!c.clearData}" onchange="{!c.getRecords}" onfocus="{!c.getRecords}" value="{!v.searchText}" />
+    
+        <div class="slds-lookup" >
+            <aura:if isTrue="{!v.displayResults}">
+                <div class="{!not(empty(v.matchedListDisplay)) ? 'slds-lookup__menu' : ''}" role="listbox">
+                    
+                    <ul class="slds-lookup__list" role="presentation">
+                        <aura:iteration var="item" items="{!v.matchedListDisplay}">
+                            <aura:if isTrue="{!!v.isArrayList}" >
+                                <li class="slds-lookup__item" data-name="{!item}" onclick="{!c.selectItem}">
+                                    <span>{!item}</span>
+                                </li>
+                                <aura:set attribute="else">
+                                    <li class="slds-lookup__item" data-id="{!item.key}" data-name="{!item.value}" onclick="{!c.selectItemWithKey}">
+                                    <span>{!item.value}</span>
+                                </li>
+                                </aura:set>
+                            </aura:if>
+                        </aura:iteration>
+                    </ul>
+                </div>
+                
+            </aura:if>
+        </div>
+        
+    
+    
+</aura:component>

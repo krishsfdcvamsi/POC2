@@ -1,0 +1,285 @@
+<aura:component controller="CDX_EstimateLineItemExtCont"
+    implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:appHostable,flexipage:availableForRecordHome,force:hasRecordId,force:hasSObjectName"
+    access="global">
+    <aura:attribute name="sortedBy" type="String" default="Name" />
+    <aura:attribute name="sortedDirection" type="String" default="asc" />
+    <aura:attribute name="data" type="CDX_Estimate_Line_Item__x[]" />
+    <aura:attribute name="selectCheckBoxColumn" type="boolean" default="true" />
+    <aura:attribute name="rejectBool" type="boolean" default="false" />
+    <aura:attribute name="bool" type="boolean" default="true" />
+    <aura:attribute name="selectedBool" type="boolean" default="true" />
+    <aura:attribute name="defaultRows" type="List" default="[]" description="reset selected rows..." />
+    <aura:attribute name="columns" type="List" />
+    <aura:attribute name="updatedComment" type="String" default="" />
+    <aura:attribute name="listToOperate" type="list" />
+    <aura:attribute name="errors" type="Object" default="[]" />
+    <aura:attribute name="draftValues" type="Object" default="[]" />
+    <aura:attribute name="localStorage" type="Object" default="[]" />
+    <aura:attribute name="draftStorage" type="CDX_Estimate_Line_Item__x[]" />
+    <aura:attribute name="NoRecordsFound" type="String" default="No Record Found" />
+    <aura:attribute name="selectedAccts" type="Object[]" />
+    <aura:attribute name="ListState" type="String"/>
+    <!--<aura:attribute name="errorMessage" type="String" default=""/>-->
+    <aura:handler name="init" value="{! this }" action="{! c.doInit }" />
+    <aura:handler event="force:refreshView" action="{!c.init}" />
+
+    <!-- <aura:if isTrue="{!v.bool}">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{! c.cancel }"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <p><b>Please enter the rejection reason</b></p>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                 	<lightning:input type="text" value="" aura:id="input">
+                    <lightning:textarea name="myTextArea" value="" aura:id="input"/>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning:button variant="brand" label="Save" onclick="{!c.save}"/>&nbsp;
+                    <lightning:button variant="brand" label="Cancel" onclick="{!c.cancel}"/>&nbsp;
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if> -->
+    <div class="slds-p-around_medium">
+        <!-- Desktop Table -->
+        <aura:if isTrue="{!$Browser.formFactor != 'PHONE'}">
+            <div style="width:13%">
+                <p class="slds-align_absolute-center">{!v.errorMessage}</p>
+                <lightning:select aura:id="statusid" name="status" label="Select Status" onchange="{!c.onChange}"
+                    value="">
+                    <option value="All">All</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Rejected">Rejected</option>
+                    <option value="CustomerWaiting">Customer Waiting</option>
+                </lightning:select>
+            </div>
+
+            <!-- the container element determine the height of the datatable -->
+            <div style="height: 300px">
+                <div class="slds-clearfix">
+                    <div class="slds-float_right">
+                        <lightning:button variant="neutral" label="Approve" title="Approve" onclick="{!c.DesktopAccept}"
+                            disabled="{!v.selectedBool}" />&nbsp;
+                        <lightning:button variant="neutral" label="Reject" title="Reject" onclick="{!c.DesktopReject}"
+                            disabled="{!v.selectedBool}" />&nbsp;
+                        <lightning:button onclick="{!c.approveAll}" label="Approve All" variant="neutral"
+                            disabled="{!v.bool}" />
+                    </div>
+                </div>
+                <br />
+                <lightning:datatable aura:id="dtTable" id="dataTab" columns="{! v.columns}" data="{! v.data }"
+                    keyField="Id" errors="{! v.errors }" draftValues="{!v.draftValues}" onsave="{! c.SaveMethod2 }"
+                    onsort="{!c.updateColumnSorting}" sortedBy="{!v.sortedBy}" sortedDirection="{!v.sortedDirection}"
+                    onrowselection="{!c.handleSelect}" selectedRows="{!v.defaultRows}"
+                    oncellchange="{! c.handleEditCellChange}" oncancel="{!c.cancel}" />
+            </div>
+        </aura:if>
+    </div>
+
+    <!-- Mobile Table -->
+    <aura:if isTrue="{!$Browser.formFactor == 'PHONE'}">
+        <div class="MobileFormat">
+            <div class="MobileButtons" style="padding: 3px">
+                <lightning:buttonMenu aura:id="MobileButtonsMenu" onselect="{! c.mobileApprovalButtons }"
+                    alternativeText="Show menu" disabled="{!v.bool}">
+                    <lightning:menuItem value="Approve" label="Approve" />
+                    <lightning:menuItem value="Reject" label="Reject" />
+                    <lightning:menuItem value="All" label="Approve All" />
+                </lightning:buttonMenu>
+            </div>
+
+            <div class="SortOptions" style="width: 100%; padding: 3px">
+                <p class="slds-align_absolute-center">{!v.errorMessage}</p>
+                <lightning:select aura:id="statusid" name="status" label="Select Status" onchange="{!c.onChange}">
+                    <option value="All">All</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Rejected">Rejected</option>
+                    <option value="CustomerWaiting">Customer Waiting</option>
+                </lightning:select>
+            </div>
+
+            <div class="MobileTable" style="width: 100%;">
+                <table
+                    class="slds-table slds-border_bottom slds-border_right slds-border_left slds-table_bordered slds-table_striped slds-max-medium-table_stacked-horizontal slds-no-row-hover"
+                    onsave="{! c.handleSaveEdition }" onsort="{!c.updateColumnSorting}"
+                    onrowselection="{!c.handleSelect}">
+                    <thead>
+                        <tr class="slds-text-title_caps">
+                            <th class="slds-cell-shrink" scope="col">
+                                <span class="slds-assistive-text" id="check-group-header">Choose a row to select and
+                                    process</span>
+                                <span class="slds-checkbox">
+
+                                </span>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Line Item">Line Item
+                                    <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+
+                                        <span class="slds-assistive-text">Sort</span>
+                                    </button>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Quantity">Quantity
+                                    <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+
+                                        <span class="slds-assistive-text">Sort</span>
+                                    </button>
+                                </div>
+                            </th>
+                            <!-- Condition Code -->
+                            <th scope="col">
+                                <div class="slds-truncate" title="Job Code Applied">Job Code
+                                    <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+
+                                        <span class="slds-assistive-text">Sort</span>
+                                    </button>
+                                </div>
+                            </th>
+                            <!-- Qualifier Code -->
+                            <th scope="col">
+                                <div class="slds-truncate" title="Why Made">Why Made
+                                    <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+
+                                        <span class="slds-assistive-text">Sort</span>
+                                    </button>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Labor">Labor
+                                    <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+
+                                        <span class="slds-assistive-text">Sort</span>
+                                    </button>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Mat/Misc">Mat/Misc
+                                    <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+
+                                        <span class="slds-assistive-text">Sort</span>
+                                    </button>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Total">Total
+                                    <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+
+                                        <span class="slds-assistive-text">Sort</span>
+                                    </button>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Description">Repair Desc
+                                    <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+
+                                        <span class="slds-assistive-text">Sort</span>
+                                    </button>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Repair Location">Repair Location
+                                    <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+
+                                        <span class="slds-assistive-text">Sort</span>
+                                    </button>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Comments">Comments
+                                    <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+                                        
+                                        <span class="slds-assistive-text">Sort</span>
+                                    </button>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Status">Status
+                                    <button class="slds-button slds-button_icon slds-button_icon" title="Sort">
+
+                                        <span class="slds-assistive-text">Sort</span>
+                                    </button>
+                                </div>
+                            </th>
+                            <th class="slds-cell-shrink" scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <aura:iteration items="{!v.data}" var="a" indexVar="akey">
+                            <tr class="slds-hint-parent">
+                                <td class="slds-cell-shrink" data-label="Select Row">
+                                    <label class="slds-checkbox">
+                                        <ui:inputCheckbox aura:id="checkData" value="" name="{!a.Id}"
+                                            change="{!c.mobileCheckbox}" />
+                                        <span class="slds-checkbox--faux" />
+                                        <span class="slds-form-element__label"></span>
+                                    </label>
+                                </td>
+                                <th scope="row" data-label="Line Item">
+                                    <div class="slds-has-flexi-truncate" title="Line Item Data">
+                                        <a href="{!a.linkName}">
+                                            {!a.ExternalId}
+                                        </a>
+                                    </div>
+                                </th>
+                                <th data-label="Quantity">
+                                    <div class="slds-has-flexi-truncate" title="Quantity">{!a.CDX_Quantity__c}</div>
+                                </th>
+                                <!-- Condition Code -->
+                                <th data-label="Job Code">
+                                    <div class="slds-has-flexi-truncate" title="Job Code">{!a.CDX_Job_Code_Applied__c}</div>
+                                </th>
+                                <!-- Qualifier Code -->
+                                <th data-label="Why Made">
+                                    <div class="slds-has-flexi-truncate" title="Why Data">{!a.CDX_Why_Made__c}</div>
+                                </th>
+                                <th data-label="Labor">
+                                    <div class="slds-truncate" title="Labor Charge Data">{!a.CDX_Labor_Charge__c}</div>
+                                </th>
+                                <th data-label="Mat/Misc">
+                                    <div class="slds-truncate" title="Materials Charge Data">
+                                        {!a.CDX_Materials_Miscellaneous_Charge__c}</div>
+                                </th>
+                                <th data-label="Total">
+                                    <div class="slds-truncate" title="Total Amount">{!a.CDX_Total_Amount__c}</div>
+                                </th>
+                                <th data-label="Description" class="slds-grid">
+                                    <div class="slds-has-flexi-truncate" title="Description Data">
+                                        {!a.CDX_Description__c}</div>
+                                </th>
+                                <th data-label="Repair Location" class="slds-grid">
+                                    <div class="slds-has-flexi-truncate" title="Repair Location Data">
+                                        {!a.CDX_Repair_Location__c}</div>
+                                </th>
+                                <th data-label="Comments">
+                                    <div class="slds-truncate" title="Comments Data">
+                                        <aura:if isTrue="{!v.bool == False}">
+                                            <lightning:input id="{!a.Id}" name="input" label="" value="{!a.CDX_Comments__c}"
+                                                             aura:id="CommentsBox" />
+                                            <aura:set attribute="else">
+                                                {!a.CDX_Comments__c}
+                                            </aura:set>
+                                        </aura:if>
+                                    </div>
+                                </th>
+                                <th data-label="Status">
+                                    <div class="slds-truncate" title="Status Data">
+                                        {!a.CDX_Status__c}
+                                    </div>
+                                </th>
+                            </tr>
+                        </aura:iteration>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </aura:if>
+    <!--<div style="text-align:center">{!v.NoRecordsFound}</div>-->
+</aura:component>

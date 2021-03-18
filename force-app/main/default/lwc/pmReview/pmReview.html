@@ -1,0 +1,20 @@
+<template>
+    
+    <lightning-tabset>
+        <lightning-tab label="Pricing Scenarios" title="Pricing Scenarios">
+                <c-pricing-scenarios-table product-id={productId} record-id={trinityQuoteId}></c-pricing-scenarios-table>
+        </lightning-tab>
+       
+        <lightning-tab label="Quote Pricing Detail" title="Quote Pricing Detail">
+            <c-pm-review-details record-id={trinityQuoteId} onrefresh={refresh}></c-pm-review-details>
+        </lightning-tab>
+        <!--<lightning-tab label="Return Calculator" title="Return Calculator">
+                <c-roi-calculation trinity-quote={trinityQuoteId}></c-roi-calculation>
+        </lightning-tab>-->
+        <lightning-tab label="Customer Requirement" title="Customer Requirement">
+            <c-customer-spec-detail quote-id={trinityQuoteId} is-trinity="true">
+            </c-customer-spec-detail>
+        </lightning-tab>
+    
+    </lightning-tabset>
+</template>

@@ -1,0 +1,203 @@
+<aura:component controller="DisplaySchedulesOrderController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" 
+                access="global">
+
+    <aura:attribute name="orderId" type="String" access="public"/>
+    <aura:attribute name="dataProgress" type="String" access="public"/>
+	<aura:attribute name="project" type="DisplaySchedulesOrderController.projectCls"/>
+	<aura:attribute name="isModalOpen" type="boolean" default="false"/>
+	<aura:attribute name="iscompletedCars" type="boolean" default="false"/>
+	<aura:attribute name="actualCompletedCars" type="boolean" default="false"/>
+	<aura:attribute name="actualshippedCars" type="boolean" default="false"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <aura:if isTrue="{!v.project.projectName != NULL}">
+            
+            <div>
+                
+                <div class="slds-scrollable_x">
+                    <table class="slds-table slds-table_cell-buffer slds-table_col-bordered">
+                        <tbody>
+                            
+                            
+                            <tr class="slds-size_1-of-8 slds-border_top" style="background-color: #ECEBEA">
+                                <th class="" scope="row" width="200px">
+                                    <div class="slds-truncate" title="Current Project Schedule Summary"><b>Current Project Schedule <br/>Summary</b></div>
+                                </th>
+								<th/><th/>
+                                <aura:iteration items="{!v.project.weekList}" var="b" indexVar="bkey">
+                                    <th width="100px">
+                                        <div class="slds-truncate slds-align_absolute-center" title="{!b.weekName}">
+                                            <b>{!b.weekNo}</b>
+                                        </div>
+                                    </th>
+                                </aura:iteration>
+								<th><b>All <br/> Remaining <br/>Weeks</b></th>
+                            </tr>    
+                            
+                            
+                            <tr class="slds-size_1-of-8" >
+                                <td rowspan="3"  class="" scope="row" width="200px">
+                                    <div class="slds-truncate" title=""><b>
+										<a href="{!'/s/projects/'+v.project.projectRecordId+'/'+v.project.projectName+'?'+$Label.c.Schedule_tab_Id}">
+										<center>{!v.project.actualName} </center>
+										</a>
+									</b></div>
+                                </td>
+                                
+								<td class="" scope="row" width="200px">
+                                    <div class="slds-truncate" title="Scheduled Cars Completed by Shop">
+										<b>Scheduled Cars Completed by Shop</b></div>
+                                </td>
+								<td class="" scope="row" width="200px">
+                                    <div class="slds-truncate" title="">
+										<a href="" onclick="{!c.showPopup}"><b>Schedule Details</b>
+										</a>
+									</div>
+                                </td>
+								<td>{!v.project.completedCars.week0}</td>
+								<td>{!v.project.completedCars.week1}</td>
+								<td>{!v.project.completedCars.week2}</td>
+								<td>{!v.project.completedCars.week3}</td>
+								<td>{!v.project.completedCars.week4}</td>
+								<td>{!v.project.completedCars.weekNth}</td>
+							</tr>
+							<tr class="slds-size_1-of-8" style="background-color: #ECEBEA">
+								<td class="" scope="row" width="200px">
+                                    <div class="slds-truncate" title="Actual Cars Completed by Shop">
+										<b>Actual Cars Completed by Shop</b></div>
+                                </td>
+								<td class="" scope="row" width="200px">
+                                    <div class="slds-truncate" title="">
+										<a href="" onclick="{!c.showPopup1}"><b>Schedule Details</b></a>
+									</div>
+                                </td>
+								<td>{!v.project.actualCompletedCars.week0}</td>
+								<td>{!v.project.actualCompletedCars.week1}</td>
+								<td>{!v.project.actualCompletedCars.week2}</td>
+								<td>{!v.project.actualCompletedCars.week3}</td>
+								<td>{!v.project.actualCompletedCars.week4}</td>
+								<td>{!v.project.actualCompletedCars.weekNth}</td>
+							</tr>
+							<tr class="slds-size_1-of-8" >
+								<td class="" scope="row" width="200px">
+                                    <div class="slds-truncate" title="Actual Cars Shipped by Shop">
+										<b>Actual Cars Shipped by Shop</b></div>
+                                </td>
+								<td class="" scope="row" width="200px">
+                                    <div class="slds-truncate" title="">
+										<a href="" onclick="{!c.showPopup2}"><b>Schedule Details</b></a>
+									</div>
+                                </td>
+								<td>{!v.project.actualshippedCars.week0}</td>
+								<td>{!v.project.actualshippedCars.week1}</td>
+								<td>{!v.project.actualshippedCars.week2}</td>
+								<td>{!v.project.actualshippedCars.week3}</td>
+								<td>{!v.project.actualshippedCars.week4}</td>
+								<td>{!v.project.actualshippedCars.weekNth}</td>
+							</tr>
+							
+                            
+                        </tbody>
+                    </table>
+                </div>
+				
+				<aura:if isTrue="{!v.isModalOpen}">
+					<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+						<div class="slds-modal__container">
+							<header class="slds-modal__header">
+								<lightning:buttonIcon iconName="utility:close"
+													  onclick="{! c.closeModel }"
+													  alternativeText="close"
+													  variant="bare-inverse"
+													  class="slds-modal__close"/>
+								<h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Schedule Details</h2>
+							</header>
+							<div class="slds-modal__content slds-p-around_medium slds-scrollable" style="height:20rem;" id="modal-content-id-1">
+								<table class="slds-table slds-table_cell-buffer slds-table_col-bordered">
+									<tbody>
+										<aura:iteration items="{!v.project.pastScheduleList}" var="sch" indexVar="bkey">
+											<tr class="slds-size_1-of-8 slds-border_top" style="background-color: #ECEBEA">
+												<th class="" scope="row" width="200px">
+													<div class="slds-truncate" title="">
+														<b>{!sch.ScheduleName}</b>
+														<aura:if isTrue="{!sch.ScheduleLocatio != ''}"><br/>
+														<b>{!sch.ScheduleLocation}</b>
+														</aura:if>
+													</div>
+												</th>
+												<aura:iteration items="{!sch.weekName}" var="wName" indexVar="bkey">
+													<th width="100px">
+														<div class="slds-truncate slds-align_absolute-center" title="{!wName}">
+															<b>{!wName}</b>
+														</div>
+													</th>
+												</aura:iteration>
+											</tr>
+											<aura:if isTrue="{!v.iscompletedCars}">
+												<tr class="slds-size_1-of-8 slds-border_top" style="">
+													<th class="" scope="row" width="200px">
+														<div class="slds-truncate" title="">
+															<b>{!sch.typeName}</b>
+														</div>
+													</th>
+													<aura:iteration items="{!sch.noOfCars}" var="nCars" indexVar="c">
+														<th width="100px">
+															<div class="slds-truncate slds-align_absolute-center" title="{!nCars}">
+																<b>{!nCars}</b>
+															</div>
+														</th>
+													</aura:iteration>
+												</tr>  
+											</aura:if>
+											<aura:if isTrue="{!v.actualCompletedCars}">
+												<tr class="slds-size_1-of-8 slds-border_top" style="">
+													<th class="" scope="row" width="200px">
+														<div class="slds-truncate" title="">
+															<b>{!sch.typeName1}</b>
+														</div>
+													</th>
+													<aura:iteration items="{!sch.noOfCars1}" var="nCars1" indexVar="c">
+														<th width="100px">
+															<div class="slds-truncate slds-align_absolute-center" title="{!nCars1}">
+																<b>{!nCars1}</b>
+															</div>
+														</th>
+													</aura:iteration>
+												</tr> 
+											</aura:if>
+											<aura:if isTrue="{!v.actualshippedCars}">
+												<tr class="slds-size_1-of-8 slds-border_top" style="">
+													<th class="" scope="row" width="200px">
+														<div class="slds-truncate" title="">
+															<b>{!sch.typeName2}</b>
+														</div>
+													</th>
+													<aura:iteration items="{!sch.noOfCars2}" var="nCars2" indexVar="c">
+														<th width="100px">
+															<div class="slds-truncate slds-align_absolute-center" title="{!nCars2}">
+																<b>{!nCars2}</b>
+															</div>
+														</th>
+													</aura:iteration>
+												</tr> 
+											</aura:if>
+											<br/>
+										</aura:iteration>
+									</tbody>
+								</table>
+							</div>
+							
+						</div>
+					</section>
+					<div class="slds-backdrop slds-backdrop_open"></div>
+				</aura:if>
+		
+            </div>
+            
+        <aura:set attribute="else">
+            <div class="slds-text-heading_small slds-p-left_small">{!v.dataProgress}</div>
+            <br></br>
+        </aura:set>
+    </aura:if>
+</aura:component>

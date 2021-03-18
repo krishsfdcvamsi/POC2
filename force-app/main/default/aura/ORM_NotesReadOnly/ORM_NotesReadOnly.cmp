@@ -1,0 +1,519 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickActionWithoutHeader,lightning:isUrlAddressable"
+ controller="ORM_NotesController" access="global" >
+	<aura:html tag="style">
+        .slds-modal__container{
+        max-width: 70rem !important;
+        width:70% !important;
+        }
+    </aura:html>
+	
+	<aura:handler name="init" value="{!this}" action="{!c.displayInfo}" />
+	<aura:attribute name="recordId" type="String" />
+	<aura:attribute name="Spinner" type="boolean" default="false"/>
+	<aura:attribute name="isChanged" type="boolean" default="true"/>
+	<aura:attribute name="isInternal" type="boolean" default="true"/>
+	<aura:attribute name="ormType" type="string" default="External ORM"/>
+	<aura:attribute name="userList" type="List" default="[]"/>
+    <aura:attribute name="options" type="Set" default="[]"/>
+	<aura:attribute name="contactList" type="List" default="[]"/>
+	<aura:attribute name="ormVar" type="ORM_NotesController.OrmWrapper" default="{}"/>
+	<!--<aura:attribute name="actionItemList" type="Action_Item__c[]"/>-->
+    <aura:attribute name="enableMultiSelect" type="boolean" default="false"/>
+    <aura:attribute name="selectedAssetFileNumber" type="string" />
+	
+	<aura:handler name="DeleteRowEvt" event="c:DeleteRowEvt" action="{!c.removeDeletedRow}"/>
+    <aura:handler name="AddRowEvt" event="c:AddNewRowEvt" action="{!c.addNewRow}"/>
+    
+    <aura:handler name="DeleteRowEvtTask" event="c:DeleteTaskEvt" action="{!c.removeDeletedRowTask}"/>
+    <aura:handler name="AddRowEvtTask" event="c:AddTaskEvt" action="{!c.addNewRowTask}"/>
+
+    <aura:attribute name="record" type="Object" description="The record object to be displayed"/>
+    <aura:attribute name="orderRecord" type="Object" description="A simplified view record object to be displayed"/>
+    <aura:attribute name="recordError" type="String" description="An error message bound to force:recordData"/>
+    <force:recordData aura:id="record"
+                      fields="AccountId,Account.Name"
+                      recordId="{!v.recordId}"
+                      targetError="{!v.recordError}"
+                      targetRecord="{!v.record}"
+                      targetFields ="{!v.orderRecord}"
+                      mode="VIEW"/>	
+	<div style="padding-left:20px;padding-right:20px;" class="slds-theme_default">
+        
+		<div>
+            <center><img src="{!$Resource.trlogo}"/></center>
+			<h1 style="font-weight: 900;font-size: larger;"><center>TRINITYRAIL/{!v.orderRecord.Account.Name}</center></h1>
+			<h1 style="font-weight: 900;font-size: larger;"><center>ORDER REVIEW MEETING</center></h1>
+		</div>
+		
+		<aura:if isTrue="{!!v.isChanged}">
+			<div>
+				<lightning:select name="select1" label="Please select the Type" required="true" onchange="{!c.displayInfo}" value="{!v.ormType}">
+					<option value="">choose one...</option>
+					<option value="Internal ORM">Internal ORM</option>
+					<option value="External ORM">External ORM</option>
+				</lightning:select>
+				
+			</div>
+			<aura:set attribute="else">
+			<div>
+				<div class="slds-grid slds-wrap">
+					<!--div class="slds-col slds-size_1-of-1">
+						<a onclick="{!c.typeSelection}" style="text-decoration: underline;font-size: larger;">Back</a>
+					</div-->
+					<div class="slds-col slds-size_1-of-3" style="padding:3px">
+						<lightning:input type="date" name="input1" label="Date:" value="{!v.ormVar.orm.Date__c}" disabled="true"/>
+					</div>
+					<div class="slds-col slds-size_1-of-3" style="padding:3px">
+                        <lightning:input type="text" name="input1" value="{!v.ormVar.orm.Revised_By__r.Name}" disabled="true" label="Revised By:"/>
+						<!--c:CustomLookup objectName="User" label="Revised By:" value="{!v.ormVar.orm.Revised_By__c}" fieldName="Name" iconName="standard:user" disabled="true"/-->
+					</div>
+					<div class="slds-col slds-size_1-of-3" style="padding:3px">
+						<lightning:input type="date" name="input1" label="Revised Date: " value="{!v.ormVar.orm.Revised_Date__c}" disabled="true"/>
+					</div>
+					
+				</div>
+				
+				<div style="border-top: 3px double #333;border-bottom: 3px double #333;">
+					<div class="slds-grid slds-wrap">
+						<div class="slds-col slds-size_1-of-3" style="padding:3px">
+                            <!--lightning:select name="select1" label="File Number:" value="{!v.selectedAssetFileNumber}">
+                                <aura:iteration items="{!v.options}" var="item">
+                                	<option text="{!item}" value="{!item}" />
+         						</aura:iteration>
+                            </lightning:select-->
+                            <lightning:input type="text" name="input1" label="File Number:" value="{!v.options[0]}" disabled="true"/>
+							<!--<lightning:input type="text" name="input1" label="File Number:" value="{!v.ormVar.orm.File_Number_Txt__c}" disabled="true"/>-->
+						</div>
+						<div class="slds-col slds-size_1-of-3" style="padding:3px">
+							 <lightning:input type="text" name="input1" label="Commodity:" value="{!v.ormVar.orm.Commodity_Txt__c}" disabled="true"/>
+						 </div>
+						<div class="slds-col slds-size_1-of-3" style="padding:3px">
+							<lightning:input type="text" name="input1" label="ORM Type:" value="{!v.ormVar.orm.Type__c}" disabled="true"/>
+						</div>
+						<div class="slds-col slds-size_1-of-3" style="padding:3px">
+							<lightning:input type="text" name="input1" label="Order Type:" value="{!v.ormVar.orm.Order_Type__c}" disabled="true"/>
+						</div>
+						<div class="slds-col slds-size_1-of-3" style="padding:3px">
+							 <lightning:input type="Number" name="input1" label="Quantity:" value="{!v.ormVar.orm.Quantity__c}" disabled="true"/>
+						 </div>
+						<div class="slds-col slds-size_1-of-3" style="padding:3px">
+							<lightning:input type="text" name="input1" label="Car Type:" value="{!v.ormVar.orm.Car_Type_Txt__c}" disabled="true"/>
+						</div>
+                        <div class="slds-col slds-size_1-of-3" style="padding:3px">
+                        <lightning:input type="text" name="input1" label="Service Type:" value="{!v.ormVar.orm.Service_Type__c}" disabled="true"/>
+                        </div>
+					</div>
+				</div>
+				<br/>
+				
+				<div>
+                    <aura:if isTrue="{!v.enableMultiSelect}">
+                        <div class="">
+                            <!--<div class="slds-size_1-of-2" >
+       Recepients:
+      </div>-->
+                            <div class="slds-size_1-of-1" style="">
+                                <h3 class="slds-section__title">
+                                    <button aria-controls="expando-unique-id" aria-expanded="true" class="slds-button slds-section__title-action">
+                                        
+                                        <span class="slds-truncate" title="Action Items">{!v.orderRecord.Account.Name+': '}</span>
+                                    </button>
+                                </h3>
+                                <div style="padding-left:10px;">
+                                    <ui:outputText value="{!v.ormVar.orm.Contacts_Name__c}" />
+                                </div>
+                                <!--<c:MultiSelectLookup aura:id="childComp" objectName="Contact" fieldName="Name" label="{!v.orderRecord.Account.Name+':'}" 
+       iconName="standard:contact" placeholder="Search for contact..." 
+       selectedRecords="{!v.contactList}" accountId = "{!v.orderRecord.AccountId}" disabled="false"/-->
+                            </div>
+                            <div class="slds-size_1-of-1" style="">
+                                <h3 class="slds-section__title">
+                                    <button aria-controls="expando-unique-id" aria-expanded="true" class="slds-button slds-section__title-action">
+                                        
+                                        <span class="slds-truncate" title="Action Items">Trinity Rail: </span>
+                                    </button>
+                                </h3>
+                                <div style="padding-left:10px;">
+                                    <ui:outputText value="{!v.ormVar.orm.User_Names__c}" />
+                                </div>
+                            <!--
+							<c:MultiSelectLookup objectName="User" recordType="{!v.ormVar.orm.Order_Record_Type__c}" 
+							selectedRecords="{!v.userList}" fieldName="Name" label="Trinity Rail:" 
+							iconName="standard:user" placeholder="Search for user..."/-->
+						</div>
+                            <div class="slds-size_1-of-1" style="">
+                                <h3 class="slds-section__title">
+                                    <button aria-controls="expando-unique-id" aria-expanded="true" class="slds-button slds-section__title-action">
+                                        
+                                        <span class="slds-truncate" title="Action Items">Additional Attendees: </span>
+                                    </button>
+                                </h3>
+                                <div style="padding-left:10px;">
+                                    <ui:outputText value="{!v.ormVar.orm.Additional_Attendees__c}" />
+                                </div>
+                            </div>
+					</div>
+                    </aura:if>
+				</div>
+				
+				<br/>
+				<div class="slds-section slds-is-open">
+					<h3 class="slds-section__title">
+						<button aria-controls="expando-unique-id" aria-expanded="true" class="slds-button slds-section__title-action">
+							
+							<span class="slds-truncate" title="Action Items">Customer Action Items</span>
+						</button>
+					</h3>
+					<div aria-hidden="false" class="slds-section__content" id="expando-unique-id">
+						<table class="slds-table slds-table_cell-buffer slds-table_bordered">
+							<thead>
+								<tr class="slds-line-height_reset">
+								<th class="" scope="col">
+										<div class="slds-truncate" title="">S.No</div>
+									</th>
+									<th class="" scope="col">
+										<div class="slds-truncate" title="">Description of The Change / Follow Up</div>
+									</th>
+									<!--th class="" scope="col">
+										<div class="slds-truncate" title="">Change <br/>Analysis</div>
+									</th-->
+									<th class="" scope="col">
+										<div class="slds-truncate" title="">Responsible Party</div>
+									</th>
+									<th class="" scope="col">
+										<div class="slds-truncate" title="">Due Date</div>
+									</th>
+									<th class="" scope="col">
+										<div class="slds-truncate" title="">Status</div>
+									</th>
+									<!--th class="" scope="col">
+										<div class="slds-truncate" title="">Action</div>
+									</th-->
+								</tr>
+							</thead>
+							<tbody>
+							<aura:iteration items="{!v.ormVar.actionItemList}" var="item" indexVar="index">
+								<c:dynamicRowItem actionItem="{!item}" rowIndex="{!index}" readOnly="true"/>
+							</aura:iteration>
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="slds-section slds-is-open">
+					<h3 class="slds-section__title">
+						<button aria-controls="expando-unique-id" aria-expanded="true" class="slds-button slds-section__title-action">
+							
+							<span class="slds-truncate" title="Action Items">Trinity Action Items</span>
+						</button>
+					</h3>
+					<div aria-hidden="false" class="slds-section__content" id="expando-unique-id">
+						<table class="slds-table slds-table_cell-buffer slds-table_bordered">
+							<thead>
+								<tr class="slds-line-height_reset">
+								<th class="" scope="col">
+										<div class="slds-truncate" title="">S.No</div>
+									</th>
+									<th class="" scope="col">
+										<div class="slds-truncate" title="">Comments</div>
+									</th>
+                                    <th class="" scope="col">
+										<div class="slds-truncate" title="">Change <br/>Analysis</div>
+									</th>
+									<th class="" scope="col">
+										<div class="slds-truncate" title="">Subject</div>
+									</th>
+									<th class="" scope="col">
+										<div class="slds-truncate" title="">Assigned To</div>
+									</th>
+									<th class="" scope="col">
+										<div class="slds-truncate" title="">Due Date</div>
+									</th>
+									<th class="" scope="col">
+										<div class="slds-truncate" title="">Status</div>
+									</th>
+									<!--th class="" scope="col">
+										<div class="slds-truncate" title="">Action</div>
+									</th-->
+								</tr>
+							</thead>
+							<tbody>
+							<aura:iteration items="{!v.ormVar.ORMTasks}" var="item" indexVar="index">
+								<c:dynamicRowItemTask tasks="{!item}" rowIndex="{!index}" readOnly="true"/>
+							</aura:iteration>
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="slds-form_horizontal slds-form slds-grid slds-wrap">
+					<div class="slds-size_1-of-2" style="padding-top:20px;margin-right:-365px;">
+						Date Minute Issued:
+					</div>
+					 <div class="slds-size_1-of-2" style=" margin-left: -10rem; margin-top: -0.2rem;">
+						<lightning:input type="datetime" name="input1" value="{!v.ormVar.orm.Date_Minutes_Issued__c}" disabled="true"/>
+					</div>
+					<div class="slds-size_1-of-2" style="">
+						Changes from quote?
+					</div>
+					<div class="slds-size_1-of-2" style=" margin-left: -526px; margin-top: -0.2rem;">
+						<lightning:input type="checkbox" name="input1" value="{!v.ormVar.orm.Changes_from_quote__c}" checked="{!v.ormVar.orm.Changes_from_quote__c}" disabled="true"/>
+					</div>
+					
+					<div class="slds-size_1-of-2" >
+						Change order required?
+					</div>
+					<div class="slds-size_1-of-2" style=" margin-left: -526px; margin-top: -0.2rem;">
+						<lightning:input type="checkbox" name="input1" value="{!v.ormVar.orm.Change_order_required__c}" checked="{!v.ormVar.orm.Change_order_required__c}" disabled="true"/>
+					</div>
+					<div class="slds-size_1-of-2" >
+						Commencing Date
+					</div>
+					<div class="slds-size_1-of-2" style=" margin-left: -526px; margin-top: -0.2rem;">
+						<lightning:input type="date" name="input1" value="{!v.ormVar.orm.Commencing_Date__c}" disabled="true"/>
+					</div>
+                    <div class="slds-size_1-of-1" />
+					<!--div class="slds-size_1-of-6" >
+						Ship cars to:
+					</div>
+					<div class="slds-size_1-of-6" >
+						Customer:
+					</div>
+					<div class="slds-size_1-of-6" >
+						<lightning:input type="checkbox" name="input12" style="margin-left: -5rem;margin-top: -0.2rem;" value="{!v.ormVar.orm.Customer__c}" checked="{!v.ormVar.orm.Customer__c}" disabled="true"/>
+					</div>
+					<div class="slds-size_1-of-6" >
+						Comments:
+					</div>
+					<div class="slds-size_2-of-6" >
+						<lightning:input type="Text" name="input1" style="margin-left: -10rem;margin-top: -0.2rem;" value="{!v.ormVar.orm.Customer_Comments__c}" disabled="true"/>
+					</div-->
+					
+					<div class="slds-size_1-of-6" >
+						
+					</div>
+					<!--div class="slds-size_1-of-6" >
+						Shop:
+					</div>
+					<div class="slds-size_1-of-6" >
+						<lightning:input type="checkbox" name="input13" style="margin-left: -5rem;margin-top: -0.2rem;" value="{!v.ormVar.orm.Shop__c}" checked="{!v.ormVar.orm.Shop__c}" disabled="true"/>
+					</div>
+					<div class="slds-size_1-of-6" >
+						Comments:
+					</div>
+					<div class="slds-size_2-of-6" >
+						<lightning:input type="Text" name="input1" style="margin-left: -10rem;margin-top: -0.2rem;" value="{!v.ormVar.orm.Shop_Comments__c}" disabled="true"/>
+					</div-->
+					
+					
+					
+				</div>
+				
+				<div class="slds-grid slds-wrap">
+					<div class="slds-size_1-of-4" >
+						Prepared By:
+					</div>
+					<div class="slds-size_1-of-4" style="margin-left: -2rem;margin-top:-23px;">
+                        <lightning:input type="text" name="input1" value="{!v.ormVar.orm.Prepared_By_User__r.Name}" disabled="true" />
+							<!--c:CustomLookup objectName="User" value="{!v.ormVar.orm.Prepared_By__c}" fieldName="Name" iconName="standard:user" disabled="true"/>
+					--></div>
+					<div class="slds-size_1-of-4" style="margin-left: 2rem;">
+						Date:
+					</div>
+					 <div class="slds-size_1-of-4"> <!-- margin-left: -10rem; margin-top: -0.2rem;-->
+						<lightning:input type="date" name="input1"  style="margin-left: -8rem;margin-top: -1rem;margin-bottom: 1rem;width:315px;" value="{!v.ormVar.orm.Prepared_Date__c}" disabled="true"/>
+					</div>
+					
+					
+					
+					<div class="slds-size_1-of-4" >
+						Engineering Approved By:	
+					</div>
+					<div class="slds-size_1-of-4" style="margin-left: -2rem;margin-top:-23px;">
+                        <lightning:input type="text" name="input1" value="{!v.ormVar.orm.Engineering_Approved_By__r.Name}" disabled="true"/>
+						<!--c:CustomLookup objectName="User" value="{!v.ormVar.orm.Engineering_Approved_By__c}" fieldName="Name" iconName="standard:user" disabled="true"/>
+					--></div>
+					<div class="slds-size_1-of-4" style="margin-left: 2rem;">
+						Date:
+					</div>
+					<div class="slds-size_1-of-4" style=" ">
+						<lightning:input type="date" name="input1" style="margin-left: -8rem;margin-top: -1rem;margin-bottom: 1rem;width:315px;" value="{!v.ormVar.orm.Engineering_Approved_Date__c}" disabled="true"/>
+					</div>
+					
+					<div class="slds-size_1-of-4" >
+						Portfolio Management:	
+					</div>
+					<div class="slds-size_1-of-4" style="margin-left: -2rem;margin-top:-23px;">
+                        <lightning:input type="text" name="input1" value="{!v.ormVar.orm.Portfolio_Management__r.Name}" disabled="true"/>
+						<!--c:CustomLookup objectName="User" value="{!v.ormVar.orm.Portfolio_Management__c}" fieldName="Name" iconName="standard:user" disabled="true"/>
+					--></div>
+					<div class="slds-size_1-of-4" style="margin-left: 2rem;">
+						Date:
+					</div>
+					 <div class="slds-size_1-of-4" style="">
+						<lightning:input type="date" name="input1" style="margin-left: -8rem;margin-top: -1rem;width:315px;" value="{!v.ormVar.orm.Portfolio_Management_Date__c}" disabled="true"/>
+					</div>
+				</div>
+                <div class="slds-form_horizontal slds-form slds-grid slds-wrap" >
+                    <div style="margin-top:1.2rem;">Comments:
+                    </div>
+                    <lightning:textarea type="text" placeholder="type here..." style="margin-top: 1.0rem;margin-left:-205px;" value="{!v.ormVar.orm.Comments__c}" disabled="true"/>
+                </div>
+				
+				<div class="slds-section slds-is-open">
+					<h3 class="slds-section__title">
+						<button aria-controls="expando-unique-id" aria-expanded="true" class="slds-button slds-section__title-action">
+							<span class="slds-truncate" title="Order Information">Additional Questions to be included in the meeting template:</span>
+						</button>
+					</h3>
+				</div>
+				
+				<div class="slds-form_horizontal slds-form slds-grid slds-wrap">
+					<div class="slds-size_1-of-2" >
+						1. Do you need any commodity or lessee stencils on the cars?
+					</div>
+					<div class="slds-size_1-of-2" style="margin-left: -10rem;">
+						<lightning:input type="text" name="input1" value="{!v.ormVar.orm.Do_you_need_any_commodity_or_lessee_sten__c}" disabled="true"/>
+					</div>
+					
+					<div class="slds-size_1-of-2" >
+						2. Will Chemtrec decals (or similar) be needed?
+					</div>
+					<div class="slds-size_1-of-2" style="margin-left: -10rem;">
+						<lightning:input type="text" name="input1" value="{!v.ormVar.orm.Will_Chemtrec_decals_or_similar_beneeded__c}" disabled="true"/>
+					</div>
+					
+					<div class="slds-size_1-of-2" >
+						3. What are the disposition instructions:
+					</div>
+					<div class="slds-size_1-of-2" style="">
+						
+					</div>
+					
+					<div class="slds-size_1-of-2" style="margin-top: 0.5rem;">
+						<span style="margin-left: 2rem;">- Location Address</span>
+					</div>
+					<div class="slds-size_1-of-2" style=" margin-left: -10rem; margin-top: -0.2rem;">
+						<lightning:input type="text" name="input1" value="{!v.ormVar.orm.Location_Address__c}" disabled="true"/>
+					</div>
+					
+					<div class="slds-size_1-of-2" style="margin-top: 0.5rem;">
+						<span style="margin-left: 2rem;">-Routing</span>
+					</div>
+					<div class="slds-size_1-of-2" style=" margin-left: -10rem; margin-top: -0.2rem;">
+						<lightning:input type="text" name="input1" value="{!v.ormVar.orm.Routing__c}" disabled="true"/>
+					</div>
+					
+					<div class="slds-size_1-of-2" style="margin-top: 0.5rem;">
+						<span style="margin-left: 2rem;">-Payor of freight</span>
+					</div>
+					<div class="slds-size_1-of-2" style=" margin-left: -10rem; margin-top: -0.2rem;">
+						<lightning:input type="text" name="input1" value="{!v.ormVar.orm.Payor_of_freight__c}" disabled="true"/>
+					</div>
+					
+					<div class="slds-size_1-of-2" >
+						4. Are there quantity limitations
+					</div>
+					<div class="slds-size_1-of-2" style="margin-left: -10rem;">
+						<lightning:input type="text" name="input1" value="{!v.ormVar.orm.Are_there_quantity_limitations__c}" disabled="true"/>
+					</div>
+					
+					<div class="slds-size_1-of-2" >
+						5. Is a sample car required?
+					</div>
+					<div class="slds-size_1-of-2" style="margin-left: -10rem;">
+						<lightning:input type="checkbox" name="input1" value="{!v.ormVar.orm.Is_a_sample_car_required__c}" checked="{!v.ormVar.orm.Is_a_sample_car_required__c}" disabled="true"/>
+					</div>
+					
+					<div class="slds-size_1-of-2" >
+						6. Lining form completed?
+					</div>
+					<div class="slds-size_1-of-2" style="margin-left: -10rem;">
+						<lightning:input type="checkbox" name="input1" value="{!v.ormVar.orm.Lining_form_completed__c}" checked="{!v.ormVar.orm.Lining_form_completed__c}" disabled="true"/>
+					</div>
+					
+					<div class="slds-size_1-of-2" >
+						7. Communication Cadence?
+					</div>
+					<div class="slds-size_1-of-2" style="margin-left: -10rem;">
+						<lightning:input type="text" name="input1" value="{!v.ormVar.orm.Communication_Cadence__c}" disabled="true"/>
+					</div>
+					
+					<div class="slds-size_1-of-2" >
+						8. Who will be completing the OT-57 application?
+					</div>
+					<div class="slds-size_1-of-2" style="margin-left: -10rem;">
+						<lightning:input type="text" name="input1" value="{!v.ormVar.orm.Who_will_be_completing_the_OT_57_app__c}" disabled="true"/>
+					</div>
+				</div>
+				
+				
+				<div class="slds-section slds-is-open">
+					<h3 class="slds-section__title">
+						<button aria-controls="expando-unique-id" aria-expanded="true" class="slds-button slds-section__title-action">
+							<span class="slds-truncate" title="Order Information">Other questions for international or direct sale customers</span>
+						</button>
+					</h3>
+				</div>
+					
+				<div class="slds-form_horizontal slds-form slds-grid slds-wrap">
+					<div class="slds-size_1-of-2" style="font-weight: 900;"> <!--font-weight: 900;-->
+						For international customers only:
+					</div>
+					<div class="slds-size_1-of-2" style="">
+						
+					</div>
+					
+					<div class="slds-size_1-of-2" style="margin-top: 0.5rem;">
+						Do you have specific customs broker?
+					</div>
+					<div class="slds-size_1-of-2" style="margin-left: -10rem;">
+						<lightning:input type="text" name="input1" value="{!v.ormVar.orm.Do_you_have_specific_customs_broker__c}" disabled="true"/>
+					</div>
+					
+					<div class="slds-size_1-of-2" style="margin-top: 0.5rem;">
+						Are you a member of Chemtrec? If yes, will international or domestic be necessary?
+					</div>
+					<div class="slds-size_1-of-2" style="margin-left: -10rem;">
+						<lightning:input type="text" name="input1" value="{!v.ormVar.orm.Are_you_a_member_of_Chemtrec__c}" disabled="true"/>
+					</div>
+					<div class="slds-size_1-of-2" style="font-weight: 900;margin-top: 1rem;"> <!--font-weight: 900;-->
+						For Direct Sale customers only:
+					</div>
+					<div class="slds-size_1-of-2" style="">
+						
+					</div>
+					
+					<div class="slds-size_1-of-1" >
+						We will provide UMLER template three months prior to first car shipment
+					</div>
+					
+					<div class="slds-size_1-of-1" >
+						As a reminder, a funding source and invoicing instructions must be identified no less than 30 days prior to first car scheduled shipment.
+					</div>			
+				</div>
+				<br/>
+				<center>
+					<button class="slds-button slds-button_outline-brand" onclick="{! c.saveAndSend }">Send Meeting Notes</button>
+					<button class="slds-button slds-button_neutral" onclick="{! c.closeModal }">Close</button>
+                    <button class="slds-button slds-button_neutral" onclick="{! c.print }">Print</button>
+				</center>
+				
+			</div>
+			</aura:set>
+		</aura:if>
+ 
+		<aura:if isTrue="{!v.Spinner}">
+			<div aura:id="spinnerId" class="slds-spinner_container">
+				<div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+					<span class="slds-assistive-text">Loading</span>
+					<div class="slds-spinner__dot-a"></div>
+					<div class="slds-spinner__dot-b"></div>
+				</div>
+			</div>
+		</aura:if>
+ 
+    </div>
+    
+    
+</aura:component>

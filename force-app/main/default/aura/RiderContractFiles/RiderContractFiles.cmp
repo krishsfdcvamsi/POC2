@@ -1,0 +1,47 @@
+<aura:component controller="RiderContractFilesController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="contentDocs" type="List" access="global" />
+    <aura:attribute name="contentDocsRider" type="List" access="global" />
+    <!-- <br />
+        <div style="text-align:center" class="slds-p-horizontal_small">
+        <b style="color:rgb(155,53,38)">If you have any questions related to the contract/rider 
+            files, please submit a case <u><a href="/s/contactsupport">here.</a></u></b>
+        </div>
+    <br /> -->
+    <lightning:card >
+        <aura:set attribute="title">
+            <lightning:icon iconName="standard:file" size="small"/>
+           Contract Files
+        </aura:set> 
+        <div class="slds-p-horizontal_small">
+            <ul style="color:rgb(155,53,38);margin-left: 30px;">
+                <aura:iteration items="{!v.contentDocs}" var="doc">
+                    <li style="margin-top:10px;">
+                        <a href="{!doc.link}" target="_blank">{!doc.title}</a>
+                    </li>
+                    
+                </aura:iteration>
+            </ul>
+        </div>
+    </lightning:card>
+    
+    <br />
+   <lightning:card>
+     <aura:set attribute="title">
+            <lightning:icon iconName="standard:file" size="small"/>
+           Rider Files
+        </aura:set> 
+        <div class="slds-p-horizontal_small">
+                <ul style="list:none;color:rgb(155,53,38);margin-left: 30px;">
+                <aura:iteration items="{!v.contentDocsRider}" var="doc">
+                    <li style="margin-top:10px;">
+                        <a href="{!doc.link}" target="_blank">{!doc.title}</a>
+                    </li>
+                    
+                </aura:iteration>
+            </ul>
+        </div>
+    </lightning:card>
+     
+</aura:component>

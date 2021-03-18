@@ -1,0 +1,25 @@
+<apex:page lightningStylesheets="true">
+    <apex:includeLightning />
+     <div class="slds">
+    <div id="lightning" />
+         <script>
+            try{
+                var strId = '{!$CurrentPage.parameters.Id}';
+                $Lightning.use("c:AssetGroupApp", function() {
+                    $Lightning.createComponent("c:AssetGroup",
+                    {
+                        lineItemId:strId
+                    },
+                   "lightning",
+                        function(component) {
+                           console.log('Display Lightning component in visualforce page');
+                        });
+                    });
+            }catch(error){
+                        console.log('error>>>>>',error);
+                      
+            }
+            
+     	</script>
+    </div>
+</apex:page>

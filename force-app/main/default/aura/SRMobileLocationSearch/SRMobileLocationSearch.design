@@ -1,0 +1,10 @@
+<design:component>
+	<design:attribute name="City"  label="City" />
+    <design:attribute name="State"  label="State" />
+    <design:attribute name="street"  label="Street" />
+    <design:attribute name="country"  label="Country" />
+    <design:attribute name="zipCode"  label="Postal Code" />
+    <design:attribute name="newAddress"  label="New Address" />
+    <design:attribute name="disableAddress"  label="Disable Address" />
+    
+</design:component>

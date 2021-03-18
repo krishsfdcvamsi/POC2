@@ -1,0 +1,27 @@
+<aura:component controller="CDX_FileUploadController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:hasSObjectName,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global"> 
+    <aura:attribute name="parentId" type="Id" />   
+    <aura:attribute name="label" type="String" />   
+    <div>
+        <div class="slds-form-element">
+            <span class="slds-form-element__label" id="file-selector-primary-label">{! v.label }</span>
+            <div class="slds-form-element__control">
+                <div class="slds-file-selector slds-file-selector_files">
+                    <div class="slds-file-selector__dropzone">
+                        
+                        <input aura:id="file" class="slds-file-selector__input slds-assistive-text" type="file" id="file-upload-input-01"
+                               aria-labelledby="file-selector-primary-label file-selector-secondary-label" />
+                        <label class="slds-file-selector__body" for="file-upload-input-01" id="file-selector-secondary-label">
+                            <span class="slds-file-selector__button slds-button slds-button_neutral">
+                                <lightning:icon iconName="utility:upload" size="xx-small" alternativeText="upload" />Upload
+                                File</span> 
+                            <span class="slds-file-selector__text slds-medium-show">    </span>
+                            <span>
+                                <ui:button label="Save" press="{!c.save}" />
+                            </span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</aura:component>

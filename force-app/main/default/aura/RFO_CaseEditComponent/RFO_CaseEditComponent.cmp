@@ -1,0 +1,14 @@
+<aura:component implements = "flexipage:availableForRecordHome,force:hasRecordId" 
+                access="global"
+                controller="RFO_ChangeRequestController">
+    <aura:attribute name="caseErrorMessage" type="String" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:if isTrue="{!v.caseErrorMessage}">
+        <div class="slds-notify slds-notify_alert slds-text-title_bold slds-theme_alert-texture slds-theme_warning" 
+             role="alert">
+            <span class="slds-assistive-text">warning</span>
+            <lightning:icon iconName="utility:warning" size = "xx-small"/>
+            <h1>{!v.caseErrorMessage}</h1>
+        </div>
+    </aura:if>
+</aura:component>

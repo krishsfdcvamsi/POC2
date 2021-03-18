@@ -1,0 +1,16 @@
+<aura:component controller="SLAReportController" implements="flexipage:availableForAllPageTypes,force:appHostable,force:hasRecordId,force:hasSObjectName">
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="iframeUrl" type="String" />
+    <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="childInformation" type="Object"/>
+    <aura:attribute name="columns" type="List"/>
+    
+    <div style="max-height: 400px">
+        <lightning:datatable
+                keyField="id"
+                data="{! v.data }"
+                columns="{! v.columns }"
+                hideCheckboxColumn="true"/>
+    </div>
+</aura:component>

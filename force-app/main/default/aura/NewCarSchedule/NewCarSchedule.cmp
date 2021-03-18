@@ -1,0 +1,249 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" 
+                access="global"
+                controller="CarScheduleController">
+    <aura:attribute name="data" type="List" />
+    <aura:attribute name="currentAssetFile" type="Object" />
+    <aura:attribute name="pastData" type="Map" />
+    <aura:attribute name="pastDate" type="Date" />
+    <aura:attribute name="pastDataList" type="List" />
+    <aura:attribute name="columns" type="List" />
+
+    <aura:attribute name="orderId" type="Id" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="isModalOpen" type="boolean" default="false"/>
+
+    <aura:if isTrue="{!v.data[0].RFO_OrderNumber__r.RecordType.Name == 'New Car'}">
+    <aura:iteration items="{!v.data}" var="assetFile" indexVar="index">
+        <article class="slds-card">
+            <div class="slds-page-header slds-page-header_record-home" style="background-color: #ECEBEA">
+                <div class="slds-page-header__row">
+                    <div class="slds-page-header__col-title">
+                        <div class="">
+                            <div class="">
+                                <!-- Icon -->
+                            </div>
+                            <div class="" >
+                                <div class="slds-page-header__name">
+                                    <div class="slds-page-header__name-title">
+                                        <h1>
+                                            <span class="slds-page-header__title slds-hyphenate">Asset File</span>
+                                            <span class="slds-page-header__title slds-truncate" title="Name">{!assetFile.Name}</span>
+                                        </h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-page-header__col-actions">
+                        <div class="slds-page-header__controls">
+                            <div class="slds-page-header__control">
+                                <!-- Follow Button -->
+                            </div>
+                            <div class="slds-page-header__control">
+                                <!-- Record Edit Buttons -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br></br>
+                <div class="slds-page-header__row slds-page-header__row_gutters">
+                    <div class="slds-page-header__col-details">
+                        <ul class="slds-list_horizontal">
+                            <li class="slds-page-header__detail-item slds-size_1-of-4">
+                                <div class="slds-text-title slds-truncate" title="Customer Number"><b>Customer Name</b></div>
+                                <div class="">{!assetFile.RFO_OrderNumber__r.Account_Name_Text__c}</div>
+                            </li>
+                            <li class="slds-page-header__detail-item slds-size_1-of-4 slds-p-left_x-small">
+
+                                <div class="slds-text-title slds-truncate" title="File #"><b>File #</b></div>
+                                <div class="slds-truncate">
+                                    {!assetFile.Name}
+                                </div>
+                            </li>
+
+                            <li class="slds-page-header__detail-item slds-size_1-of-4 slds-p-left_x-small">
+
+                                <div class="slds-text-title slds-truncate" title="Plant"><b>Plant</b></div>
+                                <div class="slds-truncate" title="Plant">
+                                    {!assetFile.RFO_CurrentPlant__r.Name}
+                                </div>
+                            </li>
+
+                            <li class="slds-page-header__detail-item slds-size_1-of-4">
+                                <div class="slds-text-title slds-truncate" title="Car Type"><b>Car Type</b></div>
+                                <div class="slds-truncate" title="Car Type">{!assetFile.RFO_OrderNumber__r.RFO_CarType__c}</div>
+                            </li>
+                        </ul>
+                        <ul  class="slds-list_horizontal">
+                            <li class="slds-page-header__detail-item slds-size_1-of-4">
+         <!--                       <div class="slds-text-title slds-truncate" title="Car Type"><b>Car Type</b></div>
+                                <div class="slds-truncate" title="Car Type">{!assetFile.RFO_OrderNumber__r.RFO_CarType__c}</div> -->
+
+                            </li>
+                            <li class="slds-page-header__detail-item">
+                                <!--empty div to align this ul witht the above ul-->
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </article>
+        <div class="slds-scrollable_x">
+            <table class="slds-table slds-table_cell-buffer slds-table_col-bordered">
+                <tr  class="slds-size_1-of-7 slds-border_top" style="background-color: #ECEBEA">
+                    <th>Week</th>
+                    <aura:iteration items="{!assetFile.data}" var="os" indexVar="osIndex">
+                        <aura:if isTrue="{!os.week == 'Past'}">
+                            <th><lightning:button name="{!assetFile.Id}" variant="base" label="{!os.week}" title="{!os.week}" onclick="{!c.handlePast}"/></th>
+                            <aura:set attribute="else">
+                                <th>{!os.week}</th>
+                            </aura:set>
+                        </aura:if>
+                    </aura:iteration>
+                </tr>
+                <tr>
+                    <th>Committed</th>
+                    <aura:iteration items="{!assetFile.data}" var="os" indexVar="osIndex">
+                        <td>{!os.committed}</td>
+                    </aura:iteration>
+                </tr>
+                <tr class="slds-size_1-of-7" style="background-color: #ECEBEA">
+                    <th>Scheduled/Actuals</th>
+                    <aura:iteration items="{!assetFile.data}" var="os" indexVar="osIndex">
+                        <td>{!os.scheduled}</td>
+                    </aura:iteration>
+                </tr>
+            </table>
+        </div>
+        <br />
+        <br />
+    </aura:iteration>
+    <div class="slds-m-around_xx-large">
+        <!--Use aura:if tag to display/hide popup based on isModalOpen value-->  
+        <aura:if isTrue="{!v.isModalOpen}">
+            <!-- Modal/Popup Box starts here-->
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <!-- Modal/Popup Box Header Starts here-->
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeModel }"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Past Schedule</h2>
+                    </header>
+                    <!--Modal/Popup Box Body Starts here-->
+                    <div class="slds-modal__content slds-p-around_medium slds-scrollable" id="modal-content-id-1">
+                        <article class="slds-card">
+                            <div class="slds-page-header slds-page-header_record-home" style="background-color: #ECEBEA">
+                                <div class="slds-page-header__row">
+                                    <div class="slds-page-header__col-title">
+                                        <div class="">
+                                            <div class="">
+                                                <!-- Icon -->
+                                            </div>
+                                            <div class="" >
+                                                <div class="slds-page-header__name">
+                                                    <div class="slds-page-header__name-title">
+                                                        <h1>
+                                                            <span class="slds-page-header__title slds-hyphenate">Asset File</span>
+                                                            <span class="slds-page-header__title slds-truncate" title="Name">{!v.currentAssetFile.Name}</span>
+                                                        </h1>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-page-header__col-actions">
+                                        <div class="slds-page-header__controls">
+                                            <div class="slds-page-header__control">
+                                                <!-- Follow Button -->
+                                            </div>
+                                            <div class="slds-page-header__control">
+                                                <!-- Record Edit Buttons -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-page-header__row slds-page-header__row_gutters">
+                                    <div class="slds-page-header__col-details">
+                                        <ul class="slds-list_horizontal">
+
+                                            <li class="slds-page-header__detail-item slds-size_1-of-4">
+                                                <div class="slds-text-title slds-truncate" title="Customer Number"><b>Customer Name</b></div>
+                                                <div class="">{!v.currentAssetFile.RFO_OrderNumber__r.Account_Name_Text__c}</div>
+                                            </li>
+                                            <li class="slds-page-header__detail-item slds-size_1-of-4 slds-p-left_x-small">
+
+                                                <div class="slds-text-title slds-truncate" title="File #"><b>File #</b></div>
+                                                <div class="slds-truncate">
+                                                    {!v.currentAssetFile.Name}
+                                                </div>
+                                            </li>
+
+                                            <li class="slds-page-header__detail-item slds-size_1-of-4 slds-p-left_x-small">
+
+                                                <div class="slds-text-title slds-truncate" title="Plant"><b>Plant</b></div>
+                                                <div class="slds-truncate" title="Plant">
+                                                    {!v.currentAssetFile.RFO_CurrentPlant__r.Name}
+                                                </div>
+                                            </li>
+
+
+                                            <li class="slds-page-header__detail-item slds-size_1-of-3">
+                                                <div class="slds-text-title slds-truncate" title="Car Type"><b>Car Type</b></div>
+                                                <div class="slds-truncate" title="Car Type">{!v.currentAssetFile.RFO_OrderNumber__r.RFO_CarType__c}</div>
+                                            </li>
+
+                                        </ul>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                        <table class="slds-table slds-table_cell-buffer slds-table_col-bordered">
+                            <tr  class="slds-size_1-of-7 slds-border_top" style="background-color: #ECEBEA">
+                                <th>Month</th>
+                                <aura:iteration items="{!v.pastDataList}" var="os" indexVar="osIndex">
+                                    <th>{!os.month}</th>
+                                </aura:iteration>
+                            </tr>
+                            <tr>
+                                <th>Committed</th>
+                                <aura:iteration items="{!v.pastDataList}" var="os" indexVar="osIndex">
+                                    <td>{!os.committed}</td>
+                                </aura:iteration>
+                            </tr>
+                            <tr class="slds-size_1-of-7" style="background-color: #ECEBEA">
+                                <th>Scheduled/Actuals</th>
+                                <aura:iteration items="{!v.pastDataList}" var="os" indexVar="osIndex">
+                                    <td>{!os.scheduled}</td>
+                                </aura:iteration>
+                            </tr>
+                        </table>
+                    </div>
+                    <!--Modal/Popup Box Footer Starts here-->
+                    <!--<footer class="slds-modal__footer">
+                        <lightning:button variant="neutral"
+                                          label="Cancel"
+                                          title="Cancel"
+                                          onclick="{! c.closeModel }"/>
+                        <lightning:button variant="brand"
+                                          label="OK"
+                                          title="OK"
+                                          onclick="{!c.submitDetails}"/>
+                    </footer> -->
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </aura:if>
+    </div>
+         <aura:set attribute="else">
+
+             <div class="slds-text-heading_small slds-p-left_small">No schedule details were found.</div> 
+
+        </aura:set>
+    </aura:if>
+</aura:component>

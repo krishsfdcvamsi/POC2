@@ -1,0 +1,27 @@
+<aura:component controller="RiderContractFilesController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="contentDocs" type="Object" />
+    <aura:attribute name="columns" type="Object" />
+    <aura:attribute name="sortDirection" type="String" default="asc" />
+    <aura:attribute name="defaultSortDirection" type="String" default="asc" />
+    <aura:attribute name="sortedBy" type="String" />
+    
+    
+    
+    
+    <lightning:card variant="Narrow" title="Estimate Files" iconName="standard:file" >
+    </lightning:card>
+        <lightning:datatable
+            columns="{!v.columns}"
+            data="{!v.contentDocs}"
+            keyField="Id"
+			hideCheckboxColumn="true"
+			showRowNumberColumn = "true"
+			sortedDirection="{!v.sortDirection}"
+        	sortedBy="{!v.sortedBy}"
+        	onsort="{!c.handleSort}"
+            onrowaction="{!c.handleRowClick}" />
+
+    
+</aura:component>

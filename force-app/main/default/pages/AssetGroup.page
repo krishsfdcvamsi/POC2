@@ -1,0 +1,70 @@
+<apex:page controller="AssetGroupVFController" lightningStylesheets="true">
+    <apex:includeLightning />
+    <div class="slds">
+    <div id="lightning" />
+        <apex:outputPanel rendered="{!isError}">
+            	<center>
+             		<div id="errorMessage" class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error" role="alert">
+                 	<h2 style="color:red;">
+                     	{!errorMsg}
+                 	</h2>
+           			</div>
+                </center>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!isError = false}">
+                <center>
+                        <h3>
+                             <p style="color:red;">
+                                Please click on 'X' to close the popup and return to GAP.  
+                             </p>
+                        </h3>
+                </center>
+            <script>
+            /*
+            function refreshPage(){
+                alert('refresh');
+                
+                var referrer = document.referrer;
+                console.log('referrer>>>',referrer);
+                var topv = window.top.location.href;
+                console.log('topv>>>',topv);
+                var linkval = window.parent.location;
+                console.log('linkval>>>>',linkval);
+                window.parent.location.reload(); 
+                
+            }
+            */
+            </script>
+     <script>
+            try{
+                //    alert('open new tab>>>');
+                	var idVal = '{!strId}';
+                    console.log('idVal>>>>>',idVal);
+            		var URLVal = '/apex/AssetGroupVFPage?Id='+idVal;
+            		console.log('URLVal>>>>>',URLVal);
+            		window.open(URLVal,'_blank');
+            	}catch(error){
+            		console.log('error>>>>>>',error);
+            	}
+             /*
+        	try{
+           
+    		$Lightning.use("c:AssetGroupApp", function() {
+                $Lightning.createComponent("c:AssetGroup",
+                {
+                    lineItemId:"{!strId}"
+                },
+               "lightning",
+                    function(component) {
+                       console.log('Display Lightning component in visualforce page');
+                    });
+                });
+        }catch(error){
+                    console.log('error>>>>>',error);
+                  
+        }
+        */
+ </script>
+            </apex:outputPanel>
+         </div>
+</apex:page>

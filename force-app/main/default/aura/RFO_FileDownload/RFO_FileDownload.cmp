@@ -1,0 +1,62 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" 
+                access="global" controller = "RFO_FileDownloadCtrl" >
+    
+    <aura:attribute name="files" type="List"/>
+    <aura:attribute name="allData" type="List"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="selectedRowsCount" type="Integer" default="0"/>
+    <aura:attribute name="maxRowSelection" type="Integer" default="100"/>
+    <aura:attribute name="strDocIds" type="String" default=""/>
+    <aura:attribute name="showDownload" type="Boolean" default="false"/>
+    <aura:attribute name="showMore" type="Boolean" default="false"/>
+    <aura:attribute name="filter" type="String" />
+    <aura:attribute name="innerQuery" type="String" default=""/>
+    <aura:attribute name="screenType" type="String" default="Full"/>
+    
+    <aura:attribute name="sortedBy" type="String" default="Name"/>
+    <aura:attribute name="sortedDirection" type="String" default="asc"/>
+    
+    <lightning:card title="Download Files" iconName="standard:file" >
+        <!-- 
+        <lightning:layout>
+            <lightning:layoutItem size="6" padding="around-small">
+                <div class="custom-box">
+                    Selected Files for Download: {! v.selectedRowsCount }
+                </div>
+            </lightning:layoutItem>
+            <lightning:layoutItem size="6" padding="around-small">
+                <div >
+                    <h3 class="slds-truncate" >
+                        <a href="{!v.strDocIds}">
+                        <lightning:button variant="brand" disabled="{!!v.showDownload}" label="Download Selected Files" title="Download Selected Files"/>
+                        </a>
+                    </h3>
+                </div>
+            </lightning:layoutItem>
+        </lightning:layout>
+        <lightning:input type="text" onchange="{!c.filter}" value="{!v.filter}" label="Filter with Name or Type" />
+        <br/> -->
+        <div class="slds-scrollable_y" style="height:595px;">
+        <lightning:datatable
+                             columns="{! v.columns }"
+                             data="{! v.files }"
+                             keyField="id"
+                             showRowNumberColumn="true" 
+                             hideCheckboxColumn="true"
+                             maxRowSelection="{! v.maxRowSelection }"
+                             onrowselection="{! c.updateSelectedText }"
+                             onsort="{!c.updateColumnSorting}"
+                         	 sortedBy="{!v.sortedBy}"  
+                         	 sortedDirection="{!v.sortedDirection}"/>
+        </div>
+        <aura:if isTrue="{!v.showMore}">
+        	<div class="showMoreDiv">
+                <span onclick="{!c.getAllData}" class="showMore"> Show more </span>
+            </div>
+        </aura:if>
+    </lightning:card>
+</aura:component>

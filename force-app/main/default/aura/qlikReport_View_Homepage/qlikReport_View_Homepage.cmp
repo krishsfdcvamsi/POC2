@@ -1,0 +1,41 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global" >
+	<aura:attribute access="public" name="headerString" type="String" default="" />
+    <aura:attribute access="public" name="urlString" type="String" default="" />
+    <aura:handler event="c:passQlikURL_evnt" action="{!c.handleApplicationEvent}"/>
+    <div class="slds-p-left_x-large slds-m-top_xx-small ">
+    	<h1>
+            <aura:if isTrue="{!v.headerString != ''}">
+                <br/><div style="font-weight:bold;">{!v.headerString}</div>
+                <aura:set attribute="else">
+                    <br/>Qlik Report view
+                </aura:set>
+            </aura:if>
+        </h1>
+     </div>    
+    <aura:if isTrue="{!v.urlString == 'OC'}"> 
+    	<c:Qlik_Open_Cases_CMP />
+    </aura:if>
+    <aura:if isTrue="{!v.urlString == 'TOT'}"> 
+    	<c:Qlik_Total_Open_Task_CMP />
+    </aura:if>
+    <aura:if isTrue="{!v.urlString == 'EAA'}"> 
+    	<c:Qlik_EstimatedAwaitingApproval_CMP />
+    </aura:if>
+    <aura:if isTrue="{!v.urlString == 'AD'}"> 
+    	<c:Qlik_AwaitingDispo_CMP />
+    </aura:if>
+    <aura:if isTrue="{!v.urlString == 'SWR'}"> 
+    	<c:Qlik_SRsWaiting_CMP />
+    </aura:if>
+    <aura:if isTrue="{!v.urlString == 'PASA'}"> 
+    	<c:Qlik_ProjectsAwaitingSchedule_CMP />
+    </aura:if>
+    <aura:if isTrue="{!v.urlString == 'AWS'}"> 
+    	<c:Qlik_AwaitingCustomerservice_CMP />
+    </aura:if>
+    <aura:if isTrue="{!v.urlString == 'FCR'}"> 
+    	<c:Qlik_FCR_CMP />
+    </aura:if>
+
+    
+</aura:component>

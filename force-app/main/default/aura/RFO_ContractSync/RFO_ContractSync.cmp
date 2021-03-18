@@ -1,0 +1,33 @@
+<aura:component controller="RFO_ContractSyncController" implements="force:hasRecordId,force:lightningQuickActionWithoutHeader,flexipage:availableForRecordHome" access="global">
+    <aura:attribute name="contractRecord" type="Object"/>
+    <aura:attribute name="recordLoadError" type="String"/>
+
+    <aura:attribute name="toggleSpinner" type="boolean" default="false"/> 
+
+    <force:recordData aura:id="recordLoader"
+        recordId="{!v.recordId}"
+        fields="RFO_TasSyncStatus__c"
+        targetFields="{!v.contractRecord}"
+        targetError="{!v.recordUpdateError}"
+        mode="VIEW" 
+        recordUpdated="{!c.handleRecordUpdated}" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler event="aura:waiting" action="{!c.showSpinner}"/>
+    <aura:handler event="aura:doneWaiting" action="{!c.hideSpinner}"/>
+
+    <!-- Display error message -->
+    <aura:if isTrue="{!not(empty(v.recordUpdateError))}">
+        <div class="recordUpdateError">
+            {!v.recordUpdateError}</div>
+    </aura:if>
+    <aura:if isTrue="{!v.toggleSpinner}">
+            <div class="slds-spinner_container">
+             <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+               <span class="slds-assistive-text">Loading</span>
+               <div class="slds-spinner__dot-a"></div>
+               <div class="slds-spinner__dot-b"></div>
+             </div>
+           </div>
+    </aura:if>   
+           
+</aura:component>

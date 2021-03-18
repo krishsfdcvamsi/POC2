@@ -1,0 +1,39 @@
+<template>
+    <div class="slds-m-top_medium slds-m-bottom_x-large">
+        <h2 class="slds-text-heading_medium slds-m-bottom_medium">
+           Asset Drawings
+        <br/>   
+        <span style="color:rgb(135, 5, 0); font-family:Open Sans; font-size:14px;" >
+            <b>If “None” appears in the Drawing# column, the car is not equipped with the component; therefore a file is not available.</b> 
+            <br>
+        </span>
+        </h2>
+            
+        <template if:true={errorDownloadingFile}>
+            <span style="color:rgb(135, 5, 0);" >
+                <i>The requested drawing number is not available because the car is not equipped with this component.</i>
+                <br>
+            </span>
+        </template>
+
+        <div>
+            <lightning-datatable
+                key-field="id"
+                data={data}
+                columns={columns}
+                hide-checkbox-column="true"
+                layout-type="Full"
+                onrowaction={handleClick}
+                >
+            </lightning-datatable>
+        </div>
+
+        <template if:true={showLoadingSpinner}>
+            <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+        </template>
+
+        <template if:false={foundDrawings}>
+            <p>{NoDrawings}</p>
+        </template>
+    </div>
+</template>

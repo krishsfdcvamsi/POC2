@@ -1,0 +1,199 @@
+<template>
+    <div style="width:60%;margin: auto;">
+        <div if:true={isLoaded}>
+         <lightning-spinner
+                 alternative-text="Loading..." variant="brand">
+         </lightning-spinner>
+     </div>
+     <div class="slds-form" role="list" >
+         <div class="slds-form slds-form_compound">
+             <div class="slds-form-element__group">
+                 <div class="slds-form-element__row">
+                   
+                     <div class="slds-form-element__row">
+                        <div class="slds-form-element slds-size_1-of-2">
+                            <lightning-input type="number" 
+                            step="0.01"
+                            disabled 
+                            label="Current Residual Value:" 
+                            value={Current_Residual_Value} onchange={currentResi}> 
+                            </lightning-input>
+                       </div>
+                         
+                     <div class="slds-form-element slds-size_1-of-2">
+                         <lightning-input type="number" 
+                         label="Future Residual Value:"
+                         disabled
+                         step="0.01"
+                         onchange={futureResi}
+                         value={Future_Residual_Value}> 
+                         </lightning-input>
+                     </div>
+                     
+                     <!--<div class="slds-form-element slds-size_1-of-2">
+                         <lightning-input type="number" disabled label="Gap Analysis Investment:"
+                         value={Gap_Analysis_Investment}>
+                         </lightning-input>
+                     </div>-->
+                     
+                 </div>
+             </div>
+             <div class="slds-form-element__group">
+                 <div class="slds-form-element__row">
+                    <!--<div class="slds-form-element slds-size_1-of-2">
+                         <lightning-input type="number" disabled label="Betterment From Gap:"
+                         value={bettermentAmountGap}>
+                         </lightning-input>
+                     </div>--> 
+                     <div class="slds-form-element slds-size_1-of-2">
+                         <lightning-input type="number" step="0.01" disabled label="Maintenance From Gap:"
+                         value={maintanceAmountGap}>
+                     </lightning-input>
+                     </div>
+                     <div class="slds-form-element slds-size_1-of-2">
+                         <lightning-input type="number"  step="0.01" disabled label="Maintenance Total:"
+                         onchange={maintenace}
+                         value={Maintenance_Total}>
+                     </lightning-input>
+                     </div>
+                     
+                     
+                 </div>
+             </div>
+             
+             <div class="slds-form-element__group">
+                 <div class="slds-form-element__row">
+                     <!--<div class="slds-form-element slds-size_1-of-2">
+                         <lightning-input type="number" label="Maintenance Total:"
+                         onchange={maintenace}
+                         value={Maintenance_Total}>
+                     </lightning-input>
+                     </div>-->
+                     <div class="slds-form-element slds-size_1-of-2">
+                         <lightning-input type="number" step="0.01" disabled label="Betterment From Gap:"
+                         value={bettermentAmountGap}>
+                         </lightning-input>
+                     </div>
+                     <div class="slds-form-element slds-size_1-of-2">
+                        <lightning-input type="number" step="0.01" disabled label="Expense From Gap:"
+                         value={expenseAmount}> 
+                         </lightning-input>
+                     </div>
+                         <!--
+                     <div class="slds-form-element slds-size_1-of-2">
+                         <lightning-input type="number" disabled label="Assumed Maintenance:"
+                          value={AssuredAmount}> 
+                          </lightning-input>
+                      </div>-->
+                 </div>
+             </div>
+			 <div class="slds-form-element__group">
+			  <div class="slds-form-element__group">
+                <div class="slds-form-element__row">
+                    <div class="slds-form-element slds-size_1-of-2">
+                        <lightning-input type="number" step="0.01" disabled label="Monthly Lease Rate:"
+                        value={monthlyLeaseRate}>
+                        </lightning-input>
+                    </div>
+					 <div class="slds-form-element slds-size_1-of-2">
+                         <lightning-input type="number" step="0.01"
+						 disabled label="Residual Betterment:"
+                         value={recidentialBetterment}> 
+                         </lightning-input>
+                     </div>
+                </div>
+            </div>
+                 <div class="slds-form-element__row">
+                     
+                    <div class="slds-form-element slds-size_1-of-2">
+                         
+							 <lightning-input type="number" step="0.01" disabled label="Price Book Rate:"
+								value={quotePriceBookRate}>
+							</lightning-input>
+                        
+                     </div>
+					 <div class="slds-form-element slds-size_1-of-2">
+					 <lightning-input type="number" step="0.01" disabled label="Per Car GAP Cost:"
+								value={gapcostperCar}>
+							</lightning-input>
+					 </div>
+                     </div>
+                 </div>
+            
+			<div class="slds-form-element__group">
+                 <div class="slds-form-element__row">
+						<!--<div class="slds-form-element slds-size_1-of-2">
+							 <label class="slds-form-element__label" for="unique-id-of-input">
+								 Baseline Pricing:<p>{baselinePricing}</p>
+							 </label>
+						 </div>-->
+						
+						 <div class="slds-form-element slds-size_2-of-2">
+							<lightning-input type="number"
+								onchange={exposure}
+								label="Exposure:" 
+								value={Exposure}>
+							</lightning-input>
+						</div>
+						 
+						
+					</div>
+			</div>
+             <div class="slds-form-element__group">
+                 <div class="slds-form-element__row">
+                     <div class="slds-form-element slds-size_1-of-2">
+							<label class="slds-form-element__label" for="unique-id-of-input" style="color:red;">
+								 <b>Return (XIRR):</b><p>
+									<lightning-formatted-number style="percent" 
+										value={Return} maximum-fraction-digits="2">
+									</lightning-formatted-number>%</p>
+							</label>
+                     </div>
+                     <div class="slds-form-element slds-size_1-of-2">
+                         <label>Run in Background:</label><br/>
+                         <lightning-input type="checkbox"
+                             onchange={headerCheckoxChanged}
+                             label="" 
+                             checked={runChecked}
+                             value={runBackground}>
+                     </lightning-input>
+                     </div>
+                     </div>
+                 </div>
+             </div>
+			 
+			 
+             <div class="slds-form-element__group">
+                 <div class="slds-form-element__row">
+                     <div class="slds-form-element slds-size_1-of-2">
+                        
+                     </div>
+                     <div class="slds-form-element slds-size_1-of-2">
+                     <div if:true={showAsync}>
+                         <label style="color:red" class="slds-form-element__label" for="unique-id-of-input">
+                             Use this option if getting timeout errors. Refresh the page after a few minutes to see results.
+                         </label>
+                         <lightning-button-icon icon-name="utility:refresh"  
+                         alternative-text="Refresh" 
+                         title="Refresh"
+                         variant="brand"
+                         onclick={handleRefreshClick}
+                         size="small"
+                         ></lightning-button-icon>
+                     </div>
+                     </div>
+                 </div>
+             </div>
+             <div class="slds-form-element__group">
+                 <div class="slds-form-element__row">
+                     <div class="slds-form-element slds-size_2-of-2">
+                         
+                             <lightning-button variant="brand" label="Calculate " title="Calculate " onclick={handleSaveClick} class="slds-button slds-button_brand"></lightning-button>
+                         
+                     </div>
+                 </div>
+             </div>
+         </div>
+         </div>
+     </div>
+ </template>

@@ -1,0 +1,657 @@
+<template>
+    <!--<lightning-card icon-name="standard:Customer_Spec__c" title="">
+    <div class="slds-m-around_medium">
+    <lightning-record-form
+        record-id={customerSpecId}
+        object-api-name="Customer_Spec__c"
+        layout-type="Full"
+        columns="2"
+        mode="readonly">
+    </lightning-record-form>
+    </div>
+</lightning-card>
+</template>
+<template>-->
+    <lightning-record-view-form record-id={customerSpecId} object-api-name="Customer_Spec__c">
+        <lightning-accordion allow-multiple-sections-open
+        onsectiontoggle={handleSectionToggle}
+        active-section-name={activeSections} >
+        
+                <lightning-accordion-section name="A" label="Customer Info">
+                    <div class="slds-form" role="list">
+                        <div class="slds-form__row">
+                            <div class="slds-form__item" role="listitem">
+    
+                                <lightning-output-field field-name="Commodity__c">
+                                </lightning-output-field>
+                            </div>
+                            <div class="slds-form__item" role="listitem">
+                                <lightning-output-field field-name="Status__c">
+                                </lightning-output-field>
+                            </div>
+    
+                        </div>
+                        <div class="slds-form__row">
+                            <div class="slds-form__item" role="listitem">
+    
+                                <lightning-output-field field-name="Opportunity_lookup__c">
+                                </lightning-output-field>
+                        </div>
+                            <div class="slds-form__item" role="listitem">
+    
+                                <lightning-output-field field-name="Status_Description__c">
+                                </lightning-output-field>
+                            </div>
+                        </div>
+                        <div class="slds-form__row">
+                            <div class="slds-form__item" role="listitem">
+                                <lightning-output-field field-name="Railcar_Type__c">
+                                </lightning-output-field>
+                            </div>
+                            <div class="slds-form__item" role="listitem">
+                                <lightning-output-field field-name="Submitted_for_Matching__c">
+                                </lightning-output-field>
+                            </div>
+                            
+                        </div>
+                        <div if:true={isGeneralPurpseTankCar}>
+                            <div class="slds-form__row">
+                                    <div class="slds-form__item" role="listitem">
+                                        <lightning-output-field field-name="UN_Code__c">
+                                        </lightning-output-field>
+                                    </div>
+                                    <div class="slds-form__item" role="listitem">
+                                        
+                                    </div>
+                                    
+                                </div>
+                        </div>
+                        <div if:true={isPressureTankCar}>
+                            <div class="slds-form__row">
+                                    <div class="slds-form__item" role="listitem">
+                                        <lightning-output-field field-name="UN_Code__c">
+                                        </lightning-output-field>
+                                    </div>
+                                    <div class="slds-form__item" role="listitem">
+                                        
+                                    </div>
+                                    
+                                </div>
+                        </div>
+                        <div class="slds-form__row">
+                            <div class="slds-form__item" role="listitem">
+                                <lightning-output-field field-name="Specific_Gravity_lbs_gallon__c">
+                                </lightning-output-field>
+                            </div>
+                            <div class="slds-form__item" role="listitem">
+                                
+                            </div>
+                            
+                        </div>
+                        <!--<div class="slds-form__row">
+                                    <div class="slds-form__item" role="listitem">
+                                        <lightning-output-field field-name="Maximum_Quantity_of_Cars__c">
+                                        </lightning-output-field>
+                                    </div>
+                                    <div class="slds-form__item" role="listitem">
+                                        
+                                    </div>
+                                    
+                                </div>-->
+                    </div>
+                </lightning-accordion-section>
+
+                <lightning-accordion-section name="B" label="Loading/Unloading">
+                    <div class="slds-form" role="list">
+                        <div class="slds-form__row">
+                            <div class="slds-form__item" role="listitem">
+                                <!--Box Car-->
+                                <lightning-output-field field-name="Loading_rail_served_address__c">
+                                </lightning-output-field>
+                            </div>
+                            <div class="slds-form__item" role="listitem">
+                                <lightning-output-field field-name="Unloading_Rail_Served_Address__c">
+                                </lightning-output-field>
+                            </div>
+                        </div>
+                        <div class="slds-form__row">
+                            <div class="slds-form__item" role="listitem">
+                                <lightning-output-field field-name="Loading_City__c">
+                                </lightning-output-field>
+                            </div>
+                            <div class="slds-form__item" role="listitem">
+                                <lightning-output-field field-name="Unloading_City__c">
+                                </lightning-output-field>
+                            </div>
+                        </div>
+                        <div class="slds-form__row">
+                            <div class="slds-form__item" role="listitem">
+                                <lightning-output-field field-name="Loading_State__c">
+                                </lightning-output-field>
+                            </div>
+                            <div class="slds-form__item" role="listitem">
+                                <lightning-output-field field-name="Unloading_State__c">
+                                </lightning-output-field>
+                            </div>
+                        </div>
+                        <div class="slds-form__row">
+                            <div class="slds-form__item" role="listitem">
+                                <lightning-output-field field-name="Loading_Country__c">
+                                </lightning-output-field>
+                            </div>
+                            <div class="slds-form__item" role="listitem">
+                            </div>
+                        </div>
+                        
+                        <div class="slds-form__row">
+                            <div class="slds-form__item" role="listitem">
+                                <lightning-output-field field-name="Loading_Preferred_Carrier__c">
+                                </lightning-output-field>
+                            </div>
+                            <div class="slds-form__item" role="listitem">
+                                <lightning-output-field field-name="Unloading_Preferred_Carrier__c">
+                                </lightning-output-field>
+                            </div>
+                        </div>
+                    </div>
+                </lightning-accordion-section>
+
+                <lightning-accordion-section name="C" label="Car Requirements">
+                    <!-- Box Car-->
+                    <div if:true={isBoxCar}>
+                        <div class="slds-form" role="list">
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Car_Length__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Car_Length_Comments__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Door_Width_Opening__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Door_Width_Opening_Comments__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Door_Preference_Type__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Door_Preference_Type_Comments__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Floor_Preference__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Floor_Preference_Comments__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                    <!--Covered Hopper and PD-->
+                    <div if:true={isCoveredHopperPD}>
+                        <div class="slds-form" role="list">
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Pressure_Differential_PD_Car__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Hatch_Cover_Requirements__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Hatch_Cover_Comments__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Gate_Requirements__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Gate_Requirements_Comments__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Gravity_Gates__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Gravity_Gate_Size_Comments__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Vibrator_Brackets_Required__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Lining_Requirements__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Lining_Requirements_Comments__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Food_Grade_Commodity__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Food_Grade_Commodity_Requirements__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Specialized_Piping_or_Connections__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Specialized_Piping_Connections_Comments__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <!--Pressure Tank Car-->
+                    <div if:true={isPressureTankCar}>
+                        <div class="slds-form" role="list">
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Gauging_Device_Multiple_Commodities__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Magnetic_Gauging_Device_Commodities__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Thermowell_Requirements__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Thermowell_Required_Comments__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Sample_Line_Requirements__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Sample_Line_Required_Comments__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Flange_Gasket_Preference__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Flange_Gasket_Preference_comments__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="O_Ring_Preference__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="O_Ring_Preference_comments__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Interior_Blast_Requirements__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Interior_Blast_Comments__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="P_Nitrogen_Pad_Oxygen_Content__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Pick_One_02_Content_comments__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Pick_One_N2_Pad_PSI_options__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="N2_Pad_PSI_comments__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Interior_Prep_Requirements__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Interior_Prep_Comments__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <!--General Purpose Tank Car-->
+                    <div if:true={isGeneralPurpseTankCar}>
+                        <div class="slds-form" role="list">
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Car_Loading_Options__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Manway_Description__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Liquid_Valve_Requirements__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Liquid_Valve_Comments__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Air_Valve_Requirements__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Air_Valve_Comments__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Fitting_Plate_Valve_Connection__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Rail_Car_Bottom_Unloading__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Bottom_Unloading_Preference__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Valve_Size_for_4_inch_Threaded_Cap_Plug__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="X4_Threaded_cap_plug_comments__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="X4_Quick_connect_comments__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Unload_Require_Heating__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Unload_Require_Heating_Comments__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Unload_Heating_Requirements__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Unload_Heating_Comments__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Need_Insulation__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Car_Insulation_Comments__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Specialty_Fitting_Required__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Specialty_Fitting_Requirements__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Specialty_Fitting_Comments__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Stainless_Steel_Parts_Required__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Stainless_Steel_Parts_comments__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Manway_Gasket_Preference__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Manway_Gasket_Preference_comments__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Flange_Gasket_Preference__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Flange_Gasket_Preference_comments__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="O_Ring_Preference__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="O_Ring_Preference_comments__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Bottom_Outlet_Valve_Cap_Gasket_Prefer__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Bottom_Outlet_Gasket_Prefer_comments__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Single_Level_Platform_Required__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Single_Level_Platform_Comments__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Interior_Coating_Requirements__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Required_Interior_Coating_comments__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Interior_Blast_Requirements__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Nitrogen_Pad_Required__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                
+                                </div>
+                            </div>
+                            
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Pick_One_02_Content_options__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Pick_One_02_Content_comments__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="GP_Nitrogen_Pad_PSI__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="N2_Pad_PSI_comments__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Interior_Surface_Prep_options__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Interior_Surface_Prep_comments__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                            <div class="slds-form__row">
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Specialty_Tank_Car_Requirements__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-form__item" role="listitem">
+                                    <lightning-output-field field-name="Specialty_Tank_Car_Requirements_comments__c">
+                                    </lightning-output-field>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </lightning-accordion-section>
+                <lightning-accordion-section name="A" label="Additional Comments">
+                    <div class="slds-form" role="list">
+                        <div class="slds-form__row">
+                            <div class="slds-form__item" role="listitem">
+    
+                                <lightning-output-field field-name="Mechanical_Structural_Dimensional_req__c">
+                                </lightning-output-field>
+                            </div>
+                            <div class="slds-form__item" role="listitem">
+                              
+                            </div>
+    
+                        </div>
+                    </div>
+                </lightning-accordion-section>
+        </lightning-accordion>
+    </lightning-record-view-form>
+
+</template>

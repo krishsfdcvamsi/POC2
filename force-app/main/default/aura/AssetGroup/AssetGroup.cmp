@@ -1,0 +1,399 @@
+<aura:component controller="AssetGroupController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global">
+    <aura:attribute name="assetGroup" type="object"/>
+    <aura:attribute name="editAssetGroupId" type="String"/>
+    <aura:attribute name="assetsToadd" type="object"/>
+    <aura:attribute name="Assetcolumns" type="object"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="selectedRowsAssetLines" type="List"/>
+    <aura:attribute name="assetLinesObj" type="object" default=""/>
+    <aura:attribute name="assetLines" type="object" default=""/>
+    <aura:attribute name="assetLinesCount" type="integer" default=""/>
+    <aura:attribute name="totalAssetLines" type="object" default=""/>
+    <aura:attribute name="tempTotalAssetLines" type="object" default=""/>
+    <aura:attribute name="assetLineLimit" type="integer" default="10"/>
+    <aura:attribute name="assetlineQueryOffset" type="integer" default="0"/>
+    
+    <aura:attribute name="lineItemId" type="String"/>
+    
+    <aura:attribute name="SelectedAssets" type="List"/>
+    <aura:attribute name="SelectedAssetsLatest" type="List"/>
+    <aura:attribute name="SelectedAssetsIds" type="List"/>
+    <aura:attribute name="assetSearchKey" type="String" default=""/>
+    <aura:attribute name="assetSearchKey1" type="String" default=""/><!-- Added By Haseeb -->
+    <aura:attribute name="assetSearchKey2" type="String" default=""/><!-- Added By Haseeb -->
+    <aura:attribute name="assetSearchKey3" type="String" default=""/><!-- Added By Haseeb -->
+    <aura:attribute name="hideFilters" type="boolean" default="true"/><!-- Added By Haseeb -->
+     <aura:attribute name="assetGroupNameSearch" type="String" default=""/><!-- Added By Haseeb -->
+    <aura:attribute name="assetGroupTRSearch" type="String" default=""/><!-- Added By Haseeb -->
+    <aura:attribute name="assetGroupCarFileSearch" type="String" default=""/><!-- Added By Haseeb -->
+    <aura:attribute name="displaySelected" type="boolean" default="false"/>
+    <aura:attribute name="displaySelectedAssetGroup" type="boolean" default="false"/>
+    <aura:attribute name="assetSearching" type="boolean" default="false"/>
+    <aura:attribute name="SpinnerLoaded" type="boolean" default="false"/>
+    <aura:attribute name="showAddAssets" type="boolean" default="false"/>
+    <aura:attribute name="noLineItemId" type="boolean" default="false"/>
+    <aura:attribute name="showEditAssetGroup" type="boolean" default="false"/>
+    <aura:attribute name="shortingOrder" type="string" default="desc"/>
+    <aura:attribute name="enableInfiniteLoading" type="Boolean" default="true"/>
+    <aura:attribute name="enableInfiniteLoadingLine" type="Boolean" default="true"/>
+    <aura:attribute name="SelectedAssetsList" type="List"/>
+	<aura:attribute name="AllAssetsList" type="List"/>
+    <aura:attribute name="initialRows" type="Integer" default="10"/>
+    <aura:attribute name="totalRows" type="Integer" default="0"/>
+    <aura:attribute name="currentCount" type="Integer" default="0"/>
+    
+    <aura:attribute name="curretnOffSet" type="Integer" default="10"/>
+    <aura:attribute name="nextButton" type="Boolean" />
+    <aura:attribute name="prevButton" type="Boolean"/>
+	<aura:attribute name="listViewId" type="String" default=""/>
+	<aura:attribute name="allAssets" type="object"/>
+    <aura:attribute name="allAssetsCSV" type="object"/>
+    <aura:attribute name="totalQueriedAssets" type="object"/>
+    <aura:attribute name="tempTotalQueriedAssets" type="object"/>
+    <aura:attribute name="totalAssets" type="object"/>
+    <aura:attribute name="allAssetsObject" type="object"/>
+    <aura:attribute name="queryOffset" type="Integer" default="0"/>
+    <aura:attribute name="queryLimit" type="Integer" default="50"/>
+    <aura:attribute name="loadOffset" type="Integer" default="1"/>
+ <aura:attribute name="fileName" type="String" default="TestDownload1"/>    
+    <aura:attribute name="pageReference" type="Object"/>
+    <lightning:navigation aura:id="navService"/>
+    <aura:attribute name="spinnerLoadedAssetAdd" type="boolean" default="false"/>
+    <!-- Added By Haseeb -->
+     <aura:attribute name="sortBy" type="String"/>
+    <aura:attribute name="sortDirection" type="String"/>
+	<!--End Haseeb -->    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <lightning:card>
+        <aura:if isTrue="{! v.SpinnerLoaded }">
+        	<lightning:spinner alternativeText="Loading" variant="brand" size="medium"/>
+    	</aura:if>
+                 	<div class="slds-size_5-of-5">
+                            <div class="slds-box_x-small slds-text-align_center slds-m-around_x-small">
+                                <div class="slds-text-heading--medium">
+                                   <b>Asset Group</b> 
+                                </div>
+                            </div>
+                          </div>
+                        <div class="demo-only" style="margin:10px;10px;">
+                            <div class="slds-form slds-form_compound">
+                                <fieldset class="slds-form-element">
+                                  <div class="slds-form-element__group">
+                                    <div class="slds-form-element__row">
+                                        <div class="slds-form-element slds-size_1-of-6">
+                                            <label class="slds-form-element__label" for="input-02"><b>Asset Group Number:</b></label>
+                                             <br/>
+                                             <label class="slds-form-element__label" for="input-01">
+                                                 <a href="{!'/'+v.assetGroup.Id}" target="_blank">{!v.assetGroup.Name}</a> 
+                                             </label>
+                                        </div>
+                                         <div class="slds-form-element slds-size_1-of-6">
+                                            <label class="slds-form-element__label" for="input-02"><b>Asset Group Name:</b></label>
+                                             <br/>
+                                             <label class="slds-form-element__label" for="input-01">
+                                                 <lightning:buttonIcon size="xx-small" 
+                                                                      iconName="utility:edit" 
+                                                                      variant="brand" 
+                                                                      onclick="{! c.handleGroupEdit}" 
+                                                                      alternativeText="Edit" />
+                                                {!v.assetGroup.Group_Name__c}
+                                             </label>
+                                        </div>
+                                      <!--<div class="slds-form-element slds-size_1-of-5">
+                                       <label class="slds-form-element__label" for="input-01"><b>Project Number:</b></label>
+                                       <br/>
+                                          <label class="slds-form-element__label" for="input-01">
+                                           <lightning:buttonIcon size="xx-small" 
+                                                                      iconName="utility:edit" 
+                                                                      variant="brand" 
+                                                                      onclick="{! c.handleGroupEdit}" 
+                                                                      alternativeText="Edit" />
+                                              {!v.assetGroup.Project_Number__c}
+                                           
+                                          </label>
+                                      </div>-->
+                                      <div class="slds-form-element slds-size_1-of-6">
+                                        <label class="slds-form-element__label" for="input-02"><b>Quote Line:</b></label>
+                                       <br/>
+                                          <label class="slds-form-element__label" for="input-01">
+                                            <!--<lightning:buttonIcon size="xx-small" 
+                                                                      iconName="utility:edit" 
+                                                                      variant="brand" 
+                                                                      onclick="{! c.handleGroupEdit}" 
+                                                                      alternativeText="Edit" />-->
+                                              {!v.assetGroup.Quote_Line__r.Name}
+                                            
+                                          </label>
+                                      </div>
+                                        <div class="slds-form-element slds-size_1-of-6">
+                                            <label class="slds-form-element__label" for="input-02"><b>Description:</b></label>
+                                           <br/>
+                                            <label class="slds-form-element__label" for="input-01">
+                                                <lightning:buttonIcon size="xx-small" 
+                                                                      iconName="utility:edit" 
+                                                                      variant="brand" 
+                                                                      onclick="{! c.handleGroupEdit}" 
+                                                                      alternativeText="Edit" />
+                                                {!v.assetGroup.Description__c}
+                                            </label>
+                                        </div>
+                                        <div class="slds-form-element slds-size_1-of-6">
+                                            <label class="slds-form-element__label" for="input-02"><b>Number of Assets:</b></label>
+                                           <br/>
+                                            <label class="slds-form-element__label" for="input-01">
+                                                {!v.assetGroup.Number_of_Assets__c}
+                                            </label>
+                                        </div>
+                                         <div class="slds-form-element slds-size_1-of-6">
+                                            <label class="slds-form-element__label" 
+                                                   for="input-02"><b>Update Asset Lines:</b></label>
+                                           <br/>
+                                             <lightning:buttonIcon size="xx-small" 
+                                                                      iconName="utility:add" 
+                                                                      variant="brand" 
+                                                                      onclick="{! c.handleNavigateListView}" 
+                                                                      alternativeText="Add" />
+                                        </div>
+                                    </div>
+                                  </div>
+                                </fieldset>
+                           </div>
+                        </div>
+                         <div class="slds-size_5-of-5">
+                            <div class="slds-box_x-small slds-text-align_center slds-m-around_x-small">
+                                <div class="slds-text-heading--medium">
+                                   <b>Assets</b> 
+                                </div>
+                            </div>
+                          </div>
+                        	<div style="float:right;margin-top:-2rem;">
+                                <aura:if isTrue = "{!v.selectedRowsAssetLines.length > 0}">
+                                    <lightning:button aura:id="assetGroup" iconName="utility:download" label="Export Selected Assets" onclick="{!c.downloadCsv}"  variant="brand"/>
+                                </aura:if>
+                                <!--<lightning:button variant="brand" iconName="utility:back" iconPosition="left" label="Back to Quote" title="Back to Quote" onclick="{! c.backtoQuote}" />-->
+                                <lightning:button iconName="action:refresh" label="Clear Filters" onclick="{!c.clearFiltersAssetGroup}" variant="destructive"/>
+                                <lightning:button variant="brand" iconName="utility:delete" iconPosition="left" label="Delete" title="Delete" onclick="{! c.handleDelete}" />
+                                <lightning:button variant="brand" iconName="utility:record_create" iconPosition="left" label="Add" title="Add" onclick="{! c.handleAdd}" />
+                            </div>
+        <span style="float:left;padding-top:22px;padding-left:5px;">
+            <lightning:button  iconName="action:check" label="{!'#:'+v.selectedRowsAssetLines.length}" variant="{!v.displaySelectedAssetGroup == true ? 'destructive' : 'brand'}"  title="Selected Assets" onclick="{!c.displaySelectedAssetGroup}"/>
+        </span>
+        <span style="width:300px !important;float:left;padding-left:5px;">
+            Asset Name:
+            <lightning:input type="text" 
+                             value="{!v.assetGroupNameSearch}" 
+                             placeholder="Search for a Asset Name" 
+                             onkeyup="{!c.serachAssetsGroup}"></lightning:input>
+        </span>
+        <span style="width:300px !important;float:left;padding-left:5px;">
+            TR #:
+            <lightning:input type="text" 
+                             value="{!v.assetGroupTRSearch}" 
+                             placeholder="Search for a TR #" 
+                             onkeyup="{!c.serachAssetsGroup}"></lightning:input>
+        </span>
+        <span style="width:300px !important;float:left;padding-left:5px;">
+            Car File:
+            <lightning:input type="text" 
+                             value="{!v.assetGroupCarFileSearch}" 
+                             placeholder="Search for a Car File" 
+                             onkeyup="{!c.serachAssetsGroup}"></lightning:input>
+        </span>
+        
+        
+                            <br/>
+                            <br/>
+                            <br/>
+                            
+                        
+                        <div style="height: 550px">
+                            
+                        <lightning:datatable
+                                keyField="Id"
+                                selectedRows = "{!v.selectedRowsAssetLines}"             
+                                data="{!v.assetLines}"
+                                columns="{! v.columns }"
+                                enableInfiniteLoading="{!v.enableInfiniteLoadingLine}"
+                                onloadmore="{!c.loadMoreAssetLinesData}"             
+                                onrowselection="{! c.LineSelect}"
+                                onsort="{!c.handleSort1}"
+                         	 	sortedBy="{!v.sortBy}"
+                         		sortedDirection="{!v.sortDirection}"
+                        />
+                        </div>
+                        <aura:if isTrue="{!v.showEditAssetGroup}">
+                            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aura:id="Modalbox" aria-modal="true"
+                                    aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                                    <div class="slds-modal__container">
+                                        <header class="slds-modal__header">
+                                            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close"
+                                                onclick="{!c.closeModal}">
+                                                <lightning:buttonIcon iconName="utility:close" size="small"  variant="brand" alternativeText="close" iconClass="dark" onclick="{!c.closeGroupEditModal}"/>
+                                                <!--<lightning:icon iconName="utility:close" size="xx-small" />-->
+                                                <span class="slds-assistive-text">Close</span>
+                                            </button>
+                                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Edit Asset Group</h2>
+                                        </header>
+                                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                                            <aura:if isTrue="{! v.SpinnerLoaded }">
+                                                <lightning:spinner alternativeText="Loading" />
+                                            </aura:if>
+                                            <lightning:recordEditForm recordId="{!v.editAssetGroupId}" objectApiName="Asset_Group__c">
+                                                <!--<lightning:outPutField aura:id="AssetGroupName" fieldName="Name" />-->
+                                                <lightning:inputField aura:id="GroupName" fieldName="Group_Name__c" />
+                                                <lightning:inputField aura:id="Description" fieldName="Description__c" />
+                                                <!--<lightning:inputField aura:id="TRNumber" fieldName="TR_Number__c" />-->
+                                            </lightning:recordEditForm>
+                                            
+                                        </div>
+                                        
+                                        <footer class="slds-modal__footer">
+                                            <lightning:button variant="destructive" iconName="utility:close" iconPosition="left" label="Cancel" title="Cancel" onclick="{! c.closeGroupEditModal}" />
+                                            <lightning:button variant="brand" iconName="utility:save" iconPosition="left" label="Save" title="Save" onclick="{! c.handleSaveGroupEdit}" />
+                                        </footer>
+                                    </div>
+                                </section>
+                    <div class="slds-backdrop slds-backdrop_open"></div>
+                        </aura:if>
+                        <aura:if isTrue="{!v.showAddAssets}">
+                                <section role="dialog" style="min-width:100%;width:100% !important;margin:auto;" tabindex="-1" aria-labelledby="modal-heading-01" aura:id="Modalbox" aria-modal="true"
+                                    aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                                    <aura:if isTrue="{!v.spinnerLoadedAssetAdd}">
+                                        <lightning:spinner alternativeText="Loading" variant="brand" size="medium"/>
+                                    </aura:if>
+                                    <div class="slds-modal__container" style="min-width:100%;width:100% !important;">
+                                        <header class="slds-modal__header">
+                                            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close"
+                                                onclick="{!c.closeModal}">
+                                                <lightning:buttonIcon iconName="utility:close" size="small"  variant="brand" alternativeText="close" iconClass="dark"/>
+                                                <!--<lightning:icon iconName="utility:close" size="xx-small" />-->
+                                                <span class="slds-assistive-text">Close</span>
+                                            </button>
+                                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">
+                                                Assets to Add
+                                            </h2>
+                                        </header>
+                                        <div class="slds-modal__content" id="modal-content-id-1">
+                                            <aura:if isTrue="{! v.SpinnerLoaded }">
+                                                <lightning:spinner alternativeText="Loading" />
+                                            </aura:if>
+                                            <div style="float:right;">
+                                            </div>
+                                            <br/>
+                                            <br/>
+                                            <div style="height: 500px">
+                                                <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+                                        
+                                           <!-- <div class="slds-size_1-of-2">
+                                                <div class=" slds-box_x-small slds-text-align_center slds-m-around_x-small">
+                
+                                                </div>
+                                            </div>-->
+                                            <div class="slds-size_2-of-2">
+                                                <!--<div class="slds-size_1-of-2" style="float: left;">
+                                                    <div class=" slds-box_x-small slds-text-align_center slds-m-around_x-small">
+                                                        <lightning:input type="text" 
+                                                        value="{!v.assetSearchKey}" 
+                                                        placeholder="Enter Search Keyword." 
+                                                        onchange="{!c.serachAssets}"></lightning:input>
+                                                    </div>
+                                                </div>-->
+                                                <div class="slds-size_2-of-2" style="float: left;text-align: left;">
+                                                    <div style="text-align: left;" class=" slds-box_x-small slds-text-align_center slds-m-around_x-small">
+                                                            <span style="float: right;margin-left: 5px;margin-top: -45px;padding-bottom:10px;">
+                                                                <!--lightning:button iconName="action:check" label="0" onclick="{!c.displayFilters}" variant="brand" /-->
+                                                                <!--lightning:button iconName="action:filter" label="Display Selected" onclick="{!c.displaySelected}" variant="brand"/-->
+                                                                <aura:if isTrue = "{!v.SelectedAssetsLatest.length > 0}">
+                                                                <lightning:button aura:id="asset" iconName="utility:download" label="Export Selected Assets" onclick="{!c.downloadCsv}"  variant="brand"/>
+                                                                </aura:if>
+                                                                <lightning:button iconName="action:refresh" label="Clear Filters" onclick="{!c.clearFilters}" variant="destructive"/>
+                                                            <!--lightning:button variant="brand" 
+                                                                              iconName="utility:sort" 
+                                                                              iconPosition="left" 
+                                                                              label="Days not Moved" 
+                                                                              title="Days not Moved" 
+                                                                              onclick="{! c.sortRecords}" /-->
+                                                            <lightning:button variant="destructive" iconName="utility:close" iconPosition="left" label="Cancel" title="Cancel" onclick="{! c.closeModal}" />
+                                                            <lightning:button variant="brand" iconName="utility:save" iconPosition="left" label="Save" title="Save" onclick="{! c.handleSave}" />
+                                                            </span>
+                                                        <!-- -->
+                                                        <!--Span style="float:left;padding-bottom:10px;">
+                                                        Car File:
+                                                            </Span-->
+                                                        <aura:if isTrue = "{!v.hideFilters}">
+                                                        <span style="width:100px !important;float:left;padding-top:22px;">
+                                                            <lightning:button  iconName="action:check" label="{!'#:'+v.SelectedAssetsLatest.length}" variant="{!v.displaySelected == true ? 'destructive' : 'brand'}"  title="Selected Assets" onclick="{!c.displaySelected}"/>
+                                                        </span>
+                                                        <span style="width:300px !important;float:left;">
+                                                            Asset Name:
+                                                            <lightning:input type="text" 
+                                                                value="{!v.assetSearchKey2}" 
+                                                                placeholder="Search for a Asset Name" 
+                                                                onkeyup="{!c.serachAssets}"></lightning:input>
+                                                        </span>
+                                                        <span style="width:300px !important;float:left;padding-left:10px;padding-bottom:10px;">
+                                                            TR #:
+                                                        <lightning:input type="text" 
+                                                                value="{!v.assetSearchKey3}" 
+                                                                placeholder="Search for a TR #" 
+                                                                onkeyup="{!c.serachAssets}"></lightning:input>
+                                                        </span>
+                                                        <span style="width:300px !important;float:left;padding-left:10px;">
+                                                            Car File:
+															<lightning:input type="text" 
+                                                                value="{!v.assetSearchKey1}" 
+                                                                placeholder="Search for a Car File" 
+                                                                onkeyup="{!c.serachAssets}"></lightning:input>
+                                                         </span>
+                                                        </aura:if>
+
+														 <!--                           
+                                                             <span style="width:300px !important;float:right;"><lightning:input type="text" 
+                                                                value="{!v.assetSearchKey}" 
+                                                                placeholder="Please search as Keyword1|Keyword2|Keyword3.." 
+                                                                onkeyup="{!c.serachAssets}"></lightning:input>
+                                                                <! <lightning:helptext
+                                                                                     content="Please search the Assets as 'Keyword1|Keyword2|Keyword3..'"
+                                                                                     />
+                                                            </span>
+                                                    -->
+                                                     </div>
+                                                </div>
+                                            </div>
+                                      
+                                    		</div>
+                                                    <lightning:datatable 
+                                                        keyField="Id"
+                                                        selectedRows = "{!v.SelectedAssets}"  
+                                                        data="{!v.allAssets}"
+                                                        columns="{! v.Assetcolumns }"
+                                                        onrowselection="{!c.AssettoSave}"
+                                                        enableInfiniteLoading="{!v.enableInfiniteLoading}"
+                         								onloadmore="{!c.loadMoreData}"
+                                                        onsort="{!c.handleSort}"
+                         	 							sortedBy="{!v.sortBy}"
+                         								sortedDirection="{!v.sortDirection}"/>
+                                                      />
+                                                <!--<div class="slds-clearfix">
+                                                <div class="slds-page-header" role="banner">
+                                                    <div class="slds-float_right">            
+                                                        <lightning:button disabled="{!v.prevButton}" variant="brand" aura:id="prevPage" label="Prev" onclick="{!c.handlePrev}" />            
+                                                        <lightning:button disabled="{!v.nextButton}" aura:id="nextPage" variant="brand" label="Next" onclick="{!c.handleNext}"/>
+                                                    </div>
+                                                    <p class="slds-page-header__title">{!v.currentCount} of {!v.totalRows}</p>
+                                                    <p class="slds-page-header__title">Load More</p>
+                                                </div>
+                                            </div>-->
+                                                </div>
+                                        </div>
+                                        <!--
+                                        <footer class="slds-modal__footer">
+                                            <button class="slds-button slds-button_neutral" onclick="{!c.closeModal}">Cancel</button>
+                                            <button class="slds-button slds-button_brand" onclick="{!c.Add}">Send</button>
+                                        </footer>-->
+                                    </div>
+                                </section>
+                    <div class="slds-backdrop slds-backdrop_open"></div>
+                    </aura:if>
+    </lightning:card>
+</aura:component>

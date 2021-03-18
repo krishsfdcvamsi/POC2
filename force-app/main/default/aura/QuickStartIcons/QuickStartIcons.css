@@ -1,0 +1,73 @@
+.THIS {
+}
+
+.THIS .bulletin_board{
+    font-size: 1rem;
+    background: rgb(155,53,38);
+    color: #fff;
+    font-family: Open Sans;
+    height: 35px;
+    padding: 5px;
+}
+
+.THIS img{
+    height: 60px;
+    width: 85px;
+}
+
+.THIS .training_material{
+    margin-top: 15px;
+}
+
+.THIS .submit_request_div{
+    margin-left: 15px;
+}
+
+.THIS .reports_div{
+    margin-left: 45px;
+}
+
+.THIS .submit_case_div{
+    margin-left: 35px;
+}
+
+.THIS .training_div{
+    margin-left: 45px;
+}
+
+.THIS .web_portal_div{
+    margin-left: 35px;
+}
+
+.THIS .submit_request{
+    width: 100px;
+    margin-top: 5px;
+    margin-left: 12px;
+}
+
+.THIS .submit_case{
+    width: 100px;
+    margin-left: 10px;
+    margin-top: 5px;
+}
+
+.THIS .web_portal{
+    width: 100px;
+    margin-left: 10px;
+    margin-top: 12px;
+}
+
+.THIS .reports{
+    margin-left: 8px;
+    margin-top: 10px;
+}
+.THIS .service_request{
+    height: 100px;
+    width: 135px;
+}
+
+@media(min-width: 64em){
+    .THIS .lrg_device{
+        width:10%;
+    }
+}

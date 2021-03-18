@@ -1,0 +1,84 @@
+<aura:component >  
+    <aura:attribute name="readOnly" type="Boolean" default = "false"/>
+    <aura:attribute name="tasks" type="Task"/>
+    <aura:attribute name="rowIndex" type="String"/>
+    <aura:attribute name="userList" type="List" default="[]"/>
+    <aura:attribute name="actionItemStatus" type="List" default="['Not Started','In Progress','Deferred','Completed']"/>
+    <aura:registerEvent name="DeleteRowEvtTask" type="c:DeleteTaskEvt"/> 
+    <aura:registerEvent name="AddRowEvtTask" type="c:AddTaskEvt"/> 
+    
+    <tr class="slds-text-title_caps">
+        <td> 
+            {!v.rowIndex + 1}
+        </td>
+        <td>
+            <!--lightning:textarea type="text" name="input1" value="{!v.actionItem.Description__c}" 
+                                style="width: 300px;" disabled="{!v.actionItem.Id != null}"/-->
+            <lightning:textarea type="text" name="input1" value="{!v.tasks.Description}" 
+                                style="width: 500px;border:none;" disabled="{!v.readOnly}"/>
+        </td>
+        <td>
+            <lightning:input type="checkbox" name="input1" value="{!v.actionItem.Change_Analysis__c}" 
+                             checked="{!v.tasks.Change_Analysis__c}" style="text-align:center;" 
+                             disabled="{!v.readOnly}"/>
+        </td>
+        <td>
+            <lightning:input type="text" name="input1" value="{!v.tasks.Subject}" 
+                             checked="{!v.tasks.Subject}" style="text-align:center;" 
+                             disabled="{!v.readOnly}"/>
+        </td>
+        <td>
+            <!--<c:MultiSelectLookup objectName="User" fieldName="Name" label="World Petroleum Corp:" 
+							iconName="standard:user" placeholder="Search for contact..." 
+							selectedRecords="{!v.userList}"/>-->
+            <aura:if isTrue="{!v.readOnly}">
+                <lightning:input type="text" value="{!v.tasks.Owner.Name}" disabled="true" />
+            </aura:if>
+            <aura:if isTrue="{!!v.readOnly}">
+            <c:CustomLookup objectName="User" value="{!v.tasks.OwnerId}" fieldName="Name" 
+                            iconName="standard:user" disabled="{!v.readOnly}"/>
+            </aura:if>
+        </td>
+        <td>
+            <lightning:input type="date" name="input1" value="{!v.tasks.ActivityDate}" 
+                             style="margin-top: 0rem;width: 120px;" disabled="{!v.readOnly}"/>
+        </td>
+        <td>
+            <!--<lightning:select name="select1" value="{!v.Status__c}">
+                <option value="Draft">Draft</option>
+                <option value="Sent">Sent</option>
+            </lightning:select>-->
+            <aura:if isTrue="{!v.readOnly}">
+                <lightning:input type="text" name="input1" value="{!v.tasks.Status}" disabled="true" />
+            </aura:if>
+            <aura:if isTrue="{!!v.readOnly}">
+            <lightning:select name="select1"  value="{!v.tasks.Status}" >
+                <!--option text="{!v.actionItem.Status__c}" value="{!v.actionItem.Status__c}"/-->
+                <aura:iteration items="{!v.actionItemStatus}" var="item">
+                    <option text="{!item}" value="{!item}" />
+                </aura:iteration>
+            </lightning:select>
+            </aura:if>
+            <!--lightning:input type="text" name="input1" value="{!v.actionItem.Status__c}" disabled="true" 
+                             style="margin-top: -1rem;width:100px"/-->
+        </td>
+        <td>
+            <aura:if isTrue="{!!v.readOnly}">
+                <aura:if isTrue="{!v.rowIndex == 0}">
+                    <a onclick="{!c.AddNewRow}">
+                        <lightning:icon iconName="utility:add" class="slds-icon slds-icon_small" size="small" 
+                                        alternativeText="add"/>
+                        <span class="slds-assistive-text">Add Icon</span>
+                    </a>    
+                    <aura:set attribute="else">
+                        <a onclick="{!c.removeRow}">
+                            <lightning:icon variant="error" iconName="utility:delete" class="slds-icon slds-icon_small" 
+                                            size="small" alternativeText="icon"/>
+                            <span class="slds-assistive-text">Delete Icon</span>
+                        </a>
+                    </aura:set> 
+                </aura:if>
+            </aura:if>
+        </td> 
+    </tr>
+</aura:component>

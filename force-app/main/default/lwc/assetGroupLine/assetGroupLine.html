@@ -1,0 +1,816 @@
+<template>
+    <div if:true={isLoaded} class="slds-is-relative">
+        <lightning-spinner
+            alternative-text="Loading..." variant="brand">
+        </lightning-spinner>
+      </div>
+      <lightning-record-view-form
+                record-id={groupId}
+                object-api-name="Asset_Lines__c">
+        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
+            <thead>
+            <tr class="slds-line-height_reset">
+                <th class="" scope="col">
+                <div class="slds-truncate" title="Question">Question</div>
+                </th>
+                <th class="" scope="col">
+                <div class="slds-truncate" title="Question Description">Question Description</div>
+                </th>
+                <th class="" scope="col">
+                <div class="slds-truncate" title="Question Match">Question Match</div>
+                </th>
+                <th class="" scope="col">
+                <div class="slds-truncate" title="Attribute Match">Attribute Match</div>
+                </th>
+                <th class="" scope="col">
+                <div class="slds-truncate" title="Attribute ID">Attribute ID</div>
+                </th>
+            </tr>
+            </thead> 
+            <tbody>
+                <tr class="slds-hint-parent">
+                    <td data-label="Question">
+                        <lightning-output-field field-name="Qn_1__c" variant="label-hidden">
+                        </lightning-output-field>
+                    </td>
+                    <td data-label="Question Description">
+                        <lightning-output-field field-name="Qn_Desc_1__c" variant="label-hidden">
+                        </lightning-output-field>
+                    </td>
+                    <td data-label="Question Match">
+                        <lightning-output-field field-name="Qn_Match_1__c" variant="label-hidden">
+                        </lightning-output-field>
+                    </td>
+                    <td data-label="Attribute Match">
+                        <lightning-output-field field-name="Attr_Match_1__c" variant="label-hidden">
+                        </lightning-output-field>
+                    </td>
+                    <td data-label="Attribute Id">
+                        <lightning-output-field field-name="AttributeID_1__c" variant="label-hidden">
+                        </lightning-output-field>
+                    </td>
+                </tr>
+                <tr class="slds-hint-parent">
+                    <td data-label="Question">
+                        <lightning-output-field field-name="Qn_2__c" variant="label-hidden">
+                        </lightning-output-field>
+                    </td>
+                    <td data-label="Question Description">
+                        <lightning-output-field field-name="Qn_Desc_2__c" variant="label-hidden">
+                        </lightning-output-field>
+                    </td>
+                    <td data-label="Question Match">
+                        <lightning-output-field field-name="Qn_Match_2__c" variant="label-hidden">
+                        </lightning-output-field>
+                    </td>
+                    <td data-label="Attribute Match">
+                        <lightning-output-field field-name="Attr_Match_2__c" variant="label-hidden">
+                        </lightning-output-field>
+                    </td>
+                    <td data-label="Attribute Id">
+                        <lightning-output-field field-name="AttributeID_2__c" variant="label-hidden">
+                        </lightning-output-field>
+                    </td>
+                </tr>
+                <tr class="slds-hint-parent">
+                    <td data-label="Question">
+                        <lightning-output-field field-name="Qn_3__c" variant="label-hidden">
+                        </lightning-output-field>
+                    </td>
+                    <td data-label="Question Description">
+                        <lightning-output-field field-name="Qn_Desc_3__c" variant="label-hidden">
+                        </lightning-output-field>
+                    </td>
+                    <td data-label="Question Match">
+                        <lightning-output-field field-name="Qn_Match_3__c" variant="label-hidden">
+                        </lightning-output-field>
+                    </td>
+                    <td data-label="Attribute Match">
+                        <lightning-output-field field-name="Attr_Match_3__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                       
+                    </td>
+                    <td data-label="Attribute Id">
+                        <lightning-output-field field-name="AttributeID_3__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                       
+                    </td>
+                </tr>
+                <tr class="slds-hint-parent">
+                    <td data-label="Question">
+                        <lightning-output-field field-name="Qn_4__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                    </td>
+                    <td data-label="Question Description">
+                        <lightning-output-field field-name="Qn_Desc_4__c" variant="label-hidden">
+                        </lightning-output-field>
+                       
+                       
+                    </td>
+                    <td data-label="Question Match">
+                        <lightning-output-field field-name="Qn_Match_4__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                        
+                    </td>
+                    <td data-label="Attribute Match">
+                        <lightning-output-field field-name="Attr_Match_4__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                       
+                    </td>
+                    <td data-label="Attribute Id">
+                        <lightning-output-field field-name="AttributeID_4__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                       
+                    </td>
+                </tr>
+                <tr class="slds-hint-parent">
+                    <td data-label="Question">
+                        <lightning-output-field field-name="Qn_5__c" variant="label-hidden">
+                        </lightning-output-field>
+                       
+                        
+                    </td>
+                    <td data-label="Question Description">
+                        <lightning-output-field field-name="Qn_Desc_5__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                       
+                    </td>
+                    <td data-label="Question Match">
+                        <lightning-output-field field-name="Qn_Match_5__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                        
+                    </td>
+                    <td data-label="Attribute Match">
+                        <lightning-output-field field-name="Attr_Match_5__c" variant="label-hidden">
+                        </lightning-output-field>
+                       
+                       
+                    </td>
+                    <td data-label="Attribute Id">
+                        <lightning-output-field field-name="AttributeID_5__c" variant="label-hidden">
+                        </lightning-output-field>
+                       
+                       
+                    </td>
+                </tr>
+                <tr class="slds-hint-parent">
+                    <td data-label="Question">
+                        <lightning-output-field field-name="Qn_6__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                        
+                    </td>
+                    <td data-label="Question Description">
+                        <lightning-output-field field-name="Qn_Desc_6__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                       
+                    </td>
+                    <td data-label="Question Match">
+                        <lightning-output-field field-name="Qn_Match_6__c" variant="label-hidden">
+                        </lightning-output-field>
+                       
+                        
+                    </td>
+                    <td data-label="Attribute Match">
+                        <lightning-output-field field-name="Attr_Match_6__c" variant="label-hidden">
+                        </lightning-output-field>
+                       
+                       
+                    </td>
+                    <td data-label="Attribute Id">
+                        <lightning-output-field field-name="AttributeID_6__c" variant="label-hidden">
+                        </lightning-output-field>
+                       
+                       
+                    </td>
+                </tr>
+                <tr class="slds-hint-parent">
+                    <td data-label="Question">
+                        <lightning-output-field field-name="Qn_7__c" variant="label-hidden">
+                        </lightning-output-field>
+                       
+                        
+                    </td>
+                    <td data-label="Question Description">
+                        <lightning-output-field field-name="Qn_Desc_7__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                       
+                    </td>
+                    <td data-label="Question Match">
+                        <lightning-output-field field-name="Qn_Match_7__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                        
+                    </td>
+                    <td data-label="Attribute Match">
+                        <lightning-output-field field-name="Attr_Match_7__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                       
+                    </td>
+                    <td data-label="Attribute Id">
+                        <lightning-output-field field-name="AttributeID_7__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                       
+                    </td>
+                </tr>
+                <tr class="slds-hint-parent">
+                    <td data-label="Question">
+                        <lightning-output-field field-name="Qn_8__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                        
+                    </td>
+                    <td data-label="Question Description">
+                        <lightning-output-field field-name="Qn_Desc_8__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                    </td>
+                    <td data-label="Question Match">
+                        <lightning-output-field field-name="Qn_Match_8__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                        
+                    </td>
+                    <td data-label="Attribute Match">
+                        <lightning-output-field field-name="Attr_Match_8__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                       
+                    </td>
+                    <td data-label="Attribute Id">
+                        <lightning-output-field field-name="AttributeID_8__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                       
+                    </td>
+                </tr>
+                <tr class="slds-hint-parent">
+                    <td data-label="Question">
+                        <lightning-output-field field-name="Qn_9__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                        
+                    </td>
+                    <td data-label="Question Description">
+                        <lightning-output-field field-name="Qn_Desc_9__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                       
+                    </td>
+                    <td data-label="Question Match">
+                        <lightning-output-field field-name="Qn_Match_9__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                    </td>
+                    <td data-label="Attribute Match">
+                        <lightning-output-field field-name="Attr_Match_9__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                       
+                    </td>
+                    <td data-label="Attribute Id">
+                        <lightning-output-field field-name="AttributeID_9__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                       
+                    </td>
+                </tr>
+                <tr class="slds-hint-parent">
+                    <td data-label="Question">
+                        <lightning-output-field field-name="Qn_10__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                        
+                    </td>
+                    <td data-label="Question Description">
+                        <lightning-output-field field-name="Qn_Desc_10__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                       
+                    </td>
+                    <td data-label="Question Match">
+                        <lightning-output-field field-name="Qn_Match_10__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                        
+                    </td>
+                    <td data-label="Attribute Match">
+                        <lightning-output-field field-name="Attr_Match_10__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                    </td>
+                    <td data-label="Attribute Id">
+                        <lightning-output-field field-name="AttributeID_10__c" variant="label-hidden">
+                        </lightning-output-field>
+                       
+                       
+                    </td>
+                </tr>
+                <tr class="slds-hint-parent">
+                    <td data-label="Question">
+                        <lightning-output-field field-name="Qn_11__c" variant="label-hidden">
+                        </lightning-output-field>
+                       
+                        
+                    </td>
+                    <td data-label="Question Description">
+                        <lightning-output-field field-name="Qn_Desc_11__c" variant="label-hidden">
+                        </lightning-output-field>
+                       
+                       
+                    </td>
+                    <td data-label="Question Match">
+                        <lightning-output-field field-name="Qn_Match_11__c" variant="label-hidden">
+                        </lightning-output-field>
+                       
+                        
+                        
+                    </td>
+                    <td data-label="Attribute Match">
+                        <lightning-output-field field-name="Attr_Match_11__c" variant="label-hidden">
+                        </lightning-output-field>
+                       
+                    </td>
+                    <td data-label="Attribute Id">
+                        <lightning-output-field field-name="AttributeID_11__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                       
+                    </td>
+                </tr>
+                <tr class="slds-hint-parent">
+                    <td data-label="Question">
+
+                        <lightning-output-field field-name="Qn_12__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                        
+                    </td>
+                    <td data-label="Question Description">
+                        <lightning-output-field field-name="Qn_Desc_12__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                       
+                    </td>
+                    <td data-label="Question Match">
+                        <lightning-output-field field-name="Qn_Match_12__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                        
+                    </td>
+                    <td data-label="Attribute Match">
+                        <lightning-output-field field-name="Attr_Match_12__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                       
+                    </td>
+                    <td data-label="Attribute Id">
+                        <lightning-output-field field-name="AttributeID_12__c" variant="label-hidden">
+                        </lightning-output-field>
+
+                       
+                    </td>
+                </tr>
+                <tr class="slds-hint-parent">
+                    <td data-label="Question">
+                        <lightning-output-field field-name="Qn_13__c" variant="label-hidden">
+                        </lightning-output-field>
+
+                        
+                    </td>
+                    <td data-label="Question Description">
+                        <lightning-output-field field-name="Qn_Desc_13__c" variant="label-hidden">
+                        </lightning-output-field>
+                       
+                    </td>
+                    <td data-label="Question Match">
+                        <lightning-output-field field-name="Qn_Match_13__c" variant="label-hidden">
+                        </lightning-output-field>
+                       
+                        
+                    </td>
+                    <td data-label="Attribute Match">
+                        <lightning-output-field field-name="Attr_Match_13__c" variant="label-hidden">
+                        </lightning-output-field>
+
+                       
+                    </td>
+                    <td data-label="Attribute Id">
+                        <lightning-output-field field-name="AttributeID_13__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                       
+                    </td>
+                </tr>
+                <tr class="slds-hint-parent">
+                    <td data-label="Question">
+                        <lightning-output-field field-name="Qn_14__c" variant="label-hidden">
+                        </lightning-output-field>
+                       
+                        
+                    </td>
+                    <td data-label="Question Description">
+
+                        <lightning-output-field field-name="Qn_Desc_14__c" variant="label-hidden">
+                        </lightning-output-field>
+                       
+                    </td>
+                    <td data-label="Question Match">
+                        <lightning-output-field field-name="Qn_Match_14__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                        
+                    </td>
+                    <td data-label="Attribute Match">
+
+                        <lightning-output-field field-name="Attr_Match_14__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                       
+                    </td>
+                    <td data-label="Attribute Id">
+
+                        <lightning-output-field field-name="AttributeID_14__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                       
+                    </td>
+                </tr>
+                <tr class="slds-hint-parent">
+                    <td data-label="Question">
+                        <lightning-output-field field-name="Qn_15__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                        
+                    </td>
+                    <td data-label="Question Description">
+                        <lightning-output-field field-name="Qn_Desc_15__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                        
+                       
+                    </td>
+                    <td data-label="Question Match">
+                        <lightning-output-field field-name="Qn_Match_15__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                    </td>
+                    <td data-label="Attribute Match">
+                        <lightning-output-field field-name="Attr_Match_15__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                       
+                    </td>
+                    <td data-label="Attribute Id">
+                        <lightning-output-field field-name="AttributeID_15__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                       
+                    </td>
+                </tr>
+                <tr class="slds-hint-parent">
+                    <td data-label="Question">
+                        <lightning-output-field field-name="Qn_16__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                        
+                    </td>
+                    <td data-label="Question Description">
+                        <lightning-output-field field-name="Qn_Desc_16__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                       
+                    </td>
+                    <td data-label="Question Match">
+                        <lightning-output-field field-name="Qn_Match_16__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                        
+                    </td>
+                    <td data-label="Attribute Match">
+                        <lightning-output-field field-name="Attr_Match_16__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                       
+                    </td>
+                    <td data-label="Attribute Id">
+                        <lightning-output-field field-name="AttributeID_16__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                       
+                    </td>
+                </tr>
+                <tr class="slds-hint-parent">
+                    <td data-label="Question">
+                        <lightning-output-field field-name="Qn_17__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                        
+                    </td>
+                    <td data-label="Question Description">
+                        <lightning-output-field field-name="Qn_Desc_17__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                       
+                    </td>
+                    <td data-label="Question Match">
+                        <lightning-output-field field-name="Qn_Match_17__c" variant="label-hidden">
+                        </lightning-output-field>
+                      
+                        
+                    </td>
+                    <td data-label="Attribute Match">
+                        <lightning-output-field field-name="Attr_Match_17__c" variant="label-hidden">
+                        </lightning-output-field>
+                      
+                       
+                    </td>
+                    <td data-label="Attribute Id">
+                        <lightning-output-field field-name="AttributeID_17__c" variant="label-hidden">
+                        </lightning-output-field>
+                      
+                       
+                    </td>
+                </tr>
+                <tr class="slds-hint-parent">
+                    <td data-label="Question">
+                        <lightning-output-field field-name="Qn_18__c" variant="label-hidden">
+                        </lightning-output-field>
+                      
+                        
+                    </td>
+                    <td data-label="Question Description">
+                        <lightning-output-field field-name="Qn_Desc_18__c" variant="label-hidden">
+                        </lightning-output-field>
+                      
+                       
+                    </td>
+                    <td data-label="Question Match">
+
+                        <lightning-output-field field-name="Qn_Match_18__c" variant="label-hidden">
+                        </lightning-output-field>
+                      
+                        
+                        
+                    </td>
+                    <td data-label="Attribute Match">
+
+                        <lightning-output-field field-name="Attr_Match_18__c" variant="label-hidden">
+                        </lightning-output-field>
+                      
+                        
+                       
+                    </td>
+                    <td data-label="Attribute Id">
+
+                        <lightning-output-field field-name="AttributeID_18__c" variant="label-hidden">
+                        </lightning-output-field>
+                      
+                       
+                    </td>
+                </tr>
+                <tr class="slds-hint-parent">
+                    <td data-label="Question">
+                        <lightning-output-field field-name="Qn_19__c" variant="label-hidden">
+                        </lightning-output-field>
+                      
+                        
+                    </td>
+                    <td data-label="Question Description">
+                        <lightning-output-field field-name="Qn_Desc_19__c" variant="label-hidden">
+                        </lightning-output-field>
+                      
+                       
+                    </td>
+                    <td data-label="Question Match">
+                        <lightning-output-field field-name="Qn_Match_19__c" variant="label-hidden">
+                        </lightning-output-field>
+                      
+                        
+                    </td>
+                    <td data-label="Attribute Match">
+                        <lightning-output-field field-name="Attr_Match_19__c" variant="label-hidden">
+                        </lightning-output-field>
+                      
+                       
+                    </td>
+                    <td data-label="Attribute Id">
+                        <lightning-output-field field-name="AttributeID_19__c" variant="label-hidden">
+                        </lightning-output-field>
+                      
+                       
+                    </td>
+                </tr>
+                <tr class="slds-hint-parent">
+                    <td data-label="Question">
+                        <lightning-output-field field-name="Qn_20__c" variant="label-hidden">
+                        </lightning-output-field>
+                      
+                        
+                    </td>
+                    <td data-label="Question Description">
+                        <lightning-output-field field-name="Qn_Desc_20__c" variant="label-hidden">
+                        </lightning-output-field>
+                      
+                       
+                    </td>
+                    <td data-label="Question Match">
+                        <lightning-output-field field-name="Qn_Match_20__c" variant="label-hidden">
+                        </lightning-output-field>
+                      
+                        
+                    </td>
+                    <td data-label="Attribute Match">
+                        <lightning-output-field field-name="Attr_Match_20__c" variant="label-hidden">
+                        </lightning-output-field>
+                      
+                       
+                    </td>
+                    <td data-label="Attribute Id">
+                        <lightning-output-field field-name="AttributeID_20__c" variant="label-hidden">
+                        </lightning-output-field>
+                      
+                       
+                    </td>
+                </tr>
+                <tr class="slds-hint-parent">
+                    <td data-label="Question">
+
+                        <lightning-output-field field-name="Qn_21__c" variant="label-hidden">
+                        </lightning-output-field>
+                      
+                        
+                    </td>
+                    <td data-label="Question Description">
+                        <lightning-output-field field-name="Qn_Desc_21__c" variant="label-hidden">
+                        </lightning-output-field>
+                      
+                       
+                    </td>
+                    <td data-label="Question Match">
+                        <lightning-output-field field-name="Qn_Match_21__c" variant="label-hidden">
+                        </lightning-output-field>
+                      
+                        
+                    </td>
+                    <td data-label="Attribute Match">
+                        <lightning-output-field field-name="Attr_Match_21__c" variant="label-hidden">
+                        </lightning-output-field>
+                      
+                       
+                    </td>
+                    <td data-label="Attribute Id">
+                        <lightning-output-field field-name="AttributeID_21__c" variant="label-hidden">
+                        </lightning-output-field>
+                      
+                       
+                       
+                    </td>
+                </tr>
+                <tr class="slds-hint-parent">
+                    <td data-label="Question">
+                        <lightning-output-field field-name="Qn_22__c" variant="label-hidden">
+                        </lightning-output-field>
+                      
+                        
+                    </td>
+                    <td data-label="Question Description">
+                        <lightning-output-field field-name="Qn_Desc_22__c" variant="label-hidden">
+                        </lightning-output-field>
+                      
+                       
+                    </td>
+                    <td data-label="Question Match">
+                        <lightning-output-field field-name="Qn_Match_22__c" variant="label-hidden">
+                        </lightning-output-field>
+                      
+                        
+                    </td>
+                    <td data-label="Attribute Match">
+                        <lightning-output-field field-name="Attr_Match_22__c" variant="label-hidden">
+                        </lightning-output-field>
+                      
+                       
+                    </td>
+                    <td data-label="Attribute Id">
+                        <lightning-output-field field-name="AttributeID_22__c" variant="label-hidden">
+                        </lightning-output-field>
+                      
+                       
+                       
+                    </td>
+                </tr>
+                <tr class="slds-hint-parent">
+                    <td data-label="Question">
+                        <lightning-output-field field-name="Qn_23__c" variant="label-hidden">
+                        </lightning-output-field>
+                      
+                        
+                    </td>
+                    <td data-label="Question Description">
+                        <lightning-output-field field-name="Qn_Desc_23__c" variant="label-hidden">
+                        </lightning-output-field>
+                      
+                       
+                    </td>
+                    <td data-label="Question Match">
+                        <lightning-output-field field-name="Qn_Match_23__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                        
+                    </td>
+                    <td data-label="Attribute Match">
+                        <lightning-output-field field-name="Attr_Match_23__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                       
+                    </td>
+                    <td data-label="Attribute Id">
+                        <lightning-output-field field-name="AttributeID_23__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                        
+                       
+                    </td>
+                </tr>
+                <tr class="slds-hint-parent">
+                    <td data-label="Question">
+                        <lightning-output-field field-name="Qn_24__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                        
+                        
+                    </td>
+                    <td data-label="Question Description">
+                        <lightning-output-field field-name="Qn_Desc_24__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                       
+                    </td>
+                    <td data-label="Question Match">
+                        <lightning-output-field field-name="Qn_Match_24__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                        
+                    </td>
+                    <td data-label="Attribute Match">
+                        <lightning-output-field field-name="Attr_Match_24__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                       
+                    </td>
+                    <td data-label="Attribute Id">
+                        <lightning-output-field field-name="AttributeID_24__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                       
+                    </td>
+                </tr>
+                <tr class="slds-hint-parent">
+                    <td data-label="Question">
+                        <lightning-output-field field-name="Qn_25__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                        
+                    </td>
+                    <td data-label="Question Description">
+                        <lightning-output-field field-name="Qn_Desc_25__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                       
+                    </td>
+                    <td data-label="Question Match">
+                        <lightning-output-field field-name="Qn_Match_25__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                        
+                    </td>
+                    <td data-label="Attribute Match">
+                        <lightning-output-field field-name="Attr_Match_25__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                       
+                    </td>
+                    <td data-label="Attribute Id">
+                        <lightning-output-field field-name="AttributeID_25__c" variant="label-hidden">
+                        </lightning-output-field>
+                        
+                       
+                    </td>
+                </tr>
+            </tbody>
+         </table>
+        </lightning-record-view-form>
+</template>

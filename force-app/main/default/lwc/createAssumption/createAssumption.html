@@ -1,0 +1,33 @@
+<template>
+    <div if:true={isLoaded}>
+        <lightning-spinner alternative-text="Loading..." size="medium"></lightning-spinner>
+    </div>
+    <lightning-record-edit-form if:true={listRiderColumns} class="createAssumptionForm" object-api-name="Assumption__c" onsubmit={handleSubmit}>
+        <lightning-card if:true={listRiderData} title="Create Assumption" icon-name="standard:product_transfer">
+            <div slot="actions">
+                <lightning-button label="Cancel" onclick={handleCancel}></lightning-button>
+                <lightning-button label="Submit" type="submit" variant="brand" class="slds-var-m-left_x-small submitButton"></lightning-button>
+            </div>
+            <div class="slds-form" role="list">
+                <div class="slds-form__row">
+                    <div class="slds-form__item" role="listitem">
+                        <div class="slds-form-element slds-form-element_stacked slds-is-editing">
+                            <lightning-input-field field-name="Source_Account__c" value={recordId} disabled></lightning-input-field>
+                        </div>
+                    </div>
+                    <div class="slds-form__item" role="listitem">
+                        <div class="slds-form-element slds-form-element_stacked slds-is-editing">
+                            <lightning-input-field field-name="Destination_Account__c" onchange={handleDestinationAccountChange}></lightning-input-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </lightning-card>
+    </lightning-record-edit-form>
+    <lightning-datatable class="riderTable" key-field="Id" suppress-bottom-bar="true" data={listRiderData} columns={listRiderColumns} oncellchange={handleCellChange}></lightning-datatable>
+    <br />
+    <div if:true={listRiderColumns} class="slds-align_absolute-center">
+        <lightning-button label="Cancel" onclick={handleCancel}></lightning-button>
+        <lightning-button label="Submit" variant="brand" class="slds-var-m-left_x-small" onclick={handleCustomSubmit}></lightning-button>
+    </div>
+</template>

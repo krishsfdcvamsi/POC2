@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata" fqn="showRelatedToRecordId">
+    <apiVersion>48.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Show Files Related To Record</masterLabel>
+    <targets>
+        <target>lightning__RecordPage</target>
+        <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage">
+            <property label="Height in rem" name="heightInRem" type="Integer" default="40"/>
+            <property label="Community Page?" name="isCommunity" type="Boolean" default="false"/>
+        </targetConfig>
+        <targetConfig targets="lightningCommunity__Default">
+            <property label="Record ID" name="recordId" type="String" description="Automatically bind the page's record id to the component variable to {!recordId} "/>
+            <property label="Community Page?" name="isCommunity" type="Boolean" default="true"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

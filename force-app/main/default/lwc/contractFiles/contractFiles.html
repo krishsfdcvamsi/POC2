@@ -1,0 +1,25 @@
+<template>
+<lightning-card title="Contract Files" icon-name="standard:file">
+    <template if:true={fileID}>
+        <ul class="slds-m-around_medium">
+            <div class="list-first"></div>
+            <template for:each={fileList} for:item="f">
+            <li key={f.value}>
+                <lightning-tile>
+                    <lightning-button variant="Base" label={f.label} onclick={setFileID} value={f.value}></lightning-button>
+               </lightning-tile>
+            </li>
+            </template>
+        </ul>
+    </template>
+
+    <template if:false={fileID}>
+        <lightning-card><div class="slds-text-align_center">No related file found.</div></lightning-card>
+    </template>
+
+    <!-- Conditionally render the error in error component -->
+    <template if:true={error}>
+        <c-error-panel errors={error}></c-error-panel>
+    </template>
+</lightning-card>
+</template>

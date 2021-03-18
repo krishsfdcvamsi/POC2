@@ -1,0 +1,128 @@
+<template>
+    <lightning-card>
+            <div if:true={showSpiner}>
+                <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+            </div>
+            <div if:true={showErrorMessage}>
+                <div class="slds-notify slds-notify_alert slds-theme_alert-texture" style={msgBackgrund} role="alert">
+                    <span class="slds-assistive-text">error</span>
+                    <h2>{errorMessage}</h2>
+                    <div class="slds-notify__close">
+                        <button class="slds-button slds-button_icon slds-button_icon-inverse" title="Close">
+                            <lightning-button-icon icon-name="utility:close"  size="medium"  
+                             alternative-text="Close" class="slds-m-left_xx-small" 
+                             onclick={handleCloseError}></lightning-button-icon>
+                            <span class="slds-assistive-text">Close</span>
+                          </button> 
+                      </div>
+                </div>
+                
+            </div>
+            <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+                        
+                <div class="slds-size_1-of-2">
+                    <div class=" slds-box_x-small slds-text-align_center slds-m-around_x-small">
+
+                    </div>
+                </div>
+                <div class="slds-size_1-of-2">
+                    
+                    <div class="slds-size_1-of-2" style="float:left;">
+                        <div class="slds-box_x-small slds-text-align_center slds-m-around_x-small">
+                            <lightning-input type="text" placeholder="Enter Keyword1|Keyword2|Keyword3." onchange={getSeachKey}></lightning-input>
+                        </div>
+                        
+                    </div>
+                    <div class="slds-size_1-of-2" style="float:left;text-align:left;">
+                        <div style="text-align: left;" class=" slds-box_x-small slds-text-align_center slds-m-around_x-small">
+                            <div if:true={showAssets}>
+                                <lightning-button variant="brand" label="Update Group" title="Update Group" onclick={handleUpdateGroupClick} class="slds-m-right_x-small"></lightning-button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+          
+            </div>
+            <div if:true={showAssets}>
+                <div style="height:420px">
+                        <lightning-datatable
+                            data={assetsData}
+                            columns={columns}
+                            key-field="Id"
+                            show-row-number-column
+                            enable-infinite-loading={infininityLoading} 
+                            onloadmore={loadNewMoreData}
+                            onrowselection={getSelectedAssetLines}>
+                        >
+                    </lightning-datatable>
+                </div>       
+                <!--<div style="height: 10rem;">
+                    <lightning-datatable
+                            key-field="id"
+                            data={lstTempAllAssets}
+                            columns={columns}
+                            enable-infinite-loading={isLoaded}
+                            onloadmore ={loadMoreData}
+                            onrowselection={getSelectedAssetLines}>
+                    </lightning-datatable>
+                </div>   -->
+            </div>
+            <div if:true={showPopup}>
+                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container">
+                      <header class="slds-modal__header">
+                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close">
+                            <lightning-button-icon  variant="brand" icon-name="utility:close"  size="medium"  
+                             alternative-text="Close" class="slds-m-left_xx-small" onclick={handleClosePopUp}></lightning-button-icon>
+                            <span class="slds-assistive-text">Close</span>
+                          </button> 
+                       
+                        <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Assest Group</h2>
+                      </header>
+                      <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+
+                        <c-look-up
+                        object-name="Asset_Group__c"
+                        field-name='Name'
+                        icon-name=""
+                        parent-field-name ='Quote_Line__r.SBQQ__Quote__c'
+                        parent-id={recordId}
+                        onselected={lookupSelected}
+                        ></c-look-up>
+                            <!-- <lightning-record-edit-form object-api-name="Asset_Lines__c">
+                                <lightning-input-field data-assetgroupid field-name="Asset_Group__c" ></lightning-input-field>
+                                </lightning-record-edit-form>
+                            --> 
+                            <p style="height: 100px;"></p>
+                            <div if:true={showPopupSpiner}>
+                                <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                            </div>
+                            <div if:true={showPopupErrorMsg}>
+                                <div class="slds-notify slds-notify_alert slds-theme_alert-texture" style={msgBackgrund} role="alert">
+                                    <span class="slds-assistive-text">error</span>
+                                    <h2>{errorPopUpMessage}</h2>
+                                    <div class="slds-notify__close">
+                                        <button class="slds-button slds-button_icon slds-button_icon-inverse" title="Close">
+                                            <lightning-button-icon icon-name="utility:close"  size="medium"  
+                                             alternative-text="Close" class="slds-m-left_xx-small" 
+                                             onclick={handleClosePopUp}></lightning-button-icon>
+                                            <span class="slds-assistive-text">Close</span>
+                                          </button> 
+                                      </div>
+                                </div>
+                                
+                            </div>
+                      </div>
+                      <footer class="slds-modal__footer">
+                        <lightning-button variant="destructive" label="Close" title="Close" onclick={handleClosePopUp} class="slds-m-left_x-small"></lightning-button>
+                        <lightning-button variant="brand" label="Update" title="Update" onclick={handleUpdateClick} class="slds-m-left_x-small"></lightning-button>
+                      </footer>
+                    </div>
+                  </section>
+                  <div class="slds-backdrop slds-backdrop_open"></div>
+
+            </div>
+</lightning-card>
+</template>

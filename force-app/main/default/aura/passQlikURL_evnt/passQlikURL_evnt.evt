@@ -1,0 +1,4 @@
+<aura:event type="APPLICATION" description="URL template" >
+    <aura:attribute name="urlString" type="String" />
+    <aura:attribute name="headerString" type="String" />
+</aura:event>

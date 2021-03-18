@@ -1,0 +1,3 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,force:hasRecordId" access="global">
+  <iframe src="{! '/apex/RFO_DeliveryTracking_Qlik_Project?Id=' + v.recordId}" width="100%" height="800px;" frameBorder="0"/>
+</aura:component>

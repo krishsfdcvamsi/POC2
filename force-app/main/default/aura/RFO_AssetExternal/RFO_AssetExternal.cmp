@@ -1,0 +1,104 @@
+<aura:component controller="RFO_ExternalObjectFilterController"  implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+    <aura:attribute name="ExtObject" type="object" /> 
+    <aura:attribute name="count" type="string" default="0"/>
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="ID" type="String" />
+    <aura:attribute name="SpinnerTag" type="boolean" default='true' />
+    <aura:attribute name="truthy" type="boolean" default='false' />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+     <aura:handler event="aura:doneWaiting" action="{!c.hideSpinner}"/>
+    <aura:handler event="aura:waiting" action="{!c.showSpinner}"/>
+    <div >
+             <div class="slds-theme_default slds-grid slds-wrap slds-p-left_small">
+				<div class="slds-size_1-of-2"> 
+ <div class='slds-p-top_small'>
+					<p><label>Current Commodity Start Date</label> </p>
+					<ui:outputText value="{!v.ExtObject.RFO_CurrentCommodityStartDate__c}"/>
+					</div>			
+							<div class=''>
+					<p><label>GRL</label> </p>
+					<ui:outputText value="{!v.ExtObject.RFO_GRL__c}"/>
+					</div>
+					
+					<div class='slds-p-top_small'>
+					<p><label>Light Weight</label> </p>
+					<ui:outputText value="{!v.ExtObject.RFO_LightWeight__c}"/>
+					</div>
+					<div class='slds-p-top_small'>
+					<p><label>Designated Capacity</label> </p>
+					<ui:outputText value="{!v.ExtObject.RFO_DesignatedCapacity__c}"/>
+					</div>
+					<div class='slds-p-top_small'>
+					<p><label>Actual Capacity</label> </p>
+					<ui:outputText value="{!v.ExtObject.RFO_ActualCapacity__c}"/>
+					</div>
+					<div class='slds-p-top_small'>
+					<p><label>TRN Type</label> </p>
+					<ui:outputText value="{!v.ExtObject.RFO_TRType__c}"/>
+					</div>
+					<div class='slds-p-top_small'>
+					<p><label>TRN #</label> </p>
+					<ui:outputText value="{!v.ExtObject.RFO_TRNumber__c}"/>
+					</div>			
+					
+					  <div class='slds-p-top_small'>
+					<p><label>Ship Date</label> </p>
+					<ui:outputText value="{!v.ExtObject.RFO_ShipDate__c}"/>
+					</div>
+					  <div class='slds-p-top_small'>
+					<p><label>Origin</label> </p>
+					<ui:outputText value="{!v.ExtObject.RFO_Origin__c}"/>
+					</div>
+					 <div class='slds-p-top_small'>
+					<p><label>Destination</label> </p>
+					<ui:outputText value="{!v.ExtObject.RFO_Destination__c}"/>
+					</div>
+							  
+				   
+				</div>
+				<aura:if isTrue="{!v.SpinnerTag}">
+					<lightning:spinner variant="brand"/>
+				</aura:if>
+				<div class="slds-size_1-of-2 slds-p-left_medium">  
+				  <div class='slds-p-top_small'>
+					<p><label>Previous Commodity Start Date</label> </p>
+                    <ui:outputText value="{!v.ExtObject.RFO_PreviousCommodityStartDate__c}"/>
+					</div>
+					<div class='slds-p-top_small'>
+					<p><label>Stencil Spec</label> </p>
+					<ui:outputText value="{!v.ExtObject.RFO_StencilSpec__c}"/>
+					</div>
+					<div class='slds-p-top_small'>
+					<p><label>Date Built</label> </p>
+					<ui:outputText value="{!v.ExtObject.RFO_DateBuilt__c}"/>
+					</div>
+					<div class='slds-p-top_small' >
+					<p><label>Car Condition</label> </p>
+					<ui:outputText value="{!v.ExtObject.RFO_CarCondition__c}" />
+					</div>
+					<div class='slds-p-top_small'>
+					<p><label>RA Type</label> </p>
+					<ui:outputText value="{!v.ExtObject.RFO_RAType__c}"/>
+					</div>
+					 <div class='slds-p-top_small'>
+					<p><label>RA #</label> </p>
+					<ui:outputText value="{!v.ExtObject.RFO_RANumber__c}"/>
+					</div>					
+					 <div class='slds-p-top_small'>
+					<p><label>Last Seen Location</label> </p>
+					<ui:outputText value="{!v.ExtObject.RFO_EventStation__c}"/>
+					</div>
+					 <div class='slds-p-top_small'>
+					<p><label>Last Seen Date</label> </p>
+					<ui:outputText value="{!v.ExtObject.RFO_StatusDate__c}"/>
+					</div>
+					 <div class='slds-p-top_small'>
+					<p><label>Loaded or Empty</label> </p>
+					<ui:outputText value="{!v.ExtObject.RFO_LE__c}"/>
+					</div>
+				
+								 
+				</div>
+			</div>
+    </div>
+</aura:component>

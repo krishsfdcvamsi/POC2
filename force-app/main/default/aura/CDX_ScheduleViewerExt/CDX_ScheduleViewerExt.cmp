@@ -1,0 +1,186 @@
+<aura:component controller="CDX_ProjectFindScheduleExt"  implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:appHostable,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction,force:hasSObjectName" access="global" >
+    
+    <aura:attribute name="ProjectID" type="String"/>
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="valueInput" type="String" default=""/>
+    
+    <aura:attribute name="ProjectObject" type="RFO_Projects__c"/>
+    <aura:attribute name="Schedules" type="CDX_Schedule__c[]"/>
+    <aura:attribute name="Everything" type="List"/>
+    <aura:attribute name="Pends" type="Boolean"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <aura:if isTrue="{!v.Pends}">
+        <lightning:textarea aura:id="inputField" 
+                            type="text" value="" 
+                            label="Please Enter Comments"
+                            />
+
+        <div align="center" style="padding-top: 4px"> 
+            <lightning:button variant="neutral" label="Approve" onclick="{!c.approve }" />
+            <lightning:button variant="neutral" label="Reject" onclick="{!c.reject }" />
+            <br></br>&nbsp;
+        </div>
+    </aura:if>
+    
+    <div class="slds-p-bottom_x-small slds-grid slds-grid_align-end slds-wrap">
+        <lightning:button class="slds-col" name="Export Button" label="Export Project Schedules" iconName="utility:download" onclick="{! c.downloadCsv }"/>
+    </div>
+    
+    <aura:iteration items="{!v.Schedules}" var="a" indexVar="akey">
+        <article class="slds-card">
+            <div>
+                <div class="slds-p-bottom_small" style="float:right">
+                	</div>
+                   
+                <!-- Desktop View -->
+               
+                <aura:if isTrue="{!$Browser.formFactor != 'PHONE'}">
+                    
+                    <div class="slds-page-header slds-page-header_record-home" style="background-color: #ECEBEA">
+                        <div class="slds-page-header__row">
+                            <div class="slds-page-header__col-title">
+                                <div class="">
+                                    <div class="">
+                                        <!-- Icon -->
+                                    </div>
+                                    <div class="" >
+                                        <div class="slds-page-header__name">
+                                            <div class="slds-page-header__name-title">
+                                                <h1>
+                                                    <span class="slds-page-header__title slds-hyphenate">Shop Name</span>
+                                                    <span class="slds-page-header__title slds-truncate" title="Name">{!a.CDX_Shop_Name__c}</span>
+                                                </h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-page-header__col-actions">
+                                <div class="slds-page-header__controls">
+                                    <div class="slds-page-header__control">
+                                        <!-- Follow Button -->
+                                    </div>
+                                    <div class="slds-page-header__control">
+                                        <!-- Record Edit Buttons -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="slds-page-header__row slds-page-header__row_gutters">
+                            <div class="slds-page-header__col-details">
+                                <ul class="slds-list_horizontal">
+                                    <li class="slds-page-header__detail-item slds-size_1-of-3">
+                                        <div class="slds-text-title slds-truncate" title="Shop Location"><b>Shop Location</b></div>
+                                        <div class="" title="Shop Location Data">{!a.CDX_Shop_Location__c}</div>
+                                    </li>
+                                    <li class="slds-page-header__detail-item slds-size_1-of-3 slds-p-left_x-small">
+                                        <div class="slds-text-title slds-truncate" title="Publish Date"><b>Publish Date</b></div>
+                                        <div class="slds-truncate" title="Publish Date Data">
+                                            <ui:outputDate value="{!a.CDX_Published_Date__c}" format= "MM/DD/YYYY"/>
+                                            </div>
+                                    </li>
+                                    <li class="slds-page-header__detail-item slds-size_1-of-3 slds-p-left_x-small">
+                                        <div class="slds-text-title slds-truncate" title="Approved/Rejected Date"><b>Approved/Rejected Date</b></div>
+                                        <div class="slds-truncate" title="Approved By Data">
+                                        <ui:outputDate value="{!a.CDX_Approved_Rejected_Date__c}" format= "MM/DD/YYYY"/></div>
+                                    </li>
+                                    
+                                    
+                                    <!--<li class="slds-page-header__detail-block">
+                                             <div class="slds-text-title slds-truncate" title="Rejected Date"><b>Rejected Date</b></div>
+                                            <div class="slds-truncate" title="Approved By Data">{!a.CDX_Rejected_Date__c}</div>
+                                        </li>
+                                        <li class="slds-page-header__detail-block">
+                                            <div class="slds-text-title slds-truncate" title="Approved Date"><b>Approved Date</b></div>
+                                            <div class="slds-truncate" title="Approved Date Data">{!a.CDX_Approved_Date__c}</div>
+                                        </li>-->
+                                    
+                                </ul>
+                                <ul  class="slds-list_horizontal">
+                                    <li class="slds-page-header__detail-item slds-size_1-of-3">
+                                        <div class="slds-text-title slds-truncate" title="Status"><b>Status</b></div>
+                                        <div class="slds-truncate" title="Status Date Data">{!a.Status__c}</div>
+                                    </li>
+                                    <li class="slds-page-header__detail-item slds-size_1-of-3 slds-p-left_x-small">
+                                        <div class="slds-text-title slds-truncate " title="Approved/Rejected By"><b>Approved/Rejected By</b></div>
+                                        <div class="slds-truncate" title="Approved By Data">{!a.CDX_Approved_Rejected_By__c}</div>
+                                    </li>
+                                    <li class="slds-page-header__detail-item">
+                                        <!--empty div to align this ul witht the above ul-->
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </aura:if>
+                
+                <!-- Mobile View -->
+                
+                <aura:if isTrue="{!$Browser.formFactor == 'PHONE'}">
+                    
+                    <div class="slds-card" style="width:100%">
+                        <div class="slds-page-header slds-page-header_vertical" style="background-color: #ECEBEA">
+                            <div >
+                                <div class="slds-media" >
+                                    <div class="slds-media__figure">
+                                        <!-- Icon -->
+                                    </div>
+                                    <div class="slds-media__body">
+                                        <div class="slds-page-header__name" >
+                                            <div class="slds-page-header__name-title">
+                                                <h1>
+                                                    <span class="slds-page-header__title slds-hyphenate" title="Name">{!a.CDX_Shop_Name__c}</span>
+                                                </h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-page-header__controls">
+                                    <!-- Follow Button -->
+                                    <ul class="slds-button-group-list">
+                                        <!-- Edit Delet Buttons -->
+                                    </ul>
+                                </div>
+                            </div></div>
+                        <ul class="slds-page-header__detail-list slds-p-left_small">
+                            <li class="slds-page-header__detail-item ">
+                                <div class="slds-text-title slds-truncate" title="Shop Location"><b>Shop Location</b></div>
+                                <div class="" title="Shop Location Data">{!a.CDX_Shop_Location__c}</div>
+                            </li>
+                            <li class="slds-page-header__detail-item slds-p-left_x-small">
+                                <div class="slds-text-title slds-truncate" title="Status"><b>Status</b></div>
+                                <div class="" title="Publish Date Data">{!a.Status__c}</div>
+                            </li>
+                            <li class="slds-page-header__detail-item ">
+                                <div class="slds-text-title slds-truncate" title="Approved By"><b>Approved By</b></div>
+                                <div class="" title="Approved By Data">{!a.CDX_Approved_By__c}</div>
+                            </li>
+                            <li class="slds-page-header__detail-item slds-p-left_x-small">
+                                <div class="slds-text-title slds-truncate" title="Approved Date"><b>Approved Date</b></div>
+                                <div class="" title="Approved Date Data">{!a.CDX_Approved_Date__c}</div>
+                            </li>
+                            <li class="slds-page-header__detail-item">
+                                <div class="slds-text-title slds-truncate" title="Publish Date"><b>Publish Date</b></div>
+                                <div class="" title="Publish Date Data">{!a.CDX_Published_Date__c}</div>
+                            </li>
+                        </ul>
+                        <br/>
+                    </div>
+                </aura:if>
+                <br/>
+                <div class="slds-p-left_small">  <b>Comments: </b> {!a.CDX_Comment__c}</div>
+                <br/>
+                <c:CDX_ScheduleDetailViewerExt ScheduleID="{!a.Schedule_External_ID__c}" />
+            </div> 
+        </article>
+        <br/>
+        <br/>
+        
+    </aura:iteration>
+    
+    
+</aura:component>

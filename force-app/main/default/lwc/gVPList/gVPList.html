@@ -1,0 +1,209 @@
+<template>
+    <div class="boarder">
+          
+               
+        <template if:true={GVPExternalList.data}>
+
+                <lightning-card title="GVPLIST" icon-name="custom:custom63"> 
+                       
+                <table class="slds-table slds-table_fixed-layout slds-table_bordered">
+                        <thead>
+                     
+                                <tr class="slds-line-height_reset">
+                                        <th class="" scope="col">
+                                            <div class="slds-truncate" title="External Id">External Id</div>
+                                           
+                                        </th>
+                          
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title=" DisplayUrl"> DisplayUrl</div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title="AssetID">AssetID</div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title="Carrier">Carrier</div>
+                                    
+                                </th>
+        
+                             
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title="Destination">Destination</div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title="	
+                                    Event Station">	
+                                    Event Station</div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title="L/E">L/E</div>
+                                    
+                                </th>
+        
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title="Origin">Origin</div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title="	 	
+                                    Status">	 	
+                                    Status</div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title="Status Date">Status Date</div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title="STCC">STCC</div>
+                                    
+                                </th>
+        
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title="STCC description">STCC description</div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title="	
+                                    Train ID">	
+                                    Train ID</div>
+                                </th>
+                                
+                            </tr>
+                           
+                        </thead> 
+
+                        <tbody>
+
+                                <template for:each={GVPExternalList.data} for:item="GVP">
+        
+                                    <tr key={GVP.Id}>
+        
+                                            <td><lightning-formatted-text value={GVP.ExternalId}></lightning-formatted-text></td>
+                                            <td><lightning-formatted-text value={GVP.DisplayUrl}></lightning-formatted-text></td>
+                                             <td><lightning-formatted-text value={GVP.RFO_AssetID__c}></lightning-formatted-text></td>
+                                            <td><lightning-formatted-text value={GVP.RFO_Carrier__c}></lightning-formatted-text></td>
+                                           <td><lightning-formatted-text value={GVP.RFO_Destination__c}></lightning-formatted-text></td>
+                                             <td><lightning-formatted-text value={GVP.RFO_EventStation__c}></lightning-formatted-text></td>
+                                            <td><lightning-formatted-text value={GVP.RFO_LE__c}></lightning-formatted-text> </td>
+                                             <td><lightning-formatted-text value={GVP.RFO_Origin__c}></lightning-formatted-text></td>
+                                             <td><lightning-formatted-text value={GVP.RFO_Status__c}></lightning-formatted-text></td>
+                                            <td><lightning-formatted-text value={GVP.RFO_StatusDate__c}></lightning-formatted-text> </td>
+                                            <td><lightning-formatted-text value= {GVP.RFO_STCC__c}></lightning-formatted-text></td>
+                                            <td><lightning-formatted-text value= {GVP.RFO_STCCDescription__c}></lightning-formatted-text></td>
+                                             <td><lightning-formatted-text value={GVP.RFO_TrainID__c}></lightning-formatted-text></td>
+                                           
+                                         
+        
+        
+        
+                                    </tr>
+        
+                                </template>
+        
+                            </tbody>
+
+
+
+
+                    </table>  
+
+
+               
+                     
+                       
+
+                </lightning-card> 
+                       <!-- <ui>
+                                <template for:each={GVPExternalList.data} for:item="GVP">
+                                    <li key={GVP.Id}>
+                                           
+                                      <td> {GVP.ExternalId}</td>
+                                       <td> {GVP.DisplayUrl}</td>
+                                        <td>{GVP.RFO_AssetID__c}</td>
+                                       <td> {GVP.RFO_Carrier__c}</td>
+                                      <td>  {GVP.RFO_Destination__c}</td>
+                                        <td>{GVP.RFO_EventStation__c}</td>
+                                       <td> {GVP.RFO_LE__c}</td>
+                                        <td>{GVP.RFO_Origin__c}</td>
+                                        <td>{GVP.RFO_Status__c}</td>
+                                       <td> {GVP.RFO_StatusDate__c}</td>
+                                       <td> {GVP.RFO_STCC__c}</td>
+                                       <td> {GVP.RFO_STCCDescription__c}</td>
+                                        <td>{GVP.RFO_TrainID__c}</td>
+                                        <td>{GVP.CDX_CreatedDate__c}</td>
+                                    </li>
+                                </template>
+                            </ui>-->
+
+
+
+
+                            
+            
+        </template>
+        <template if:false={GVPExternalList.data}>
+                <lightning-card title="CDX_GVPLIST" icon-name="custom:custom63"> 
+            <table class="slds-table slds-table_fixed-layout slds-table_bordered">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="External Id">External Id</div>
+                            
+                        </th>
+                  
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title=" DisplayUrl"> DisplayUrl</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="AssetID">AssetID</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Carrier">Carrier</div>
+                            
+                        </th>
+
+                       
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Destination">Destination</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="	
+                            Event Station">	
+                            Event Station</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="L/E">L/E</div>
+                       
+                        </th>
+
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Origin">Origin</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="	 	
+                            Status">	 	
+                            Status</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Status Date">Status Date</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="STCC">STCC</div>
+                            
+                        </th>
+
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="STCC description">STCC description</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="	
+                            Train ID">	
+                            Train ID</div>
+                        </th>
+                        
+                    </tr>
+                   
+                </thead>    
+        </table>
+        
+    </lightning-card>
+    </template>
+    </div>
+</template>

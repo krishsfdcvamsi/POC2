@@ -1,0 +1,4 @@
+<design:component label="Picklist Path Configure">
+    <design:attribute name="fieldApiName" label="Field API Name" description="API name of the Field" />
+    
+</design:component>

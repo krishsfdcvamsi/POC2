@@ -1,0 +1,5 @@
+<aura:component implements="flexipage:availableForRecordHome,lightning:actionOverride,force:hasRecordId,force:lightningQuickActionWithoutHeader" description="My Lightning Component" access="global">
+	 <aura:handler name="init" value="this" action="{!c.doInit}"/>
+    <aura:attribute name="parentRecordId" type="String" />
+    <p>{!v.parentRecordId}</p>
+</aura:component>

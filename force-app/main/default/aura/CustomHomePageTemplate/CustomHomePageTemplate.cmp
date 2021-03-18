@@ -1,0 +1,34 @@
+<!-- 
+* ============================================================================
+* @Name:  Custom Home Page
+* @Author: Ramesh
+* @Version:  V1.0
+* @Created Date: 09-09-2020 
+* @Description: The purpose of this component is for home page layout.
+* =========================================================================
+-->
+<aura:component implements="lightning:HomeTemplate" description="Template Component usage for First Full row and second two column row">
+    
+    <aura:attribute name="firstElement" type="Aura.Component[]" />
+    <aura:attribute name="secondElement" type="Aura.Component[]" />
+    <aura:attribute name="thirdElement" type="Aura.Component[]" />
+    
+    <div>
+        <lightning:layout horizontalAlign="spread">
+            <lightning:layoutItem flexibility="grow" size="{! $Browser.isDesktop ? '12' : '6' }"
+                                  class="slds-m-left_small">
+                <div>{!v.firstElement}</div>
+            </lightning:layoutItem>
+        </lightning:layout>
+        <lightning:layout horizontalAlign="spread">
+            <lightning:layoutItem padding="slds-col" flexibility="grow" size="{! $Browser.isDesktop ? '8' : '6' }"
+                                  class="slds-m-left_small">
+                <div>{!v.secondElement}</div>
+            </lightning:layoutItem>
+            <lightning:layoutItem padding="slds-col" flexibility="grow" size="{! $Browser.isDesktop ? '4' : '6' }"
+                                  class="slds-m-left_small">
+                <div>{!v.thirdElement}</div>
+            </lightning:layoutItem>
+        </lightning:layout>
+    </div>
+</aura:component>

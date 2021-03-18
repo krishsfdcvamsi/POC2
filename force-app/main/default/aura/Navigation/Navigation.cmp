@@ -1,0 +1,23 @@
+<aura:component implements="lightning:availableForFlowScreens" access="global" >
+    <lightning:layout >
+        <lightning:layoutItem size="6">
+            <lightning:button aura:id="PAUSE" label="Pause" 
+                              variant="neutral" onclick="{!c.navigate}" />
+        </lightning:layoutItem>
+        
+        <lightning:layoutItem size="2">
+            <lightning:button aura:id="BACK" label="Previous" 
+                              variant="neutral" onclick="{!c.navigate}" /> &nbsp;&nbsp;&nbsp;&nbsp;
+        </lightning:layoutItem>
+        
+        <lightning:layoutItem size="2">
+            <lightning:button aura:id="NEXT" label="Continue" 
+                              variant="neutral" onclick="{!c.navigate}" /> &nbsp;&nbsp;&nbsp;&nbsp;
+        </lightning:layoutItem>
+        <lightning:layoutItem size="2">
+            
+            <lightning:button aura:id="FINISH" label="Finish" 
+                              variant="brand" onclick="{!c.finish}" /> &nbsp;&nbsp;&nbsp;&nbsp;
+        </lightning:layoutItem>
+    </lightning:layout>
+</aura:component>

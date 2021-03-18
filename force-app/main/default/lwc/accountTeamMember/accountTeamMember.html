@@ -1,0 +1,30 @@
+<template>
+    <lightning-card title="Account Team" icon-name="custom:custom103">
+       <table class="slds-table slds-table_bordered slds-table_striped">
+           <thead>
+               <tr>
+                   <th scope="col"><span class="slds-truncate">Team Member</span></th>
+                   <th scope="col"><span class="slds-truncate">Team Role</span></th>
+                   <th scope="col"><span class="slds-truncate">Phone</span></th>
+                   <th scope="col"><span class="slds-truncate">Email</span></th>
+               </tr>
+           </thead>
+   
+                   <tbody>
+                    <template if:true={accounts.data}>
+                       <template for:each={accounts.data} for:item="acc">
+                           <tr key={acc.Id}>
+                              
+                               <td><lightning-formatted-text value={acc.User.Name}></lightning-formatted-text></td>
+                               <td><lightning-formatted-text value={acc.TeamMemberRole}></lightning-formatted-text></td>
+                               <td> <lightning-formatted-phone value={acc.User.Phone}></lightning-formatted-phone></td>
+                               <td><lightning-formatted-email value={acc.User.Email}></lightning-formatted-email></td> 
+                           </tr>
+                       </template>
+                    </template>	
+                   </tbody>
+               </table>
+           
+       
+       </lightning-card>
+   </template>

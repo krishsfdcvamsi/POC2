@@ -1,0 +1,19 @@
+<apex:component controller="RFO_ChangeOrderEmailController" access="global">
+    <apex:attribute name="AcctId" type="Id" description="Id of the account" assignTo="{!orderId}"/>
+     <table cellpadding="5" width="100%"  cellspacing="0" border="1" >
+        
+        <tr style="font-size:12px;">
+        <apex:repeat value="{!changeorderlineitems}" var="o">  
+            
+         <!--  
+		As part of 35.12.06 US modified below line of code
+		{!o.index}. {!o.changeOrder.Name} : {!o.changeOrder.RFO_ChangeOrderLineItemComments__c}  
+		-->
+            
+                <td>
+             <apex:outputfield value="{!o.changeOrder.RFO_ChangeOrderLineItemComments__c}"/></td>
+           
+        </apex:repeat> 
+          </tr>
+    </table>
+</apex:component>

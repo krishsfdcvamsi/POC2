@@ -1,0 +1,182 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" 
+                access="global"
+                controller="FilterMileageReportController" >
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <aura:attribute name="data" type="Map" />
+    <aura:attribute name="originalData" type="Map" />
+    <aura:attribute name="accounts" type="List" />
+    <aura:attribute name="accountsMap" type="Map" />
+    <aura:attribute name="dataByAccount" type="Map" />
+    <aura:attribute name="toCarNumber" type="String" />
+    <aura:attribute name="fromCarNumber" type="String" />
+    <aura:attribute name="railRoad" type="String" />
+    <aura:attribute name="riderNumber" type="String"  />
+    <aura:attribute name="accountName" type="Id" />
+    <aura:attribute name="carMark" type="String" />
+    
+    <aura:attribute name="allowedStartDate" type="Date" />
+    <aura:attribute name="allowedEndDate" type="Date" />
+    <aura:attribute name="earnedStartDate" type="Date" />
+    <aura:attribute name="earnedEndDate" type="Date" />
+    <aura:attribute name="today" type="String" />
+    <aura:attribute name="earnedDateLimit" type="String" />
+    <aura:attribute name="disableForm" type="Boolean" />
+    <aura:attribute name="disableSubmit" type="Boolean" />
+    
+    
+    <aura:attribute name="options" type="List" default="[
+    {'label': 'All Cars', 'value': 'true'}
+    ]"/>
+    
+    <aura:attribute name="riderNumbers" type="List" />
+    
+    
+    <aura:attribute name="whereClause" type="String" />
+    <aura:attribute name="riderWhereClause" type="String" />
+    <aura:attribute name="allcars" type="List" default="true" />
+    
+    
+    <aura:handler name="change" value="{!v.riderNumber}" action="{!c.riderNumberChange}"/>
+    
+	<center>
+        <h1>Earned Date range cannot exceed 18 months</h1>
+        <h2>Allowed Start and End Dates must be within Earned Date range</h2>
+    </center>	
+    
+    <lightning:layout horizontalAlign="center" multipleRows="true">
+        
+        
+        <lightning:layoutItem size="3" padding="around-small">
+        </lightning:layoutItem>
+        <lightning:layoutItem size="3" padding="around-small">
+            <lightning:select disabled="{!v.disableForm}" onchange="{!c.setDataByAccount}" name="account_name" label="Account Name" value="{!v.accountName}">
+                <aura:if isTrue="{!v.accounts.length > 1}">
+                    <option value="">All</option>
+                </aura:if>
+                <aura:iteration items="{!v.accounts}" var="account" indexVar="index">
+                    <option value="{!account.Id}">{!account.Name}</option>
+                </aura:iteration>
+            </lightning:select>
+        </lightning:layoutItem> 
+        <lightning:layoutItem size="3" padding="around-small">
+            <!--<lightning:select onchange="{!c.setDataByAccount}" disabled="{!v.disableForm}" name="rider_number" label="Rider Number" value="{!v.riderNumber}">
+                <option value="">-</option>                
+                <aura:iteration items="{!v.riderNumbers}" var="fm" indexVar="index">
+                    <option value="{!fm}">{!fm}</option>
+                </aura:iteration>
+            </lightning:select>  -->
+         <c:DynamicComboBox label="Rider Number" 
+                            sObjectName="RFO_Rider__c"
+                            fieldName="Rider_Number_new__c"
+                            searchText = "{!v.riderNumber}"
+                            whereClause =  "{!v.riderWhereClause}"
+                            matchedListDisplay="{!v.riderNumbers}"
+                            parentHandlesSearch = "true"
+                            displayResults = "false"
+                             />
+            
+        </lightning:layoutItem>
+        <lightning:layoutItem size="3" padding="around-small">
+        </lightning:layoutItem>
+        
+        <lightning:layoutItem size="3" padding="around-small">
+        </lightning:layoutItem>
+       <!-- <lightning:layoutItem size="3" padding="around-small">
+            <lightning:select onchange="{!c.setDataByAccount}" name="car_mark" label="Car Mark" value="{!v.carMark}">
+                <option value="">-</option>                
+                <aura:iteration items="{!v.data.carMark}" var="fm" indexVar="index">
+                    <option value="{!fm}">{!fm}</option>
+                </aura:iteration>
+            </lightning:select> 
+            
+            
+            
+        </lightning:layoutItem>   -->
+        <lightning:layoutItem size="9" padding="around-small">
+            <lightning:checkboxGroup name="All Cars"
+                             label=""
+                             options="{!v.options}"
+                             value="{! v.allcars }"
+                            onchange = "{!c.setAllCars}" 
+                             />
+        </lightning:layoutItem>
+        <lightning:layoutItem size="3" padding="around-small">
+        </lightning:layoutItem>
+        <lightning:layoutItem size="3" padding="around-small">
+           <!-- <lightning:select onchange="{!c.setAll}" name="car_number" label="From Car Number" value="{!v.fromCarNumber}">
+                <option value="">-</option>
+                <option value="All">All</option>
+                <aura:iteration items="{!v.data.carNumber}" var="fm" indexVar="index">
+                    <option value="{!fm}">{!fm}</option>
+                </aura:iteration>
+            </lightning:select>
+            -->
+            <c:DynamicComboBox label="From Car Number" 
+                               sObjectName="Asset"
+                               fieldName="Name"
+                               searchText = "{!v.fromCarNumber}"
+                               whereClause =  "{!v.whereClause}"
+                               disableInput = "{!not(empty(v.allcars))}" />
+           
+        </lightning:layoutItem>
+        
+        <lightning:layoutItem size="3" padding="around-small">
+             <!--<lightning:select name="car_number" disabled="{!v.disableForm}" label="To Car Number" value="{!v.toCarNumber}">
+                <option value="">-</option>
+               
+                <aura:iteration items="{!v.data.carNumber}" var="fm" indexVar="index">
+                    <option value="{!fm}">{!fm}</option>
+                </aura:iteration>
+            </lightning:select> -->
+            <c:DynamicComboBox label="To Car Number" 
+                               sObjectName="Asset"
+                               fieldName="Name"
+                               searchText = "{!v.toCarNumber}"
+                               whereClause =  "{!v.whereClause}"
+                               disableInput = "{!not(empty(v.allcars))}"
+                              />
+            
+        </lightning:layoutItem>
+          <lightning:layoutItem size="3" padding="around-small">
+        </lightning:layoutItem>
+        
+        <lightning:layoutItem size="3" padding="around-small"></lightning:layoutItem>
+        <lightning:layoutItem size="6" padding="around-small">
+          
+            <lightning:input type="text" name="railRoad" label="Rail Road" value="{!v.railRoad}" />
+            
+        </lightning:layoutItem>
+      <lightning:layoutItem size="3" padding="around-small">
+        </lightning:layoutItem>
+        <lightning:layoutItem size="3" padding="around-small"></lightning:layoutItem>
+         <lightning:layoutItem size="3" padding="around-small">
+            <lightning:input type="date" name="allowedstartDate" label="Allowed Start Date" value="{!v.allowedStartDate}" min="{!v.pastDate}" max="{!v.today}" />
+        </lightning:layoutItem>
+        
+        <lightning:layoutItem size="3" padding="around-small">
+            <lightning:input type="date" name="input8" label="Allowed End Date" value="{!v.allowedEndDate}" min="{!v.pastDate}" max="{!v.today}" />
+        </lightning:layoutItem>
+        <lightning:layoutItem size="3" padding="around-small"></lightning:layoutItem>
+        
+        <lightning:layoutItem size="3" padding="around-small">
+            <lightning:input aura:id="earnedStartDate" onchange="{!c.setEarnedEndDate}" required="true" type="date" name="startDate" label="Earned Start Date" value="{!v.earnedStartDate}"  />
+        </lightning:layoutItem>
+         
+        <lightning:layoutItem size="3" padding="around-small">
+            <lightning:input aura:id="earnedEndDate" messageWhenRangeOverflow="Earned Date range cannot exceed 18 month"
+                             messageWhenRangeUnderflow="Earned end date must be greater than start date."
+                             required="true" type="date" name="input8" label="Earned End Date" value="{!v.earnedEndDate}"
+                             min="{!v.earnedStartDate}" max="{!v.earnedDateLimit}" />
+        </lightning:layoutItem>
+        
+        
+    </lightning:layout>
+    <lightning:layout horizontalAlign="center">
+        
+        <lightning:layoutItem size="6" padding="around-small">
+            <lightning:button variant="brand" label="Run Fleet Mileage Report" title="Run Fleet Mileage Report" onclick="{!c.goToReport}" />
+        </lightning:layoutItem>
+        
+    </lightning:layout>
+</aura:component>

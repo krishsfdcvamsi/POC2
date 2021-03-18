@@ -1,0 +1,4 @@
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false">
+<apex:iframe src="{!$Label.Qlik_FCRURL}"           
+scrolling="true" frameborder="false"/>  
+</apex:page>

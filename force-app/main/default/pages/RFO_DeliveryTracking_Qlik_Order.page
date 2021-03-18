@@ -1,0 +1,4 @@
+<apex:page standardController="Order" showHeader="false" sidebar="false" standardStylesheets="false">
+<iframe src="{!$Label.RFO_Qlik_OrderURL}{!Order.RFO_File__c}"      
+scrolling="true" height="800px" width="800px" frameborder="false"/>  
+</apex:page>

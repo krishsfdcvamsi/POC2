@@ -1,0 +1,50 @@
+<aura:component controller="RF1_AccountsNoSurveyContactCtrl" 
+                implements="flexipage:availableForAllPageTypes,force:hasRecordId,force:appHostable" access="global">
+	<!-- Handle component initialization in a client-side controller -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <aura:attribute name="Accounts" type="Account[]"/>
+    <aura:attribute name="page" type="integer" description="using for store page Number"/>
+    <aura:attribute name="pages" type="integer" description="using for store All Pages page Number"/>
+    <aura:attribute name="total" type="integer" description="total records count store "/>
+    <aura:attribute name="mycolumns" type="List"/>
+    <aura:attribute name="IsSpinner" type="Boolean"/>
+    
+    <aura:if isTrue="{!v.IsSpinner}">
+       <lightning:spinner variant="brand"  size="large" />
+    </aura:if>
+	<div class="c-container">
+            <lightning:layout >
+                <lightning:layoutItem padding="around-small">
+                    <p class="slds-page-header__title slds-truncate">{!v.total} Accounts • page {!v.page} / {!v.pages}</p>
+                </lightning:layoutItem>
+            </lightning:layout>
+        	<lightning:layout>
+                <lightning:layoutItem padding="around-small" class="slds-float_left">
+            		<ui:inputSelect aura:id="surveyType" label="Survey Type: " change="{!c.doInit}">
+                		<ui:inputSelectOption text="Survey Contact" label="Survey Contact" value="true"/>
+                		<ui:inputSelectOption text="Compliance Project Survey Contact" label="Compliance Project Survey Contact"/>
+            		</ui:inputSelect>    	
+                </lightning:layoutItem>
+				
+                <lightning:layoutItem padding="around-small" class="slds-float_right">
+            		<ui:inputSelect aura:id="recordSize" label="Display Record Per Page: " change="{!c.onSelectChange}">
+                		<ui:inputSelectOption text="10" label="10" value="true"/>
+                		<ui:inputSelectOption text="20" label="20"/>
+                		<ui:inputSelectOption text="50" label="50"/>
+            		</ui:inputSelect>
+                </lightning:layoutItem>
+                
+            </lightning:layout>
+  	</div>    
+    <div class="slds-m-around_small">
+        <p class="slds-p-horizontal_small slds-box">
+            <lightning:datatable data="{!v.Accounts}" columns="{!v.mycolumns}" keyField="id" hideCheckboxColumn="true" resizeColumnDisabled="true"/>
+        </p>
+        <div class="slds-align_absolute-center">            
+            <lightning:button disabled="{!v.page == 1}" variant="brand" label="Previous Page" onclick="{! c.navigate }" />            
+            <lightning:button disabled="{!v.page == v.pages}" aura:id="previousPage" variant="brand" label="Next Page" onclick="{! c.navigate }" />
+        </div>
+    </div>
+        
+</aura:component>
